@@ -16,11 +16,9 @@ public class DBConnector {
     public static Connection createConnection() {
 
         try {
-            DriverManager.registerDriver(new com.mysql.jdbc.Driver);
+            DriverManager.registerDriver(new com.mysql.jdbc.Driver());
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
             System.out.println("Printing connection object " + connection);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
