@@ -1,6 +1,5 @@
 package by.kamotskaya.epam.command;
 
-import by.kamotskaya.epam.command.JspCommand;
 import by.kamotskaya.epam.receiver.BaseReceiver;
 
 /**
@@ -9,13 +8,13 @@ import by.kamotskaya.epam.receiver.BaseReceiver;
 public enum CommandType {
     LANGUAGE(BaseReceiver::selectLanguage);
 
-    private JspCommand command;
+    private FunctionalCommand command;
 
-    CommandType(JspCommand command) {
+    CommandType(FunctionalCommand command) {
         this.command = command;
     }
 
-    public JspCommand getCommand() {
+    public FunctionalCommand getCommand() {
         return command;
     }
 }

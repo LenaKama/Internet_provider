@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
+<%@ taglib prefix="ctg" uri="customtags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
@@ -15,6 +16,7 @@
     </style>
 </head>
 <body>
+<ctg:hello role="admin"
 <div>
     <br/>
     <fmt:message key="selection" bundle="${lang}" />

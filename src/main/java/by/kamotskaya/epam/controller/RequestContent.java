@@ -1,5 +1,6 @@
-package by.kamotskaya.epam.content;
+package by.kamotskaya.epam.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,6 +9,8 @@ import java.util.Map;
  */
 public class RequestContent {
 private Map<String, String[]> requestParameters = new HashMap<>();
+private Map<String, String[]> requestAttributes = new HashMap<>();
+private Map<String, String[]> sessionAttributes = new HashMap<>();
 
     public Map<String, String[]> getRequestParameters() {
         return requestParameters;
@@ -15,5 +18,13 @@ private Map<String, String[]> requestParameters = new HashMap<>();
 
     public void setRequestParameters(Map<String, String[]> requestParameters) {
         this.requestParameters = requestParameters;
+    }
+
+    public void setRequestAttributes() {}
+
+    public void setSessionAttributesAttributes() {}
+
+    public HttpServletRequest update() {
+        return request;
     }
 }

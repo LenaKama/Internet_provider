@@ -1,11 +1,15 @@
-package by.kamotskaya.epam.repository;
+package by.kamotskaya.epam.repository.impl;
+
+import by.kamotskaya.epam.entity.Entity;
+import by.kamotskaya.epam.repository.BaseRepository;
 
 /**
  * @author Lena Kamotskaya
  */
 public class TariffRepository implements BaseRepository {
+
     @Override
-    public void add() {
+    public void add(Entity entity) {
 
     }
 

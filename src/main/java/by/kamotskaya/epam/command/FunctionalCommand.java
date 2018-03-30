@@ -1,13 +1,12 @@
 package by.kamotskaya.epam.command;
 
 
-import by.kamotskaya.epam.content.RequestContent;
+import by.kamotskaya.epam.controller.RequestContent;
 
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Lena Kamotskays
  */
-public interface JspCommand {
+public interface FunctionalCommand {
     CommandResult execute(RequestContent content);
 }

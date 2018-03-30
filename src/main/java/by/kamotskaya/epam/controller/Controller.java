@@ -1,9 +1,8 @@
-package by.kamotskaya.epam.servlet;
+package by.kamotskaya.epam.controller;
 
-import by.kamotskaya.epam.factory.CommandFactory;
+import by.kamotskaya.epam.command.CommandFactory;
 import by.kamotskaya.epam.command.CommandResult;
-import by.kamotskaya.epam.command.JspCommand;
-import by.kamotskaya.epam.content.RequestContent;
+import by.kamotskaya.epam.command.FunctionalCommand;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -20,22 +19,25 @@ import java.io.IOException;
 /**
  * @author Lena Kamotskaya
  */
-@WebServlet(name = "FunctionalServlet", urlPatterns = "/FunctionalServlet")
-public class FunctionalServlet extends HttpServlet {
+@WebServlet(name = "Controller", urlPatterns = "/Controller")
+public class Controller extends HttpServlet {
 
-    private static Logger LOGGER = LogManager.getLogger(FunctionalServlet.class);
+    private static Logger LOGGER = LogManager.getLogger(Controller.class);
 
-    public FunctionalServlet() {
+    public Controller() {
         super();
     }
 
+    @Override
     public void init() throws ServletException {
     }
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         processRequest(request, response);
     }
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -45,8 +47,9 @@ public class FunctionalServlet extends HttpServlet {
         RequestContent content = new RequestContent();
         content.setRequestParameters(request.getParameterMap());
         CommandFactory factory = CommandFactory.getInstance();
-        JspCommand command = factory.getCommand(content);
+        FunctionalCommand command = factory.getCommand(content);
         CommandResult result = command.execute(content);
+        request = content.update();
         switch (result.getResponseType()) {
             case FORWARD:
                 request.getRequestDispatcher(result.getPage()).forward(request, response);
@@ -56,9 +59,10 @@ public class FunctionalServlet extends HttpServlet {
         }
     }
 
+    @Override
     public void destroy() {
 
-        LOGGER.log(Level.INFO, "FunctionalServlet is destroyed");
+        LOGGER.log(Level.INFO, "Controller is destroyed");
         super.destroy();
     }
 }

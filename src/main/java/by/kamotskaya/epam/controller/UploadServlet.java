@@ -1,6 +1,6 @@
-package by.kamotskaya.epam.servlet;
+package by.kamotskaya.epam.controller;
 
-import by.kamotskaya.epam.exception.TechnicalException;
+import by.kamotskaya.epam.constant.PagePath;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,18 +27,28 @@ public class UploadServlet extends HttpServlet {
 
     private static final Logger LOGGER = LogManager.getLogger(UploadServlet.class);
     private static final String SAVE_DIR = "uploadFiles";
-    private static final String ERROR_PAGE = "/pages/error.jsp";
-    private static final String FILE_NAME = "tariffs.xml";
+    private static final String FILE_NAME = "file.xml";
 
 
     public UploadServlet() {
         super();
     }
 
+    @Override
     public void init() throws ServletException {
     }
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         String appPath = request.getServletContext().getRealPath("");
         String savePath = appPath + SAVE_DIR;
@@ -49,10 +59,10 @@ public class UploadServlet extends HttpServlet {
             fileSaveDir.mkdir();
         }
         List<Part> fileParts = request.getParts().stream()
-                    .filter(part -> "file".equals(part.getName()))
-                    .collect(Collectors.toList());
-            request.setAttribute("message", "File isn't uploaded.");
-            request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
+                .filter(part -> "file".equals(part.getName()))
+                .collect(Collectors.toList());
+        request.setAttribute("message", "File isn't uploaded.");
+        request.getRequestDispatcher(PagePath.ERROR.getValue()).forward(request, response);
 
         for (Part part : fileParts) {
             fileName = Paths.get(part.getSubmittedFileName()).getFileName().toString();
@@ -60,17 +70,14 @@ public class UploadServlet extends HttpServlet {
                 part.write(savePath + File.separator + fileName);
             } else {
                 request.setAttribute("message", "Wrong file.");
-                request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
+                request.getRequestDispatcher(PagePath.ERROR.getValue()).forward(request, response);
             }
         }
 
         LOGGER.log(Level.INFO, "File is uploaded.");
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-    }
-
+    @Override
     public void destroy() {
 
         LOGGER.log(Level.INFO, "UploadServlet is destroyed");

@@ -1,13 +1,11 @@
 package by.kamotskaya.epam.receiver;
 
 import by.kamotskaya.epam.command.CommandResult;
-import by.kamotskaya.epam.content.RequestContent;
+import by.kamotskaya.epam.constant.PagePath;
+import by.kamotskaya.epam.controller.RequestContent;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 /**
  * @author Lena Kamotskaya
@@ -15,10 +13,8 @@ import javax.servlet.http.HttpSession;
 public class BaseReceiver {
 
     private static final Logger LOGGER = LogManager.getLogger(BaseReceiver.class);
-    private static final String FILE_PAGE = "/pages/file.jsp";
 
-    public BaseReceiver() {
-    }
+    public BaseReceiver() {}
 
     public static CommandResult selectLanguage(RequestContent content) {
 
@@ -37,6 +33,6 @@ public class BaseReceiver {
 
         LOGGER.log(Level.INFO, "Got a language");
 
-        return new CommandResult(CommandResult.ResponseType.FORWARD, FILE_PAGE);
+        return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.HOME.getValue());
     }
 }

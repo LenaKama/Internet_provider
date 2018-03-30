@@ -3,7 +3,7 @@ package by.kamotskaya.epam.specification;
 /**
  * @author Lena Kamotskaya
  */
-public interface OperativeSpecification {
+public interface BaseSpecification {
 
-    void specified();
+    boolean specified(String string);
 }

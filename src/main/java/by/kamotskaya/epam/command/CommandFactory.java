@@ -1,8 +1,6 @@
-package by.kamotskaya.epam.factory;
+package by.kamotskaya.epam.command;
 
-import by.kamotskaya.epam.command.CommandType;
-import by.kamotskaya.epam.command.JspCommand;
-import by.kamotskaya.epam.content.RequestContent;
+import by.kamotskaya.epam.controller.RequestContent;
 
 /**
  * @author Lena Kamotskaya
@@ -18,7 +16,7 @@ public class CommandFactory {
         return instance;
     }
 
-    public JspCommand getCommand(RequestContent content) {
+    public FunctionalCommand getCommand(RequestContent content) {
         String commandName = content.getRequestParameters().get("command")[0];
         CommandType type = CommandType.valueOf(commandName.toUpperCase());
         return type.getCommand();
