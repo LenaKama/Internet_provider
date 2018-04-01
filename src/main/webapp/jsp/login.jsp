@@ -16,18 +16,17 @@
     </style>
 </head>
 <body>
-<ctg:hello role="admin"
+<ctg:hello role="admin">
+    Hello, I'm admin.
+</ctg:hello>
 <div>
     <br/>
-    <fmt:message key="selection" bundle="${lang}" />
-    <form method="post" action="/FunctionalServlet">
-        <input type="hidden" name="command" value="Language"/>
+    <fmt:message key="authorization" bundle="${lang}"/>
+    <form method="post" action="/Controller">
+        <input type="hidden" name="command" value="authorization"/>
         <br/>
-        <select name="Language" size="1">
-            <option>English</option>
-            <option>Russian</option>
-        </select>
-        <br/>
+        <input type="text" name="login" value="Login"/>
+        <input type="text" name="login" value="Password"/>
         <br/>
         <input type="submit" value="${submit}"/>
     </form>

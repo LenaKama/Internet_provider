@@ -20,14 +20,14 @@ public class ConnectionPool {
 
     private static final Logger LOGGER = LogManager.getLogger(ConnectionPool.class);
 
-    private static final ConnectionPool instance = new ConnectionPool();
+    private static ConnectionPool instance;
 
     private static ReentrantLock instanceLock;
     private static ReentrantLock connectionLock;
     private static final int POOL_SIZE = 10;
 
     private static AtomicBoolean instanceCreated;
-    private static ProxyConnection connection;
+  //  private static ProxyConnection connection;
     private static Queue<ProxyConnection> freeConnections = new ArrayDeque<>(POOL_SIZE);
     private static Queue<ProxyConnection> busyConnections = new ArrayDeque<>(POOL_SIZE);
 
@@ -36,9 +36,11 @@ public class ConnectionPool {
     private ConnectionPool() {
         try {
             DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-            String url = propertiesReader.getValue(URL);
+            String url = propertiesReader.getUrl();
+            String username = propertiesReader.getUsername();
+            String password = propertiesReader.getPassword();
             for (int i = 0; i < POOL_SIZE; i++) {
-                connection = new ProxyConnection(DriverManager.getConnection(propertiesReader));
+                ProxyConnection connection = new ProxyConnection(DriverManager.getConnection(url, username, password));
                 freeConnections.add(connection);
             }
         } catch (SQLException e) {
@@ -52,7 +54,7 @@ public class ConnectionPool {
             try {
                 if (instance == null) {
                     instance = new ConnectionPool();
-                    initializeConnectionPool();
+                  //  initializeConnectionPool();
                     instanceCreated.compareAndSet(false, true);
                 }
             } finally {
@@ -64,17 +66,19 @@ public class ConnectionPool {
 
     public static ProxyConnection getConnection() {
         connectionLock.lock();
-        Connection connection = null;
-        if (availableConnections.size() > 0) {
-            connection = availableConnections.get(FIRST_CONNECTION);
-            availableConnections.remove(FIRST_CONNECTION);
+        ProxyConnection connection = null;
+        if (freeConnections.size() > 0) {
+           // connection = freeConnections.get(FIRST_CONNECTION);
+           // freeConnections.remove(FIRST_CONNECTION);
+            connection = freeConnections.poll();
+            busyConnections.add(connection);
         }
         connectionLock.unlock();
         return connection;
-
+/*
         ProxyConnection connection = freeConnections.poll();
         busyConnections.add(connection);
-        return connection;
+        return connection;*/
     }
 
     public static void releaseConnection(ProxyConnection connection) throws SQLException {

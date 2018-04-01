@@ -6,7 +6,8 @@ import by.kamotskaya.epam.receiver.BaseReceiver;
  * @author Lena Kamotskaya
  */
 public enum CommandType {
-    LANGUAGE(BaseReceiver::selectLanguage);
+    LANGUAGE(BaseReceiver::selectLanguage),
+    AUTHORIZATION(BaseReceiver::authorize);
 
     private FunctionalCommand command;
 
