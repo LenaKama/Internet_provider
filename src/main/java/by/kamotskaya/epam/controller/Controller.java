@@ -45,10 +45,9 @@ public class Controller extends HttpServlet {
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         RequestContent content = new RequestContent(request);
-        CommandFactory factory = CommandFactory.getInstance();
-        FunctionalCommand command = factory.getCommand(content);
-        CommandResult result = command.execute(content);
-        request = content.update();
+        FunctionalCommand command = CommandFactory.getInstance().getCommand(content);
+        CommandResult result = command.apply(content);
+        request = content.update(request);
         switch (result.getResponseType()) {
             case FORWARD:
                 request.getRequestDispatcher(result.getPage()).forward(request, response);

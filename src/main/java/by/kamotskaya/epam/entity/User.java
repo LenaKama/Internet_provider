@@ -7,7 +7,10 @@ public class User extends Entity {
 
     private String login;
     private String password;
+    private String name;
+    private String surname;
     private String email;
+    private String passport;
 
     public String getLogin() {
         return login;
@@ -32,4 +35,29 @@ public class User extends Entity {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getPassport() {
+        return passport;
+    }
+
+    public void setPassport(String passport) {
+        this.passport = passport;
+    }
 }
+

@@ -62,7 +62,7 @@ public class UploadServlet extends HttpServlet {
                 .filter(part -> "file".equals(part.getName()))
                 .collect(Collectors.toList());
         request.setAttribute("message", "File isn't uploaded.");
-        request.getRequestDispatcher(PagePath.ERROR.getValue()).forward(request, response);
+        request.getRequestDispatcher(PagePath.ERROR).forward(request, response);
 
         for (Part part : fileParts) {
             fileName = Paths.get(part.getSubmittedFileName()).getFileName().toString();
@@ -70,7 +70,7 @@ public class UploadServlet extends HttpServlet {
                 part.write(savePath + File.separator + fileName);
             } else {
                 request.setAttribute("message", "Wrong file.");
-                request.getRequestDispatcher(PagePath.ERROR.getValue()).forward(request, response);
+                request.getRequestDispatcher(PagePath.ERROR).forward(request, response);
             }
         }
 

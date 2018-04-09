@@ -1,4 +1,4 @@
-package by.kamotskaya.epam.controller;
+package by.kamotskaya.epam.controller.listener;
 
 /**
  * @author Lena Kamotskaya

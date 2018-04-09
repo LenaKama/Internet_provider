@@ -9,7 +9,6 @@ import java.util.Map;
  */
 public class RequestContent {
 
-    private HttpServletRequest request;
     private Map<String, String[]> requestParameters = new HashMap<>();
     private Map<String, String> requestAttributes = new HashMap<>(); // type
     private Map<String, String> sessionAttributes = new HashMap<>();
@@ -18,11 +17,6 @@ public class RequestContent {
     }
 
     public RequestContent(HttpServletRequest request) {
-        this.request = request;
-        buildRequestParameterMap();
-    }
-
-    private void buildRequestParameterMap() {
         requestParameters = request.getParameterMap();
     }
 
@@ -34,9 +28,10 @@ public class RequestContent {
         sessionAttributes.put(name, value);
     }
 
-    public HttpServletRequest update() {
-        requestAttributes.forEach((a,b) -> request.setAttribute(a, b));
-        return request; // set all setting parameters
+    HttpServletRequest update(HttpServletRequest request) {
+        requestAttributes.forEach((name,value) -> request.setAttribute(name, value));
+        sessionAttributes.forEach((name,value) -> request.getSession().setAttribute(name, value));
+        return request;
     }
 
     public Map<String, String[]> getRequestParameters() {
@@ -52,5 +47,4 @@ public class RequestContent {
 
     public void setSessionAttributesAttributes() {
     }
-
   }

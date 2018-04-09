@@ -1,0 +1,56 @@
+.form-sign {
+    border: 3px solid grey;
+    max-width: 400px;
+    height: 500px;
+    padding: 30px;
+    margin: 0 auto;
+}
+.form-sign .form-sign-heading,
+.form-sign .checkbox {
+    margin-bottom: 20px;
+}
+.form-sign .checkbox {
+    clear: both;
+    font-weight: normal;
+}
+.form-sign .form-control {
+    position: relative;
+    height: auto;
+    box-sizing: border-box;
+    padding: 10px;
+    font-size: 16px;
+}
+.form-sign .field {
+    clear: both;
+    text-align: right;
+    line-height:25px;
+}
+.form-sign a {
+    clear: both;
+    float: left;
+}
+.form-sign .form-control:focus {
+    z-index: 2;
+}
+label {
+    float: left;
+    padding-right: 10px;
+}
+.form-sign input {
+    float: right;
+    margin-bottom: 0px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+.form-sign  .sign-in input{
+    position: relative;
+    float: left;
+}
+.form-sign input[name="form_submit"] {
+    clear: both;
+    float: left;
+    margin-bottom: 0px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    font-weight: bold;
+}

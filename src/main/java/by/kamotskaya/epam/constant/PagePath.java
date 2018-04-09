@@ -3,23 +3,14 @@ package by.kamotskaya.epam.constant;
 /**
  * @author Lena Kamotskaya
  */
-public enum PagePath {
-    INDEX("index.jsp"),
-    LOGIN("jsp/login.jsp"),
-    HOME("jsp/home.jsp"),
-    ERROR("jsp/error.jsp");
+public class PagePath {
 
-    private String value;
+    public static final String INDEX = "index.jsp";
+    public static final String LOGIN = "jsp/login.jsp";
+    public static final String HOME = "jsp/home.jsp";
+    public static final String REGISTRATION = "jsp/registration.jsp";
+    public static final String ERROR = "jsp/error.jsp";
 
-    PagePath(String value) {
-        this.value = value;
-    }
+    PagePath() {}
 
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
 }

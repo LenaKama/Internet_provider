@@ -1,5 +1,6 @@
 package by.kamotskaya.epam.pool;
 
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,41 +21,32 @@ public class ConnectionPool {
 
     private static final Logger LOGGER = LogManager.getLogger(ConnectionPool.class);
 
+    private static final String PROPERTIES_FILE_NAME = "properties/db.properties";
+
     private static ConnectionPool instance;
 
-    private static ReentrantLock instanceLock;
-    private static ReentrantLock connectionLock;
-    private static final int POOL_SIZE = 10;
+    private static ReentrantLock instanceLock = new ReentrantLock();
+    private static ReentrantLock connectionLock = new ReentrantLock();
 
-    private static AtomicBoolean instanceCreated;
-  //  private static ProxyConnection connection;
-    private static Queue<ProxyConnection> freeConnections = new ArrayDeque<>(POOL_SIZE);
-    private static Queue<ProxyConnection> busyConnections = new ArrayDeque<>(POOL_SIZE);
+    private static PropertiesReader propertiesReader = new PropertiesReader();
 
-    private PropertiesReader propertiesReader = new PropertiesReader();
+    private static AtomicBoolean instanceCreated = new AtomicBoolean();
+    private static Queue<ProxyConnection> freeConnections;
+    private static Queue<ProxyConnection> busyConnections;
+
 
     private ConnectionPool() {
-        try {
-            DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-            String url = propertiesReader.getUrl();
-            String username = propertiesReader.getUsername();
-            String password = propertiesReader.getPassword();
-            for (int i = 0; i < POOL_SIZE; i++) {
-                ProxyConnection connection = new ProxyConnection(DriverManager.getConnection(url, username, password));
-                freeConnections.add(connection);
-            }
-        } catch (SQLException e) {
-            LOGGER.catching(e);
-        }
+
     }
 
     public static ConnectionPool getInstance() {
         if (!instanceCreated.get()) {
             instanceLock.lock();
+            // try-with-resources when java 9
             try {
                 if (instance == null) {
                     instance = new ConnectionPool();
-                  //  initializeConnectionPool();
+                   initializeConnectionPool();
                     instanceCreated.compareAndSet(false, true);
                 }
             } finally {
@@ -64,32 +56,48 @@ public class ConnectionPool {
         return instance;
     }
 
-    public static ProxyConnection getConnection() {
+    private static void initializeConnectionPool() {
+        try {
+            propertiesReader.read(PROPERTIES_FILE_NAME);
+            freeConnections = new ArrayDeque<>(propertiesReader.getPoolSize());
+            busyConnections = new ArrayDeque<>(propertiesReader.getPoolSize());
+
+            DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+            String url = propertiesReader.getUrl();
+            String username = propertiesReader.getUsername();
+            String password = propertiesReader.getPassword();
+            for (int i = 0; i < propertiesReader.getPoolSize(); i++) {
+                ProxyConnection connection = new ProxyConnection(DriverManager.getConnection(url, username, password));
+                freeConnections.add(connection);
+            }
+            LOGGER.log(Level.DEBUG, freeConnections.size());
+        } catch (SQLException e) {
+            LOGGER.catching(e);
+        }
+    }
+
+    public ProxyConnection takeConnection() {
         connectionLock.lock();
         ProxyConnection connection = null;
         if (freeConnections.size() > 0) {
-           // connection = freeConnections.get(FIRST_CONNECTION);
-           // freeConnections.remove(FIRST_CONNECTION);
             connection = freeConnections.poll();
             busyConnections.add(connection);
         }
         connectionLock.unlock();
         return connection;
-/*
-        ProxyConnection connection = freeConnections.poll();
-        busyConnections.add(connection);
-        return connection;*/
     }
 
     public static void releaseConnection(ProxyConnection connection) throws SQLException {
-        connection.setAutoCommit(true);
+       if (!connection.getAutoCommit()) {
+           connection.setAutoCommit(true);
+       }
         freeConnections.add(busyConnections.poll());
     }
 
     public void destroyConnections() throws SQLException {
         //check if all connections return to the freeConnections
         //locking while polling from freeConnections
-        for (int i = 0; i < POOL_SIZE; i++) {
+        for (int i = 0; i < propertiesReader.getPoolSize(); i++) {
             freeConnections.poll().close();
         }
         try {

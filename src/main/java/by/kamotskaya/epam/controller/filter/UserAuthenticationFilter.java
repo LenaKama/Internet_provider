@@ -4,6 +4,7 @@ import by.kamotskaya.epam.constant.PagePath;
 import by.kamotskaya.epam.entity.User;
 
 import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -12,9 +13,10 @@ import java.io.IOException;
 /**
  * @author Lena Kamotskaya
  */
-public class UserAuthentificationFilter implements Filter {
+//@WebFilter
+public class UserAuthenticationFilter implements Filter {
 
-    private static final String USER = "user";
+    private static final String LOGIN = "login";
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -27,9 +29,9 @@ public class UserAuthentificationFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         HttpSession session = request.getSession();
-        User user = (User) session.getAttribute(USER);
+        User user = (User) session.getAttribute(LOGIN);
         if (user == null) {
-            response.sendRedirect(PagePath.HOME.getValue());
+            response.sendRedirect(PagePath.HOME);
         } else {
             filterChain.doFilter(request, response);
         }
