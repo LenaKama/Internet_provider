@@ -5,7 +5,7 @@
   <artifactId>internet-provider</artifactId>
   <packaging>war</packaging>
   <version>1.0-SNAPSHOT</version>
-  <name>internet-provider Maven Webapp</name>
+  <usName>internet-provider Maven Webapp</usName>
   <url>http://maven.apache.org</url>
   <dependencies>
     <dependency>
@@ -47,10 +47,21 @@
       <version>2.10.0</version>
     </dependency>
 
+    <!--<dependency>-->
+      <!--<groupId>mysql</groupId>-->
+      <!--<artifactId>mysql-connector-java</artifactId>-->
+      <!--<version>5.1.45</version>-->
+    <!--</dependency>-->
+
+    <dependency>
+      <groupId>com.sun.jersey</groupId>
+      <artifactId>jersey-bundle</artifactId>
+      <version>1.19.4</version>
+    </dependency>
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
-      <version>5.1.45</version>
+      <version>6.0.6</version>
     </dependency>
 
   </dependencies>

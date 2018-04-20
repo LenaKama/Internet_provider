@@ -5,59 +5,101 @@ package by.kamotskaya.epam.entity;
  */
 public class User extends Entity {
 
-    private String login;
-    private String password;
-    private String name;
-    private String surname;
-    private String email;
-    private String passport;
+    private String usLogin;
+    private String usPassword;
+    private String usName;
+    private String usSurname;
+    private String usEmail;
+    private String usPassport;
+    private String usRole;       ////generate
+    private boolean usBban;
+    private Tariff tariff;  //???
 
-    public String getLogin() {
-        return login;
+    public String getUsLogin() {
+        return usLogin;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setUsLogin(String usLogin) {
+        this.usLogin = usLogin;
     }
 
-    public String getPassword() {
-        return password;
+    public String getUsPassword() {
+        return usPassword;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setUsPassword(String usPassword) {
+        this.usPassword = usPassword;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUsEmail() {
+        return usEmail;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsEmail(String usEmail) {
+        this.usEmail = usEmail;
     }
 
-    public String getName() {
-        return name;
+    public String getUsName() {
+        return usName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsName(String usName) {
+        this.usName = usName;
     }
 
-    public String getSurname() {
-        return surname;
+    public String getUsSurname() {
+        return usSurname;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setUsSurname(String usSurname) {
+        this.usSurname = usSurname;
     }
 
-    public String getPassport() {
-        return passport;
+    public String getUsPassport() {
+        return usPassport;
     }
 
-    public void setPassport(String passport) {
-        this.passport = passport;
+    public void setUsPassport(String usPassport) {
+        this.usPassport = usPassport;
+    }
+
+    public String getUsRole() {
+        return usRole;
+    }
+
+    public void setUsRole(String usRole) {
+        this.usRole = usRole;
+    }
+
+    public boolean isUsBban() {
+        return usBban;
+    }
+
+    public void setUsBban(boolean usBban) {
+        this.usBban = usBban;
+    }
+
+    public Tariff getTariff() {
+        return tariff;
+    }
+
+    public void setTariff(Tariff tariff) {
+        this.tariff = tariff;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "usLogin='" + usLogin + '\'' +
+                ", usPassword='" + usPassword + '\'' +
+                ", usName='" + usName + '\'' +
+                ", usSurname='" + usSurname + '\'' +
+                ", usEmail='" + usEmail + '\'' +
+                ", usPassport='" + usPassport + '\'' +
+                ", usRole='" + usRole + '\'' +
+                ", usBban=" + usBban +
+                ", tariff=" + tariff +
+                '}';
     }
 }
 

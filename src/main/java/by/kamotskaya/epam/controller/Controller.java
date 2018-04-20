@@ -45,7 +45,7 @@ public class Controller extends HttpServlet {
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         RequestContent content = new RequestContent(request);
-        FunctionalCommand command = CommandFactory.getInstance().getCommand(content);
+        FunctionalCommand command = CommandFactory.getINSTANCE().getCommand(content);
         CommandResult result = command.apply(content);
         request = content.update(request);
         switch (result.getResponseType()) {

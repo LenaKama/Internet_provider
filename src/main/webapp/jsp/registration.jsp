@@ -5,59 +5,66 @@
 <html>
 <head>
     <fmt:setLocale value="en_US"/>
-    <fmt:setBundle basename="properties.text" var="lang"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <fmt:setBundle basename="prop.text" var="lang"/>
+    <meta usName="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Bootstrap core CSS -->
-    <link href="../../dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Custom styles for this template -->
-    <link href="../css/login.css" rel="stylesheet">
+    <link href="css/bootstrap/bootstrap-theme.min.css" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat+Alternates" rel="stylesheet">
+
+    <link href="../css/usLogin.css" rel="stylesheet">
 </head>
 <body>
 <form id="registration-form" class="form-sign" action="/Controller" method="post"/>
-<input type="hidden" name="command" value="registration"/>
+<input type="hidden" usName="command" value="registration"/>
 
 <h2 class="form-sign-heading"><fmt:message key="registration" bundle="${lang}"/></h2>
 <div class="field">
-<label for="login"><fmt:message key="form.login" bundle="${lang}"/></label>
-<input id="login" type="text" name="login" class="form-control" title='<fmt:message key="form.login.title" bundle="${lang}"/>'
+<label for="usLogin"><fmt:message key="form.usLogin" bundle="${lang}"/></label>
+<input id="usLogin" type="text" usName="usLogin" class="form-control" title='<fmt:message key="form.usLogin.title" bundle="${lang}"/>'
        required pattern="^[a-zA-Z]{1}[a-zA-Z0-9_]{3,}">
 </div>
 <div class="field">
-    <label for="password"><fmt:message key="form.password" bundle="${lang}"/></label>
-<input id="password" type="password" name="password" class="form-control"
-       title='<fmt:message key="form.password.title" bundle="${lang}"/>'
+    <label for="usPassword"><fmt:message key="form.usPassword" bundle="${lang}"/></label>
+<input id="usPassword" type="usPassword" usName="usPassword" class="form-control"
+       title='<fmt:message key="form.usPassword.title" bundle="${lang}"/>'
        required pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z*]{4,}">
 </div>
 <div class="field">
-<label for="password_repeat"><fmt:message key="form.password.repeat" bundle="${lang}"/></label>
-<input id='password_repeat' type="password" class="form-control" name="password" required
-       title='<fmt:message key="form.password.repeat.title" bundle="${lang}"/>'
+<label for="password_repeat"><fmt:message key="form.usPassword.repeat" bundle="${lang}"/></label>
+<input id='password_repeat' type="usPassword" class="form-control" usName="usPassword" required
+       title='<fmt:message key="form.usPassword.repeat.title" bundle="${lang}"/>'
        pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z*]{6,}"/>
 </div>
 <div class="field">
-<label for="name"><fmt:message key="form.name" bundle="${lang}"/></label>
-<input id="name" type="text" name="name" class="form-control"
-       title='<fmt:message key="form.name.title" bundle="${lang}"/>'/>
+<label for="usName"><fmt:message key="form.usName" bundle="${lang}"/></label>
+<input id="usName" type="text" usName="usName" class="form-control"
+       title='<fmt:message key="form.usName.title" bundle="${lang}"/>'/>
 </div>
 <div class="field">
-<label for="surname"><fmt:message key="form.surname" bundle="${lang}"/></label>
-<input id="surname" type="text" name="surname" class="form-control"
-       title='<fmt:message key="form.surname.title" bundle="${lang}"/>'/>
+<label for="usSurname"><fmt:message key="form.usSurname" bundle="${lang}"/></label>
+<input id="usSurname" type="text" usName="usSurname" class="form-control"
+       title='<fmt:message key="form.usSurname.title" bundle="${lang}"/>'/>
 </div>
 <div class="field">
-<label for="email"><fmt:message key="form.email" bundle="${lang}"/></label>
-<input id="email" type="text" name="email" class="form-control"
-       title='<fmt:message key="form.email.title" bundle="${lang}"/>' required
+<label for="usEmail"><fmt:message key="form.usEmail" bundle="${lang}"/></label>
+<input id="usEmail" type="text" usName="usEmail" class="form-control"
+       title='<fmt:message key="form.usEmail.title" bundle="${lang}"/>' required
        pattern="^[-._a-z0-9]+@(?:[a-z0-9][-a-z0-9]+\.)+[a-z]{2,6}$"/>
 </div>
 <div class="field">
-<label for="passport"><fmt:message key="form.passport" bundle="${lang}"/></label>
-<input id="passport" type="text" class="form-control" name="passport" required
-       title='<fmt:message key="form.passport.title" bundle="${lang}"/>'/>
+<label for="usPassport"><fmt:message key="form.usPassport" bundle="${lang}"/></label>
+<input id="usPassport" type="text" class="form-control" usName="usPassport" required
+       title='<fmt:message key="form.usPassport.title" bundle="${lang}"/>'/>
 </div>
-<input id="submit_registration" name="form_submit" type="submit" class="form-control" value='<fmt:message key="form.button.enter" bundle="${lang}"/>'/>
+<div class="field">
+    <label for="tariff"><fmt:message key="form.tariff" bundle="${lang}"/></label>
+    <input id='tariff' type="text" class="form-control" usName="tariff" required
+           title='<fmt:message key="form.tariff.title" bundle="${lang}"/>'/>
+</div>
+<input id="submit_registration" usName="form_submit" type="submit" class="form-control" value='<fmt:message key="form.button.enter" bundle="${lang}"/>'/>
 </form>
 </div>
 </body>

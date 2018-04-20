@@ -4,7 +4,6 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -21,7 +20,7 @@ public class ConnectionPool {
 
     private static final Logger LOGGER = LogManager.getLogger(ConnectionPool.class);
 
-    private static final String PROPERTIES_FILE_NAME = "properties/db.properties";
+    private static final String PROPERTIES_FILE_NAME = "prop/db.properties";
 
     private static ConnectionPool instance;
 
@@ -94,7 +93,7 @@ public class ConnectionPool {
         freeConnections.add(busyConnections.poll());
     }
 
-    public void destroyConnections() throws SQLException {
+    public static void destroyConnectionPool() throws SQLException {
         //check if all connections return to the freeConnections
         //locking while polling from freeConnections
         for (int i = 0; i < propertiesReader.getPoolSize(); i++) {

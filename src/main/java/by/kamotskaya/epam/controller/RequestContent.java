@@ -10,7 +10,7 @@ import java.util.Map;
 public class RequestContent {
 
     private Map<String, String[]> requestParameters = new HashMap<>();
-    private Map<String, String> requestAttributes = new HashMap<>(); // type
+    private Map<String, String> requestAttributes = new HashMap<>();
     private Map<String, String> sessionAttributes = new HashMap<>();
 
     public RequestContent() {

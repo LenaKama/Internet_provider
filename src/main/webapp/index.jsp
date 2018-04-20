@@ -3,6 +3,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <body>
-<jsp:forward page="jsp/login.jsp"/>
+<jsp:forward page="jsp/usLogin.jsp"/>
 </body>
 </html>

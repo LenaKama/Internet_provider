@@ -1,16 +1,16 @@
 package by.kamotskaya.epam.command;
 
-import by.kamotskaya.epam.receiver.BaseReceiver;
 import by.kamotskaya.epam.receiver.UserReceiver;
 
 /**
  * @author Lena Kamotskaya
  */
 public enum CommandType {
-    LANGUAGE(BaseReceiver::selectLanguage),
+
     AUTHENTICATION(UserReceiver::authenticate),
     GO_TO_REGISTRATION(UserReceiver::goToRegistration),
-    REGISTRATION(UserReceiver::register);
+    REGISTRATION(UserReceiver::register),
+    DELETE_USER(UserReceiver::deleteUser);
 
     private FunctionalCommand command;
 

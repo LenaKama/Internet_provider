@@ -7,13 +7,13 @@ import by.kamotskaya.epam.controller.RequestContent;
  */
 public class CommandFactory {
 
-    private static CommandFactory instance = new CommandFactory();
+    private static CommandFactory INSTANCE = new CommandFactory();
 
     private CommandFactory() {
     }
 
-    public static CommandFactory getInstance() {
-        return instance;
+    public static CommandFactory getINSTANCE() {
+        return INSTANCE;
     }
 
     public FunctionalCommand getCommand(RequestContent content) {

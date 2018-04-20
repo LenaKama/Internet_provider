@@ -5,8 +5,13 @@ package by.kamotskaya.epam.constant;
  */
 public class SqlQuery {
 
-    public final static String REGISTER_CLIENT = "INSERT INTO user(us_login, us_password, us_email, us_name, us_surname, us_passport, us_role, t_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
 
-    public final static String FIND_BY_LOGIN = "SELECT us_login, us_password FROM user"; // WHERE us_login = ?";
-    public final static String UPDATE_USER = "ALTER TABLE user SET us_login = ? SET us_password FROM user";
+    //TariffDAO
+
+
+    //SessionDAO
+    public final static String ADD_NEW_SESSION = "INSERT INTO session(session_date, session_duration, traffic_in, traffic_out, speed_in, speed_out, us_login) VALUES(?, ?, ?, ?, ?)";
+    public final static String UPDATE_SESSION = "ALTER TABLE session SET t_name = ? SET connection_payment = ? SET daily_fee = ? FROM user";
+    public final static String DELETE_SESSION = "ALTER TABLE session DELETE FROM tariff WHERE t_name = ?";
+
 }

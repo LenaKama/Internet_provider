@@ -6,20 +6,20 @@
         http://java.sun.com/xml/ns/web-jsptaglibrary_2_1.xsd">
 
     <tlib-version>1.0</tlib-version>
-    <short-name>ctg</short-name>
+    <short-usName>ctg</short-usName>
     <uri>customtags</uri>
     <tag>
-        <name>info-time</name>
+        <usName>info-time</usName>
         <tag-class>by.kamotskaya.epam.tag.RoleTag</tag-class>
         <body-content>empty</body-content>
     </tag>
 
     <tag>
-    <name>hello</name>
+    <usName>hello</usName>
     <tag-class>by.kamotskaya.epam.tag.RoleTag</tag-class>
     <body-content>empty</body-content>
     <attribute>
-    <name>role</name>
+    <usName>usRole</usName>
         <required>true</required>
         <rtexprvalue>true</rtexprvalue>
     </attribute>

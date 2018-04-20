@@ -23,7 +23,7 @@ public class PropertiesReader {
     private String username;
     private String password;
     private int poolSize;
-
+//должен проверять на наличие пропертиес на нул
     public PropertiesReader() {
         properties = new Properties();
 

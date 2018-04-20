@@ -8,10 +8,10 @@ import java.util.List;
 /**
  * @author Lena Kamotskaya
  */
-public interface BaseDAO<T> {
+public interface BaseDAO<T extends Entity> {
 
     List<Object> add(T entity) throws DAOException;
-    void delete(Entity entity);
+    void delete(String us_login) throws DAOException;
     void update(String us_login) throws DAOException;
 
 }

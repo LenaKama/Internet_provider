@@ -11,6 +11,5 @@ public class PagePath {
     public static final String REGISTRATION = "jsp/registration.jsp";
     public static final String ERROR = "jsp/error.jsp";
 
-    PagePath() {}
-
+    private PagePath() {}
 }
