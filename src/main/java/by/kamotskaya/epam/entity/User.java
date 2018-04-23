@@ -12,7 +12,7 @@ public class User extends Entity {
     private String usEmail;
     private String usPassport;
     private String usRole;       ////generate
-    private boolean usBban;
+    private boolean usBan;
     private Tariff tariff;  //???
 
     public String getUsLogin() {
@@ -71,12 +71,12 @@ public class User extends Entity {
         this.usRole = usRole;
     }
 
-    public boolean isUsBban() {
-        return usBban;
+    public boolean isUsBan() {
+        return usBan;
     }
 
-    public void setUsBban(boolean usBban) {
-        this.usBban = usBban;
+    public void setUsBan(boolean usBan) {
+        this.usBan = usBan;
     }
 
     public Tariff getTariff() {
@@ -97,7 +97,7 @@ public class User extends Entity {
                 ", usEmail='" + usEmail + '\'' +
                 ", usPassport='" + usPassport + '\'' +
                 ", usRole='" + usRole + '\'' +
-                ", usBban=" + usBban +
+                ", usBan=" + usBan +
                 ", tariff=" + tariff +
                 '}';
     }

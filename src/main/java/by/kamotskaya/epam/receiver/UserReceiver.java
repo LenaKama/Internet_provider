@@ -27,29 +27,26 @@ public class UserReceiver {
         String login = content.getRequestParameters().get("login")[0];
         String password = content.getRequestParameters().get("password")[0];
 
-        User user = new User();
-        user.setUsLogin(login);
-        PasswordEncryptor passwordEncryptor = new PasswordEncryptor();
-        user.setUsPassword(passwordEncryptor.encryptPassword(password));
+        PasswordGenerator passwordGenerator = new PasswordGenerator();
 
         try {
-            if (userDAO.findUserByLogin(login)) {
-                 content.putSessionAttribute("login", login);
+            if (passwordGenerator.authenticate(password,userDAO.findPasswordByLogin(login))) {
+                User user = userDAO.createUserBean(login);
+                content.putSessionAttribute("user", user);
+                 content.putSessionAttribute("login", login);//${user.login}
                  content.putRequestAttribute("message", "Welcome " + login + "!");
              } else {
                  content.putRequestAttribute("message", "Wrong user credentials.");
-                 return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.LOGIN);
+                 return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.SIGN_IN);
 
              }
         } catch (DAOException e) {
             LOGGER.catching(e);
         }
-        return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.HOME);
+        return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.WELCOME);
     }
 
-    public static CommandResult goToRegistration(RequestContent content) {
-        return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.REGISTRATION);
-    }
+
 
         public static CommandResult register(RequestContent content) {
 
@@ -68,7 +65,7 @@ public class UserReceiver {
         user.setUsEmail(email);
         user.setUsPassport(passport);
         user.setUsRole("client");
-        user.setUsBban(false);
+        user.setUsBan(false);
         //set Tariff
 
         LOGGER.log(Level.INFO, user.toString());
@@ -77,7 +74,7 @@ public class UserReceiver {
         } catch (DAOException e) {
             LOGGER.catching(e);
         }
-        return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.HOME);
+        return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.WELCOME);
     }
 
     public static CommandResult deleteUser(RequestContent content) {
@@ -88,6 +85,6 @@ public class UserReceiver {
             LOGGER.catching(e);
             // return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.ERROR);
         }
-        return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.HOME);
+        return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.WELCOME);
     }
 }

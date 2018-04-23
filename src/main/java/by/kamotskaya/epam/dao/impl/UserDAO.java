@@ -9,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,8 @@ public class UserDAO implements BaseDAO<User> {
     private static final Logger LOGGER = LogManager.getLogger(UserDAO.class);
 
     public final static String ADD_NEW_CLIENT = "INSERT INTO user(us_login, us_password, us_email, us_name, us_surname, us_passport, us_role, us_ban, t_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    public final static String FIND_BY_LOGIN = "SELECT us_password FROM user WHERE us_login = ?"; // WHERE us_login = ?";
+    public final static String FIND_PASSWORD_BY_LOGIN = "SELECT us_password FROM user WHERE us_login = ?";
+    public final static String GET_USER_INFO = "SELECT * FROM user WHERE us_login = ?";
     public final static String UPDATE_USER = "ALTER TABLE user SET us_login = ? SET us_password WHERE us_login = ?";
     public final static String DELETE_USER = "ALTER TABLE user DELETE FROM user WHERE us_login = ?";
 
@@ -43,7 +45,7 @@ public class UserDAO implements BaseDAO<User> {
             statement.setString(5, user.getUsSurname());
             statement.setString(6, user.getUsPassport());
             statement.setString(7, user.getUsRole());
-            statement.setBoolean(8, user.isUsBban());
+            statement.setBoolean(8, user.isUsBan());
             statement.setInt(9, 1);
             statement.executeUpdate();
             resultList.add("user " + user.getUsLogin() + " is inserted.");
@@ -82,13 +84,40 @@ public class UserDAO implements BaseDAO<User> {
         }
     }
 
-    public boolean findUserByLogin (String login) throws DAOException {
-        try (ProxyConnection connection = connectionPool.takeConnection()) {
-            PreparedStatement statement = connection.prepareStatement(FIND_BY_LOGIN);
-            statement.setString(1, login);
-            statement.execute();
+    public String findPasswordByLogin(String usLogin) throws DAOException {
+        try (ProxyConnection connection = connectionPool.takeConnection();
+                PreparedStatement statement = connection.prepareStatement(FIND_PASSWORD_BY_LOGIN)) {
+            statement.setString(1, usLogin);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getString(1);
+            } else {
+                return "";
+            }
         } catch (SQLException e) {
             throw new DAOException("Exception from UserDAO: ", e);
         }
+    }
+
+    public User createUserBean(String usLogin) throws DAOException {
+        User user = new User();
+        try (ProxyConnection connection = connectionPool.takeConnection();
+             PreparedStatement statement = connection.prepareStatement(GET_USER_INFO)) {
+            statement.setString(1, usLogin);
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+            user.setUsLogin(resultSet.getString("us_login"));
+            user.setUsPassword(resultSet.getString("us_password"));
+            user.setUsEmail(resultSet.getString("us_email"));
+            user.setUsName(resultSet.getString("us_name"));
+            user.setUsSurname(resultSet.getString("us_surname"));
+            user.setUsPassport(resultSet.getString("us_passport"));
+            user.setUsRole(resultSet.getString("us_role"));
+            user.setUsBan(resultSet.getBoolean("us_ban"));
+            //tariff
+        } catch (SQLException e) {
+            throw new DAOException("Exception from UserDAO: ", e);
+        }
+        return user;
     }
 }

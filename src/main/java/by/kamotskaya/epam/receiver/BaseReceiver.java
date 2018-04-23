@@ -17,24 +17,14 @@ public class BaseReceiver {
     public BaseReceiver() {
     }
 
-    public static CommandResult selectLanguage(RequestContent content) {
+    public static CommandResult changeLocale(RequestContent content) {
 
-        String language;
-        String country;
-        String lang = content.getRequestParameters().get("Language")[0];///??????
+        String locale = content.getRequestParameters().get("locale")[0];
+        String pageUrl = content.getRequestParameters().get("previousPage")[0];
+        content.putSessionAttribute("userLocale", locale);
+        LOGGER.log(Level.INFO, "Change the locale, pageUrl - " + pageUrl);
 
-        if ("Russian".equals(lang)) {
-            language = "ru";
-            country = "RU";
-        } else {
-            language = "en";
-            country = "US";
-        }
-        content.getRequestParameters().put("value", new String[]{language + "_" + country});
-
-        LOGGER.log(Level.INFO, "Got a language");
-
-        return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.HOME);
+        return new CommandResult(CommandResult.ResponseType.REDIRECT, pageUrl);
     }
 
 

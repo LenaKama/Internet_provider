@@ -13,11 +13,11 @@ public class Session {
     private int trafficOut;
     private int usLogin;//??
 
-    public String getSessionDate() {
+    public Date getSessionDate() {
         return sessionDate;
     }
 
-    public void setSessionDate(String sessionDate) {
+    public void setSessionDate(Date sessionDate) {
         this.sessionDate = sessionDate;
     }
 

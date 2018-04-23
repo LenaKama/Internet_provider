@@ -10,8 +10,8 @@ import java.util.Map;
 public class RequestContent {
 
     private Map<String, String[]> requestParameters = new HashMap<>();
-    private Map<String, String> requestAttributes = new HashMap<>();
-    private Map<String, String> sessionAttributes = new HashMap<>();
+    private Map<String, Object> requestAttributes = new HashMap<>();
+    private Map<String, Object> sessionAttributes = new HashMap<>();
 
     public RequestContent() {
     }
@@ -20,11 +20,11 @@ public class RequestContent {
         requestParameters = request.getParameterMap();
     }
 
-    public void putRequestAttribute(String name, String value) {
+    public void putRequestAttribute(String name, Object value) {
         requestAttributes.put(name, value);
     }
 
-    public void putSessionAttribute(String name, String value) {
+    public void putSessionAttribute(String name, Object value) {
         sessionAttributes.put(name, value);
     }
 

@@ -3,6 +3,35 @@
     font-size: 15px;
 }
 
+.imgLogo {
+    float: left;
+    height: 100px;
+    width: 600px;
+}
+
+.nav-item .nav-link {
+    padding: 5px;
+}
+.nav-item input{
+    padding: 10px;
+    margin: 5px;
+}
+.nav-item input:hover{
+    border: 3px solid orange;
+    /*background-color: #5ee5e5;*/
+}
+.nav-item .nav-link {
+    color: red!important;
+    cursor: pointer;
+}
+
+.locale input[type="image"] {
+    /*background-image: url("../img/ru_icon.png");*/
+    /*background-size: 100px 100px;*/
+    height: 60px;
+    width: 80px;
+    border-radius: 30%;
+}
 .form-sign {
     border: 3px solid grey;
     max-width: 400px;

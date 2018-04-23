@@ -4,7 +4,6 @@ import by.kamotskaya.epam.constant.PagePath;
 import by.kamotskaya.epam.entity.User;
 
 import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -31,7 +30,7 @@ public class UserAuthenticationFilter implements Filter {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute(LOGIN);
         if (user == null) {
-            response.sendRedirect(PagePath.HOME);
+            response.sendRedirect(PagePath.WELCOME);
         } else {
             filterChain.doFilter(request, response);
         }
