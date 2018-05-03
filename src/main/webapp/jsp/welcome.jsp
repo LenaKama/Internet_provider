@@ -2,21 +2,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<c:set value="alert" var="alert"/>
-<%--<c:set var="command" value="${requestScope.command}"/>--%>
-
-<%--<fmt:setLocale value="en_US"/>--%>
-<%--<fmt:setBundle basename="prop.locale.text" var="loc"/>--%>
-
-<%--<fmt:setBundle basename="by.tr.hotelbooking.localization.front-end" scope="session" var="loc"/>--%>
-
-<%--<!DOCTYPE html>--%>
 <html>
 <head>
    <%@include file="part/bundle.jsp"%>
 
  <fmt:message key="page.home.title" bundle="${loc}" var="title"/>
-    <fmt:message key="submit" bundle="${loc}" var="submit"/>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -27,17 +17,31 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat+Alternates" rel="stylesheet">
 
     <link href="../css/style.css" rel="stylesheet">
-    
-    <title>${title}</title>
-</head>
-<body>
 
+   <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/icon.png" type="image/x-icon">
+
+   <title>${title}</title>
+</head>
+<body class="bg-faded">
 <%@include file="part/header.jsp" %>
 <div class="container">
+   <c:choose>
+   <c:when test="${sessionScope.usRole eq 'quest'}">
 <%@include file="sign_in.jsp"%>
+   </c:when>
+      <c:when test="${sessionScope.usRole eq 'admin'}">
+         <%@include file="part/admin_menu.jsp" %>
+      </c:when>
+      <c:when test="${sessionScope.usRole eq 'client'}">
+         <%@include file="part/client-menu.jsp" %>
+      </c:when>
+   </c:choose>
 </div>
-
-
+<div class="navbar navbar-fixed-bottom bg-primary">
 <%@include file="fragment/footer.jspf" %>
+</div>
+<script src="../js/bootstrap/jquery.min.js"></script>
+<script src="../js/bootstrap/bootstrap.min.js"></script>
+
 </body>
 </html>

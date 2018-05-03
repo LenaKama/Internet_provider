@@ -1,15 +1,11 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false"%>
 <%@ taglib prefix="ctg" uri="customtags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<%--<fmt:setLocale value="en_US"/>--%>
-<%--<fmt:setBundle basename="prop.locale.text" var="loc"/>--%>
-<%--<fmt:message key="submit" bundle="${loc}" var="submit"/>--%>
 <html>
 <head>
 
-    <%@include file="part/bundle.jsp"%>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link href="../css/bootstrap/bootstrap.min.css" rel="stylesheet">
@@ -23,36 +19,30 @@
 </head>
 <body>
 <div class="container">
-    <div class="row">
-        <div class="col-md-5">
-            hop
-        </div>
-    </div>
-    <form class="form-sign" method="post" action="/Controller">
-        <input type="hidden" name="command" value="authentication"/>
+    <div style="border: 3px solid grey; margin: 10px; padding: 10px">
+    <form method="post" action="/Controller">
+        <input type="hidden" name="command" value="authenticate"/>
 
-        <h2 class="form-sign-heading"><fmt:message key="word.login" bundle="${loc}"/></h2>
-        ${message}
-           <div class="sign-in">
+        <h2><fmt:message key="word.login" bundle="${loc}"/></h2>
+           <div class="form-group row col-md-4">
                <input id="login_login" type="text" name="usLogin" class="form-control"
                title='<fmt:message key="form.usLogin.title" bundle="${loc}"/>' placeholder='<fmt:message key="form.usLogin" bundle="${loc}"/>' required pattern="^[a-zA-Z]{1}[a-zA-Z0-9_]{3,}" />
            </div>
-        <div class="sign-in">
+         <div class="from-group row col-md-4">
         <input id="login_password" type="password" name="usPassword" class="form-control"
                title='<fmt:message key="form.usPassword.title" bundle="${loc}"/>' placeholder='<fmt:message key="form.usPassword" bundle="${loc}"/>' required/>
         </div>
-        <div class="checkbox">
-            <label>
-            <input type="checkbox" value="reminder"><fmt:message key="form.reminder" bundle="${loc}"/>
-        </label>
+        <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="checker">
+            <label class="form-check-label" for="checker"><fmt:message key="form.reminder" bundle="${loc}"/></label>
         </div>
-        <input name="form_submit" class="form-control sign-in" type="submit" value='<fmt:message key="form.button.enter" bundle="${loc}"/>'/>
-    <a href="../jsp/registration.jsp"><fmt:message key="form.button.register" bundle="${loc}"/>
-    </a>
-
-        <%--<input type="hidden" usName="command" value="go_to_registration"/>--%>
-        <%--<input type="submit" value=--%>
+        <button type="submit" class="btn-primary"><fmt:message key="form.button.enter" bundle="${loc}"/></button>
     </form>
+    <form method="post" action="/Controller">
+        <input type="hidden" name="command" value="go_to_registration"/>
+        <button type="submit" class="btn btn-primary"><fmt:message key="form.button.register" bundle="${loc}"/></button>
+    </form>
+</div>
 </div>
 </body>
 </html>

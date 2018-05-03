@@ -10,13 +10,13 @@
     <uri>customtags</uri>
     <tag>
         <name>info-time</name>
-        <tag-class>by.kamotskaya.epam.tag.RoleTag</tag-class>
+        <tag-class>by.kamotskaya.internet_provider.tag.RoleTag</tag-class>
         <body-content>empty</body-content>
     </tag>
 
     <tag>
     <name>hello</name>
-    <tag-class>by.kamotskaya.epam.tag.RoleTag</tag-class>
+    <tag-class>by.kamotskaya.internet_provider.tag.RoleTag</tag-class>
     <body-content>empty</body-content>
     <attribute>
     <name>usRole</name>

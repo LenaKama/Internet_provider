@@ -3,9 +3,11 @@
     font-size: 15px;
 }
 
+
 .imgLogo {
+    margin-top: 10px;
     float: left;
-    height: 100px;
+    height: 75px;
     width: 600px;
 }
 
@@ -17,22 +19,16 @@
     margin: 5px;
 }
 .nav-item input:hover{
-    border: 3px solid orange;
+    border: 3px solid deepskyblue;
     /*background-color: #5ee5e5;*/
-}
-.nav-item .nav-link {
-    color: red!important;
-    cursor: pointer;
 }
 
 .locale input[type="image"] {
-    /*background-image: url("../img/ru_icon.png");*/
-    /*background-size: 100px 100px;*/
-    height: 60px;
-    width: 80px;
+    height: 40px;
+    width: 60px;
     border-radius: 30%;
 }
-.form-sign {
+.myForm {
     border: 3px solid grey;
     max-width: 400px;
     height: 500px;
@@ -88,3 +84,24 @@ label {
     border-top-right-radius: 0;
     font-weight: bold;
 }
+
+/*tariffs*/
+.myPanel {
+    border: 1px solid grey;
+    border-radius: 10%;
+    box-shadow: 0px 0px 4px #ccc;
+    margin: 3%;
+}
+.myPanel .heading {
+    display: inline;
+    background: deepskyblue;
+    border-radius: 10%;
+    color: #2b669a;
+}
+.myPanel .body {
+    padding: 10px 20px;
+}
+.myPanel .showOnClick {
+    display: none;
+}
+
