@@ -13,7 +13,7 @@ import java.io.IOException;
  *
  * @author Lena Kamotskaya
  */
-@WebFilter
+@WebFilter(urlPatterns = {"/*"})
 public class RoleFilter implements Filter {
 
     @Override
@@ -29,8 +29,9 @@ public class RoleFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpSession session = httpRequest.getSession();
 
-        String role = (String) session.getAttribute(ParamNames.ROLE);
+        session.setAttribute(ParamNames.WELCOME_LOCALE, "en_US");
 
+        String role = (String) session.getAttribute(ParamNames.ROLE);
         if (role == null || role.isEmpty()) {
             session.setAttribute(ParamNames.ROLE, "quest");
         }

@@ -21,4 +21,9 @@ public class CommandFactory {
         CommandType type = CommandType.valueOf(commandName.toUpperCase());
         return type.getCommand();
     }
+
+    public String getType(RequestContent content) {
+        String typeName = content.getRequestParameters().get("type")[0];
+        return typeName;
+    }
 }

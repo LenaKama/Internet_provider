@@ -40,4 +40,6 @@ public class ParamNames {
     public static final String USER_LIST = "userList";
     public static final String USER_TO_BLOCK = "userToBlock";
     public static final String UPLOAD_SPEED = "uploadSpeed";
+
+    public static final String WELCOME_LOCALE = "welcomeLocale";
 }

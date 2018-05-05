@@ -21,12 +21,18 @@
     <title>${title}</title>
 
     <script>
-        function myFunction(count) {
-            var x = document.getElementById("tariffInfo" + count);
-            if (x.style.display === "none") {
-                x.style.display = "inline";
+        function showMore(count) {
+            var angleStatus = document.getElementById("angle" + count).className;
+            if (angleStatus === "fa fa-angle-down") {
+                document.getElementById("angle" + count).className = "fa fa-angle-up";
             } else {
-                x.style.display = "none";
+                document.getElementById("angle" + count).className = "fa fa-angle-down";
+            }
+            var info = document.getElementById("tariffInfo" + count);
+            if (info.style.display === "none") {
+                info.style.display = "inline";
+            } else {
+                info.style.display = "none";
             }
         }
     </script>
@@ -35,34 +41,87 @@
 <%@include file="part/header.jsp" %>
 
 <div class="container">
-    <div class="panel-group">
-        <c:forEach items="${requestScope.tariffList}" var="tariff" varStatus="theCount">
-            <div class="myPanel panel panel-default">
-                <div class="panel-heading">
-                        ${tariff.tName}
-                    <span class="label label-default">${tariff.connectionPayment}</span>
-                <%--</div>--%>
-                <%--<div class="panel-body">--%>
-                    <%--<button onclick="myFunction(${theCount.count})">--%>
-                        <i class="fa fa-angle-down" aria-hidden="true"
-                           onClick="($(this)[0].className === 'fa fa-angle-down')?$(this)[0].className='fa fa-angle-up':$(this)[0].className='fa fa-angle-down'"></i>
-
-                    <%--</button>--%>
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" href="#limited" data-toggle="tab" role="tab">
+                <fmt:message key="page.tariffs.limited" bundle="${loc}"/></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#unlimited" data-toggle="tab" role="tab">
+                <fmt:message key="page.tariffs.unlimited" bundle="${loc}"/></a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane fade in active" id="limited" role="tabpanel">
+            <c:forEach items="${requestScope.tariffList}" var="tariff" varStatus="theCount">
+                <c:if test="${tariff.trafficLimit != 0}">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                            ${tariff.tName}
+                        <span class="label label-default">${tariff.connectionPayment}</span>
+                        <button class="btn btn-primary" type="button" onclick="showMore(${theCount.count})">
+                            <i id="angle${theCount.count}" class="fa fa-angle-down"></i>
+                        </button>
+                        <form class="glyphicon-align-right" action="/Controller" method="post">
+                            <button type="submit" class="btn-primary">
+                                <input type="hidden" name="command" value="change_tariff">
+                                <fmt:message key="tariff.button.connect" bundle="${loc}"/></button>
+                        </form>
+                    </div>
+                    <div class="panel" id="tariffInfo${theCount.count}" style="display: none">
+                        <div class="panel-body card-block card-body">
+                            <p><label class="label-info"><fmt:message key="tariff.dailyFee" bundle="${loc}"/></label>
+                                    ${tariff.dailyFee}</p>
+                            <p><label class="label-info">
+                                <fmt:message key="tariff.trafficLimit" bundle="${loc}"/></label>
+                                    ${tariff.trafficLimit}</p>
+                            <p><label class="label-info"><fmt:message key="tariff.speedIn" bundle="${loc}"/></label>
+                                    ${tariff.speedIn}</p>
+                            <p><label class="label-info"><fmt:message key="tariff.speedOut" bundle="${loc}"/></label>
+                                    ${tariff.speedOut}</p>
+                            <p><label class="label-info"><fmt:message key="tariff.overrunFee" bundle="${loc}"/></label>
+                                    ${tariff.overrunFee}</p>
+                                <%--sale--%>
+                        </div>
+                    </div>
                 </div>
-            <div class="panel-collapse collapse in show" aria-expanded="false" aria-hidden="true"
-                 style="display: none; overflow: visible; height: auto;">
-                <div class="panel-body card-block card-body">
-                    <p class="ql-align-justify"> ${tariff.dailyFee}</p>
-                    <p class="ql-align-justify"> ${tariff.trafficLimit}</p>
-                </div>
-            </div>
-            <%--<div class="panel-collapse collapse in show" id="tariffInfo${theCount.count}">--%>
-                    <%--${tariff.dailyFee}--%>
-            <%--</div>--%>
-
-            </div>
-        </c:forEach>
+                </c:if>
+            </c:forEach>
+        </div>
+        <div class="tab-pane fade" id="unlimited" role="tabpanel">
+            <c:forEach items="${requestScope.tariffList}" var="tariff" varStatus="theCount">
+                <c:if test="${tariff.trafficLimit eq 0}">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                                ${tariff.tName}
+                            <span class="label label-default">${tariff.connectionPayment}</span>
+                            <button class="btn btn-primary" type="button" onclick="showMore(${theCount.count})">
+                                <i id="angle${theCount.count}" class="fa fa-angle-down"></i>
+                            </button>
+                        </div>
+                        <div class="panel" id="tariffInfo${theCount.count}" style="display: none">
+                            <div class="panel-body card-block card-body">
+                                <p><label class="label-info"><fmt:message key="tariff.dailyFee" bundle="${loc}"/></label>
+                                        ${tariff.dailyFee}</p>
+                                <p><label class="label-info"><fmt:message key="tariff.speedIn" bundle="${loc}"/></label>
+                                        ${tariff.speedIn}</p>
+                                <p><label class="label-info"><fmt:message key="tariff.speedOut" bundle="${loc}"/></label>
+                                        ${tariff.speedOut}</p>
+                                    <%--sale--%>
+                            </div>
+                        </div>
+                    </div>
+                </c:if>
+            </c:forEach>
+        </div>
     </div>
 </div>
+<div class="navbar navbar-fixed-bottom bg-primary">
+    <%@include file="fragment/footer.jspf" %>
+</div>
+
+<script src="../js/bootstrap/jquery.min.js"></script>
+<script src="../js/bootstrap/bootstrap.min.js"></script>
+
 </body>
 </html>

@@ -3,6 +3,9 @@ package by.kamotskaya.internet_provider.receiver;
 import by.kamotskaya.internet_provider.command.CommandResult;
 import by.kamotskaya.internet_provider.constant.PagePath;
 import by.kamotskaya.internet_provider.controller.RequestContent;
+import by.kamotskaya.internet_provider.dao.impl.OpeningBalanceDAO;
+import by.kamotskaya.internet_provider.dao.impl.SessionDAO;
+import by.kamotskaya.internet_provider.dao.impl.TransactionDAO;
 import by.kamotskaya.internet_provider.dao.impl.UserDAO;
 import by.kamotskaya.internet_provider.entity.User;
 import by.kamotskaya.internet_provider.exception.DAOException;
@@ -31,15 +34,28 @@ public class UserReceiver {
 
         LOGGER.log(Level.DEBUG, usPassword + " - usPassword");
 
+        SessionDAO sessionDAO = new SessionDAO();
+        TransactionDAO transactionDAO = new TransactionDAO();
+        OpeningBalanceDAO openingBalanceDAO = new OpeningBalanceDAO();
+
         try {
             if (passwordGenerator.authenticate(usPassword,userDAO.findPasswordByLogin(usLogin))) {
                LOGGER.log(Level.DEBUG, userDAO.findPasswordByLogin(usLogin) + " - from userDAO");
 
                User user = userDAO.createUserBean(usLogin);
                 content.putSessionAttribute("user", user);
-                content.putRequestAttribute("userList", userDAO.findAllUsers());
+                if(user.getUsRole().equals("admin")) {
+                    content.putRequestAttribute("userList", userDAO.findAllUsers());
+                }
+                if(user.getUsRole().equals("client")) {}
+                content.putSessionAttribute("currentBalance", openingBalanceDAO.getCurrentBalance(usLogin));
+                content.putSessionAttribute("trafficInStatus", sessionDAO.findTrafficInStatus(usLogin));
+                content.putSessionAttribute("trafficOutStatus", sessionDAO.findTrafficOutStatus(usLogin));
+                content.putSessionAttribute("sessionList", sessionDAO.createSessionList(usLogin));
+                content.putSessionAttribute("transactionList", transactionDAO.createTransactionList(usLogin));
                  content.putSessionAttribute("usLogin", usLogin);//${user.login}
-                 content.putRequestAttribute("message", "Welcome " + usLogin + "!");
+                 content.putSessionAttribute("usRole", user.getUsRole());//${user.login}
+                content.putRequestAttribute("message", "Welcome " + usLogin + "!");
              } else {
                  LOGGER.log(Level.DEBUG, userDAO.findPasswordByLogin(usLogin) + " - from userDAO");
                 LOGGER.log(Level.DEBUG, passwordGenerator.encryptPassword(usPassword) + " - from passwordGenerator");
@@ -80,14 +96,14 @@ public class UserReceiver {
         try {
             userDAO.add(user);
         } catch (DAOException e) {
-            LOGGER.catching(e);//add attr to content for error page
+            content.putRequestAttribute("errorMessage", "Error while adding a new user.");
+            return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.ERROR);
         }
-        content.putRequestAttribute("message", "user is added");
         return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.WELCOME);
     }
 
     public static CommandResult checkLogin(RequestContent content) {
-        content.putSessionAttribute("loginExists", true);
+        content.putSessionAttribute("loginExists", "true");
         return null;
     }
 

@@ -21,7 +21,11 @@
 <%--<c:set var="curImg" value="${imgRU}"/>--%>
 <%--</c:otherwise>--%>
 <%--</c:choose>--%>
-
+<script>
+    $( "#nav-item" ).on( "click", function() {
+        $( this ).toggleClass( "active" );
+    });
+</script>
 <nav class="navbar navbar-static-top bg-primary">
     <div class="container">
         <form action="/Controller" method="post">
