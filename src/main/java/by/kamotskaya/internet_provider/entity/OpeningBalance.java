@@ -5,7 +5,7 @@ import java.sql.Date;
 /**
  * @author Lena Kamotskaya
  */
-public class OpeningBalance {
+public class OpeningBalance extends Entity {
 
     private Date obDate;
     private double obSum;

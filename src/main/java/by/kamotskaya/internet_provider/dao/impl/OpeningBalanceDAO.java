@@ -18,27 +18,27 @@ public class OpeningBalanceDAO {
 
     private static final Logger LOGGER = LogManager.getLogger(OpeningBalanceDAO.class);
 
-    private final static String ADD_NEW_OPENNING_BALANCE = "INSERT INTO openning_balance(ob_date, ob_sum, us_login) VALUES(?, ?, ?)";
-    private final static String SELECT_LATEST_BALANCE = "SELECT ob_sum FROM openning_balance WHERE MONTH(ob_date) = MONTH(CURDATE()) AND us_login = ?";
+    private final static String ADD_NEW_OPENING_BALANCE = "INSERT INTO opening_balance(ob_date, ob_sum, us_login) VALUES(?, ?, ?)";
+    private final static String SELECT_LATEST_BALANCE = "SELECT ob_sum FROM opening_balance WHERE MONTH(ob_date) = MONTH(CURDATE()) AND YEAR(ob_date) = YEAR(CURDATE()) AND us_login = ?";
 
     private final ConnectionPool connectionPool = ConnectionPool.getInstance();
 
     public OpeningBalanceDAO() {
     }
 
-    public void add(OpeningBalance openningBalance) throws DAOException {
+    public void add(OpeningBalance openingBalance) throws DAOException {
         try (ProxyConnection connection = connectionPool.takeConnection();
-             PreparedStatement statement = connection.prepareStatement(ADD_NEW_OPENNING_BALANCE)) {
-            statement.setDate(1, openningBalance.getObDate());
-            statement.setDouble(2, openningBalance.getObSum());
-            statement.setString(3, openningBalance.getUsLogin());
+             PreparedStatement statement = connection.prepareStatement(ADD_NEW_OPENING_BALANCE)) {
+            statement.setDate(1, openingBalance.getObDate());
+            statement.setDouble(2, openingBalance.getObSum());
+            statement.setString(3, openingBalance.getUsLogin());
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new DAOException("Exception from OpeningBalanceDAO", e);
         }
     }
 
-    public Double getCurrentBalance(String usLogin) throws DAOException {
+    public Double findOpeningBalance(String usLogin) throws DAOException {
         try (ProxyConnection connection = connectionPool.takeConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_LATEST_BALANCE)) {
             statement.setString(1, usLogin);

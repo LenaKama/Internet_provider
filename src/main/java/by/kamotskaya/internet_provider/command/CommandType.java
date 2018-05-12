@@ -2,6 +2,7 @@ package by.kamotskaya.internet_provider.command;
 
 import by.kamotskaya.internet_provider.receiver.BaseReceiver;
 import by.kamotskaya.internet_provider.receiver.GoToPageReceiver;
+import by.kamotskaya.internet_provider.receiver.BalanceReceiver;
 import by.kamotskaya.internet_provider.receiver.UserReceiver;
 
 /**
@@ -10,17 +11,23 @@ import by.kamotskaya.internet_provider.receiver.UserReceiver;
 public enum CommandType {
 
     CHANGE_LOCALE(BaseReceiver::changeLocale),
-    SHOW_SIGN_IN(GoToPageReceiver::goToSignIn),
+    SHOW_WELCOME_PAGE(GoToPageReceiver::goToWelcomePage),
     SHOW_TARIFFS(GoToPageReceiver::goToTariffs),
     SHOW_NEWS(GoToPageReceiver::goToNews),
     SHOW_ABOUT_US(GoToPageReceiver::goToAboutUs),
-  //  SHOW_SIGN_IN(GoToPageReceiver::goToSignIn),
+    SHOW_GENERAL(GoToPageReceiver::goToGeneral),
+    SHOW_MESSAGES(GoToPageReceiver::goToMessages),
+    SHOW_TRAFFIC_STATUS(GoToPageReceiver::goToTrafficStatus),
+    SHOW_SESSIONS(GoToPageReceiver::goToSessions),
+    SHOW_TRANSACTIONS(GoToPageReceiver::goToTransactions),
+    SHOW_ACCOUNT_SETTINGS(GoToPageReceiver::goToAccountSettings),
     AUTHENTICATE(UserReceiver::authenticate),
     CHECK_LOGIN(UserReceiver::checkLogin),
-    GO_TO_REGISTRATION(GoToPageReceiver::goToRegistration),
     REGISTER(UserReceiver::register),
     DELETE_USER(UserReceiver::deleteUser),
-    LOAD_USER_LIST(UserReceiver::loadUserList);
+    SHOW_USER_LIST(UserReceiver::showUserList),
+    RECHARGE_ACCOUNT(BalanceReceiver::rechargeAccount),
+    CHANGE_TARIFF(UserReceiver::changeTariff);
 
     private FunctionalCommand command;
 

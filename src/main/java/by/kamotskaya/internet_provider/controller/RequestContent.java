@@ -11,7 +11,7 @@ public class RequestContent {
 
     private Map<String, String[]> requestParameters = new HashMap<>();
     private Map<String, Object> requestAttributes = new HashMap<>();
-    private Map<String, Object> sessionAttributes = new HashMap<>();
+    private static Map<String, Object> sessionAttributes = new HashMap<>();
 
     public RequestContent() {
     }
@@ -45,6 +45,7 @@ public class RequestContent {
     public void setRequestAttributes() {
     }
 
-    public void setSessionAttributesAttributes() {
+    public static Map<String, Object> getSessionAttributes() {
+        return sessionAttributes;
     }
   }

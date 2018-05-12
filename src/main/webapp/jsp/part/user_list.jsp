@@ -16,7 +16,6 @@
     </script>
 </head>
 <body>
-ewrtfhg
 <div class="panel-group">
     <c:forEach items="${requestScope.userList}" var="client" varStatus="theCount">
     <div class="panel panel-default">

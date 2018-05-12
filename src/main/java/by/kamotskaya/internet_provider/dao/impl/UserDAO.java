@@ -22,12 +22,13 @@ public class UserDAO implements BaseDAO<User> {
 
     private static final Logger LOGGER = LogManager.getLogger(UserDAO.class);
 
-    public final static String ADD_NEW_CLIENT = "INSERT INTO user(us_login, us_password, us_email, us_name, us_surname, us_passport, us_role, us_ban, t_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    public final static String ADD_NEW_CLIENT = "INSERT INTO user(us_login, us_password, us_email, us_name, us_surname, us_passport, us_role, us_ban) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
     public final static String FIND_PASSWORD_BY_LOGIN = "SELECT us_password FROM user WHERE us_login = ?";
     public final static String GET_USER_INFO = "SELECT * FROM user WHERE us_login = ?";
     public final static String SELECT_ALL_USERS = "SELECT * FROM user";
-    public final static String UPDATE_USER = "UPDATE TABLE user SET us_login = ?, us_password = ?, us_email = ?, us_name = ?, us_surname = ?, us_passport = ?, us_role = ?, us_ban = ? WHERE us_login = ?";
+    public final static String UPDATE_USER = "UPDATE TABLE user SET us_password = ?, us_email = ?, us_name = ?, us_surname = ?, us_passport = ?, us_role = ?, us_ban = ? t_id = ? WHERE us_login = ?";
     public final static String DELETE_USER = "ALTER TABLE user DELETE FROM user WHERE us_login = ?";
+    public final static String SELECT_ALL_US_LOGINS = "SELECT us_login FROM user";
 
     private final ConnectionPool connectionPool = ConnectionPool.getInstance();
 
@@ -36,10 +37,8 @@ public class UserDAO implements BaseDAO<User> {
 
     @Override
     public void add(User user) throws DAOException {
-        List<Object> resultList = new ArrayList<>();
-        try (ProxyConnection connection = connectionPool.takeConnection()) {
-
-            PreparedStatement statement = connection.prepareStatement(ADD_NEW_CLIENT);
+        try (ProxyConnection connection = connectionPool.takeConnection();
+             PreparedStatement statement = connection.prepareStatement(ADD_NEW_CLIENT)) {
             statement.setString(1, user.getUsLogin());
             statement.setString(2, user.getUsPassword());
             statement.setString(3, user.getUsEmail());
@@ -48,19 +47,16 @@ public class UserDAO implements BaseDAO<User> {
             statement.setString(6, user.getUsPassport());
             statement.setString(7, user.getUsRole());
             statement.setBoolean(8, user.isUsBan());
-            statement.setInt(9, 1);
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new DAOException("Exception from UserDAO:", e);
         }
-//map в которую запихивать все имена значения с формы решистрации, запускаем процесс валидации и если что-то не так выкидывать что неверно и отправляем клиенту checker будет
-        //закрывать statement!!! 9 jdk
     }
 
     public List<User> findAllUsers() throws DAOException {
         List<User> users = new ArrayList<>();
-        try (ProxyConnection connection = connectionPool.takeConnection()) {
-            Statement statement = connection.createStatement();
+        try (ProxyConnection connection = connectionPool.takeConnection();
+             Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(SELECT_ALL_USERS);
             while (resultSet.next()) {
                 User user = new User();
@@ -72,7 +68,7 @@ public class UserDAO implements BaseDAO<User> {
                 user.setUsPassport(resultSet.getString("us_passport"));
                 user.setUsRole(resultSet.getString("us_role"));
                 user.setUsBan(resultSet.getBoolean("us_ban"));
-               // user.setTariffId(resultSet.getInt("t_id"));
+                user.setTId(resultSet.getInt("t_id"));
                 users.add(user);
             }
         } catch (SQLException e) {
@@ -82,32 +78,30 @@ public class UserDAO implements BaseDAO<User> {
     }
 
     @Override
-    public void delete(String login) throws DAOException {
-        try (ProxyConnection connection = connectionPool.takeConnection()) {
-            PreparedStatement statement = connection.prepareStatement(DELETE_USER);
-            statement.setString(1, login);
+    public void delete(String usLogin) throws DAOException {
+        try (ProxyConnection connection = connectionPool.takeConnection();
+             PreparedStatement statement = connection.prepareStatement(DELETE_USER)) {
+            statement.setString(1, usLogin);
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new DAOException("Exception from UserDAO: ", e);
         }
     }
 
-        @Override
+    @Override
     public void update(User user) throws DAOException {
-        try (ProxyConnection connection = connectionPool.takeConnection()) {
-              PreparedStatement statement = connection.prepareStatement(UPDATE_USER);
-                statement.setString(1, user.getUsLogin());
-                statement.setString(2, user.getUsPassword());
-                statement.setString(3, user.getUsEmail());
-                statement.setString(4, user.getUsName());
-                statement.setString(5, user.getUsSurname());
-                statement.setString(6, user.getUsPassport());
-                statement.setString(7, user.getUsRole());
-                statement.setBoolean(8, user.isUsBan());
-                statement.setString(9, user.getUsLogin());//login is unique???
-                statement.executeUpdate();
+        try (ProxyConnection connection = connectionPool.takeConnection();
+             PreparedStatement statement = connection.prepareStatement(UPDATE_USER)) {
+            statement.setString(1, user.getUsPassword());
+            statement.setString(2, user.getUsEmail());
+            statement.setString(3, user.getUsName());
+            statement.setString(4, user.getUsSurname());
+            statement.setString(5, user.getUsPassport());
+            statement.setString(6, user.getUsRole());
+            statement.setBoolean(7, user.isUsBan());
+            statement.setInt(8, user.getTId());
+            statement.setString(9, user.getUsLogin());
             statement.executeUpdate();
-
         } catch (SQLException e) {
             throw new DAOException("Exception from UserDAO: ", e);
         }
@@ -115,7 +109,7 @@ public class UserDAO implements BaseDAO<User> {
 
     public String findPasswordByLogin(String usLogin) throws DAOException {
         try (ProxyConnection connection = connectionPool.takeConnection();
-                PreparedStatement statement = connection.prepareStatement(FIND_PASSWORD_BY_LOGIN)) {
+             PreparedStatement statement = connection.prepareStatement(FIND_PASSWORD_BY_LOGIN)) {
             statement.setString(1, usLogin);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
@@ -143,10 +137,25 @@ public class UserDAO implements BaseDAO<User> {
             user.setUsPassport(resultSet.getString("us_passport"));
             user.setUsRole(resultSet.getString("us_role"));
             user.setUsBan(resultSet.getBoolean("us_ban"));
-            //tariff
+            user.setTId(resultSet.getInt("t_id"));
         } catch (SQLException e) {
             throw new DAOException("Exception from UserDAO: ", e);
         }
         return user;
+    }
+
+    public boolean checkLogin(String usLogin) throws DAOException {
+        try (ProxyConnection connection = connectionPool.takeConnection();
+             Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(SELECT_ALL_US_LOGINS);
+            while (resultSet.next()) {
+                if (resultSet.getString(1).equals(usLogin)) {
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Exception from UserDAO: ", e);
+        }
+        return true;
     }
 }

@@ -1,90 +1,126 @@
 * {
     font-family: 'Montserrat Alternates', sans-serif;
     font-size: 15px;
+    color: black;
+}
+.container {
+    /*padding-top: 20px;*/
+    background-color: rgba(5, 250, 224, 0.1);
+    border-radius: 10px 10px 0 0;
 }
 
+#my_header {
+    background-color: rgba(5, 250, 224, 0.4);
+}
+/*welcome*/
+.carousel {
+    z-index: -99;
+}
+
+/* keeps this behind all content */
+.carousel .item {
+    top: 0;
+    opacity: 0.8;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    -webkit-transition: opacity 1s;
+    -moz-transition: opacity 1s;
+    -o-transition: opacity 1s;
+    transition: opacity 1s;
+
+}
+
+.carousel .one {
+    background: url("../img/pic1.jpg");
+    background-size: cover;
+    -moz-background-size: cover;
+}
+
+.carousel .two {
+    background: url("../img/pic2.jpg");
+    background-size: cover;
+    -moz-background-size: cover;
+}
+
+.carousel .three {
+    background: url("../img/pic3.jpg");
+    background-size: cover;
+    -moz-background-size: cover;
+}
 
 .imgLogo {
     margin-top: 10px;
     float: left;
-    height: 75px;
-    width: 600px;
+    height: 60px;
+    width: 500px;
+    margin-right: 100px;
+}
+
+.nav-item.active input {
+    border: 3px solid #05fae0;
 }
 
 .nav-item .nav-link {
     padding: 5px;
 }
-.nav-item input{
+
+.nav-item input {
     padding: 10px;
     margin: 5px;
+    color: black;
 }
-.nav-item input:hover{
-    border: 3px solid deepskyblue;
-    /*background-color: #5ee5e5;*/
+.nav-item input:hover {
+    border: 3px solid #05fae0;
 }
 
+.menu-item.active input {
+    border: 3px solid #05fae0;
+}
+.menu-item input:hover {
+    border: 3px solid #05fae0;
+}
 .locale input[type="image"] {
     height: 40px;
     width: 60px;
-    border-radius: 30%;
-}
-.myForm {
-    border: 3px solid grey;
-    max-width: 400px;
-    height: 500px;
-    padding: 30px;
-    margin: 0 auto;
-}
-.form-sign .form-sign-heading,
-.form-sign .checkbox {
-    margin-bottom: 20px;
-}
-.form-sign .checkbox {
-    clear: both;
-    font-weight: normal;
-}
-.form-sign .form-control {
-    position: relative;
-    height: auto;
-    box-sizing: border-box;
-    padding: 10px;
-    font-size: 16px;
-}
-.form-sign .field {
-    clear: both;
-    text-align: right;
-    line-height:25px;
-}
-.form-sign a {
-    clear: both;
-    float: left;
-}
-.form-sign .form-control:focus {
-    z-index: 2;
-}
-label {
-    float: left;
-    padding-right: 10px;
-}
-.form-sign input {
-    float: right;
-    margin-bottom: 0px;
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
-}
-.form-sign  .sign-in input{
-    position: relative;
-    float: left;
-}
-.form-sign input[name="form_submit"] {
-    clear: both;
-    float: left;
-    margin-bottom: 0px;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-    font-weight: bold;
+    border-radius: 20%;
 }
 
+.locale.active input[type="image"] {
+    border: 3px solid #05fae0;
+}
+
+/*sign_in*/
+.form-sign-in {
+    padding: 30px;
+    margin: 100px 150px;
+    height: 330px;
+    width: 500px;
+    background-color: rgba(178, 178, 178, 0.5);
+    /*opacity: 0.5;*/
+    z-index: -1;
+    border-radius: 5%;
+
+}
+
+.form-sign-in:hover {
+    opacity: 0.8;
+}
+
+/*registration*/
+.form-registration {
+    padding: 30px 60px;
+    margin: 100px 150px;
+    height: 510px;
+    width: 430px;
+    background-color: rgba(178, 178, 178, 0.5);
+    z-index: -1;
+    border-radius: 5%;
+}
+
+.form-registration:hover {
+    opacity: 0.8;
+}
 /*tariffs*/
 .myPanel {
     border: 1px solid grey;
@@ -92,16 +128,34 @@ label {
     box-shadow: 0px 0px 4px #ccc;
     margin: 3%;
 }
+
 .myPanel .heading {
     display: inline;
     background: deepskyblue;
     border-radius: 10%;
     color: #2b669a;
 }
+
 .myPanel .body {
     padding: 10px 20px;
 }
-.myPanel .showOnClick {
-    display: none;
+
+/*about_us*/
+.about-us {
+    padding: 50px;
+    box-sizing: border-box;
+}
+/*client_menu*/
+.menu-item {
+    border-radius: 5%;
+}
+/*general*/
+#transfer_form input[type="image"] {
+    height: 50px;
+    width: 50px;
 }
 
+.profile_photo img {
+    height: 100px;
+    width: 100px;
+}

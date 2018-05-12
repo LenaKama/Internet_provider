@@ -64,27 +64,6 @@ public class PasswordGenerator {
         return generatedPassword;
     }
 
-
-
-
-        /*try {
-            String algorithm = "PBKDF2WithHmacSHA1";
-            int derivedKeyLength = 160;
-            int iterations = 100;
-
-            KeySpec spec = new PBEKeySpec(password.toCharArray(), salt,
-                    iterations, derivedKeyLength);
-
-            SecretKeyFactory f = SecretKeyFactory.getInstance(algorithm);
-
-            return String.valueOf(f.generateSecret(spec).getEncoded());
-        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-
-            e.printStackTrace();
-        }
-        return null;
-    }
-*/
     public String decryptPassword(String encryptedPassword) {
         String decryptedPassword = null;
         return decryptedPassword;    }

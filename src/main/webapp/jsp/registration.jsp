@@ -1,10 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
-<%@ taglib prefix="ctg" uri="customtags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <html>
 <head>
-    <%@include file="part/bundle.jsp"%>
+    <%@include file="part/bundle.jsp" %>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -19,114 +19,77 @@
     <fmt:message key="page.registration.title" bundle="${loc}" var="title"/>
     <title>${title}</title>
 
-    <script>
-        $(document).on("click", "#somebutton", function() { // When HTML DOM "click" event is invoked on element with ID "somebutton", execute the following function...
-            $.get("Controller", function(responseText) {   // Execute Ajax GET request on URL of "someservlet" and execute the following function with Ajax response text...
-                $("#somediv").text(responseText);           // Locate HTML DOM element with ID "somediv" and set its text content with the response text.
-            });
-        });
-    </script>
 </head>
 <body>
-<%@include file="part/header.jsp" %>
-<div class="container">
-    <form action="/Controller" method="post" style="border: 3px solid grey; margin: 10px; padding: 10px;">
-        <input type="hidden" name="command" value="register"/>
-
-        <h2><fmt:message key="registration" bundle="${loc}"/></h2>
-        <div class="form-group row col-sm-9">
-            <div id="errorLogin" style="display: none"><fmt:message key="form.errorLogin" bundle="${loc}"/></div>
-            <label for="usLogin"><fmt:message key="form.usLogin" bundle="${loc}"/></label>
-            <input id="usLogin" type="text" name="usLogin" class="form-control"
-                   onchange="checkLogin()" title='<fmt:message key="form.usLogin.title" bundle="${loc}"/>'
-                   required pattern="^[a-zA-Z]{1}[a-zA-Z0-9_]{3,}">
+<form class="form-registration" action="/Controller" method="post">
+    <input type="hidden" name="command" value="register"/>
+    <h2 style="font-weight: bold"><fmt:message key="registration" bundle="${loc}"/></h2>
+    <div class="form-group row">
+        <label class="col-sm-4" for="usLogin"><fmt:message key="form.usLogin" bundle="${loc}"/></label>
+        <div class="col-sm-7">
+            <input id="usLogin" type="text" name="usLogin"
+                   title='<fmt:message key="form.usLogin.title" bundle="${loc}"/>'
+                   required pattern="^[a-zA-Z]{1}[a-zA-Z0-9_]{3,}" onkeyup="trackChange(this.value)">
+            <small class="text-muted" id="errorLogin" style="display: none; color:red;">
+                <fmt:message key="form.errorLogin" bundle="${loc}"/>
+            </small>
         </div>
-        <div class="form-group">
-            <label for="usPassword"><fmt:message key="form.usPassword" bundle="${loc}"/></label>
-            <input id="usPassword" type="password" name="usPassword" class="form-control"
-                   title='<fmt:message key="form.usPassword.title" bundle="${loc}"/>'
-                   required pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z*]{4,}">
-            <small class="form-text text-muted"><fmt:message key="form.usPassword.helpMessage" bundle="${loc}"/></small>
-        </div>
-        <div class="field">
-            <label for="password_repeat"><fmt:message key="form.usPassword.repeat" bundle="${loc}"/></label>
-            <input id='password_repeat' type="password" class="form-control" name="upassword" required
-                   title='<fmt:message key="form.usPassword.repeat.title" bundle="${loc}"/>'
-                   pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z*]{6,}"/>
-        </div>
-        <div class="field">
-            <label for="usName"><fmt:message key="form.usName" bundle="${loc}"/></label>
-            <input id="usName" type="text" name="usName" class="form-control"
-                   title='<fmt:message key="form.usName.title" bundle="${loc}"/>'/>
-        </div>
-        <div class="field">
-            <label for="usSurname"><fmt:message key="form.usSurname" bundle="${loc}"/></label>
-            <input id="usSurname" type="text" name="usSurname" class="form-control"
-                   title='<fmt:message key="form.usSurname.title" bundle="${loc}"/>'/>
-        </div>
-        <div class="field">
-            <label for="usEmail"><fmt:message key="form.usEmail" bundle="${loc}"/></label>
-            <input id="usEmail" type="text" name="usEmail" class="form-control"
-                   title='<fmt:message key="form.usEmail.title" bundle="${loc}"/>' required
-                   pattern="^[-._a-z0-9]+@(?:[a-z0-9][-a-z0-9]+\.)+[a-z]{2,6}$"/>
-        </div>
-        <div class="field">
-            <label for="usPassport"><fmt:message key="form.usPassport" bundle="${loc}"/></label>
-            <input id="usPassport" type="text" class="form-control" name="usPassport" required
-                   title='<fmt:message key="form.usPassport.title" bundle="${loc}"/>'/>
-        </div>
-        <div class="field">
-            <label for="tariff"><fmt:message key="form.tariff" bundle="${loc}"/></label>
-            <input id='tariff' type="text" class="form-control" name="tariff" required
-                   title='<fmt:message key="form.tariff.title" bundle="${loc}"/>'/>
-        </div>
-        <button class="btn-primary" type="submit"><fmt:message key="form.button.enter" bundle="${loc}"/></button>
-    </form>
-
-    <button id="somebutton">press here</button>
-    <div id="somediv"></div>
-
-</div>
-
-<script>
-    function checkLogin() {
-        var login = $("#usLogin").val();
-        var params = {
-            command: "check_login",
-            searchLogin: login
-        };
-//        $.post("Controller", $.param(params), function(response) {
-//            // ...
-//        });
-        $.get('${pageContext.request.contextPath}/Controller', {
-            "command": "check_login",
-            "searchLogin": login
-        }, function () {
-            if (${loginExists} == true
-            )
-            {
-                document.getElementById('errorLogin').style.display = 'block';
-            }
-            else
-            {
-                document.getElementById('errorLogin').style.display = 'none';
-            }
-        });
-    }
-
-    /*
-     $.ajax({
-     url: "test.html",
-     cache: false
-     })
-     .done(function( html ) {
-     $( "#results" ).append( html );
-     });
-     */
-</script>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-4" for="usPassword"><fmt:message key="form.usPassword" bundle="${loc}"/></label>
+        <div class="col-sm-7">
+        <input id="usPassword" type="password" name="usPassword"
+               title='<fmt:message key="form.usPassword.helpMessage" bundle="${loc}"/>' required
+               pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z*]{4,}"/>
+    </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-4" for="usPassword_repeat"><fmt:message key="form.usPassword.repeat"
+                                                                     bundle="${loc}"/></label>
+        <div class="col-sm-7">
+        <input id='usPassword_repeat' type="password" required
+               title='<fmt:message key="form.usPassword.repeat.title" bundle="${loc}"/>'
+               pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z*]{6,}" onkeyup="checkPasswords()"/>
+    </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-4" for="usName"><fmt:message key="form.usName" bundle="${loc}"/></label>
+        <div class="col-sm-7">
+            <input id="usName" type="text" name="usName" required
+               title='<fmt:message key="form.usName.title" bundle="${loc}"/>'/>
+    </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-4" for="usSurname"><fmt:message key="form.usSurname" bundle="${loc}"/></label>
+        <div class="col-sm-7">
+            <input id="usSurname" type="text" name="usSurname" required
+               title='<fmt:message key="form.usSurname.title" bundle="${loc}"/>'/>
+    </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-4" for="usEmail"><fmt:message key="form.usEmail" bundle="${loc}"/></label>
+        <div class="col-sm-7">
+            <input id="usEmail" type="text" name="usEmail"
+               title='<fmt:message key="form.usEmail.title" bundle="${loc}"/>' required
+               pattern="^[-._a-z0-9]+@(?:[a-z0-9][-a-z0-9]+\.)+[a-z]{2,6}$"/>
+    </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-4" for="usPassport"><fmt:message key="form.usPassport" bundle="${loc}"/></label>
+        <div class="col-sm-7">
+            <input id="usPassport" type="text" name="usPassport" required
+               title='<fmt:message key="form.usPassport.title" bundle="${loc}"/>'/>
+    </div>
+    </div>
+    <button id="submit_registration" class="btn btn-default" type="submit">
+        <fmt:message key="form.button.enter" bundle="${loc}"/></button>
+</form>
 
 <script src="../js/bootstrap/jquery.min.js"></script>
 <script src="../js/bootstrap/bootstrap.min.js"></script>
+<script src="../js/ajax.js"></script>
+<script src="../js/carousel.js"></script>
+<script src="../js/script.js"></script>
 
 </body>
 </html>

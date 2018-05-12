@@ -41,9 +41,9 @@
 <%@include file="part/header.jsp" %>
 
 <div class="container">
-    <ul class="nav nav-tabs" role="tablist">
-        <li class="nav-item">
-            <a class="nav-link active" href="#limited" data-toggle="tab" role="tab">
+    <ul class="nav nav-tabs nav-justified" role="tablist">
+        <li class="nav-item active">
+            <a class="nav-link" href="#limited" data-toggle="tab" role="tab">
                 <fmt:message key="page.tariffs.limited" bundle="${loc}"/></a>
         </li>
         <li class="nav-item">
@@ -55,36 +55,44 @@
         <div class="tab-pane fade in active" id="limited" role="tabpanel">
             <c:forEach items="${requestScope.tariffList}" var="tariff" varStatus="theCount">
                 <c:if test="${tariff.trafficLimit != 0}">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
                             ${tariff.tName}
-                        <span class="label label-default">${tariff.connectionPayment}</span>
-                        <button class="btn btn-primary" type="button" onclick="showMore(${theCount.count})">
-                            <i id="angle${theCount.count}" class="fa fa-angle-down"></i>
-                        </button>
-                        <form class="glyphicon-align-right" action="/Controller" method="post">
-                            <button type="submit" class="btn-primary">
-                                <input type="hidden" name="command" value="change_tariff">
-                                <fmt:message key="tariff.button.connect" bundle="${loc}"/></button>
-                        </form>
-                    </div>
-                    <div class="panel" id="tariffInfo${theCount.count}" style="display: none">
-                        <div class="panel-body card-block card-body">
-                            <p><label class="label-info"><fmt:message key="tariff.dailyFee" bundle="${loc}"/></label>
-                                    ${tariff.dailyFee}</p>
-                            <p><label class="label-info">
-                                <fmt:message key="tariff.trafficLimit" bundle="${loc}"/></label>
-                                    ${tariff.trafficLimit}</p>
-                            <p><label class="label-info"><fmt:message key="tariff.speedIn" bundle="${loc}"/></label>
-                                    ${tariff.speedIn}</p>
-                            <p><label class="label-info"><fmt:message key="tariff.speedOut" bundle="${loc}"/></label>
-                                    ${tariff.speedOut}</p>
-                            <p><label class="label-info"><fmt:message key="tariff.overrunFee" bundle="${loc}"/></label>
-                                    ${tariff.overrunFee}</p>
-                                <%--sale--%>
+                            <span class="label label-default">${tariff.connectionPayment}</span>
+                            <button class="btn btn-primary" type="button" onclick="showMore(${theCount.count})">
+                                <i id="angle${theCount.count}" class="fa fa-angle-down glyphicon-align-center"></i>
+                            </button>
+                            <c:if test="${sessionScope.usRole eq 'client'|| sessionScope.usRole eq 'admin'}">
+                                <div class="row col-sm-offset-8">
+                                    <form class="glyphicon-align-right" action="/Controller" method="post">
+                                    <button type="submit" class="btn-primary">
+                                        <input type="hidden" name="command" value="change_tariff">
+                                        <input type="hidden" name="tId" value="${theCount.count}"
+                                        <fmt:message key="tariff.button.connect" bundle="${loc}"/></button>
+                                </form>
+                                </div>
+                            </c:if>
+                        </div>
+                        <div class="panel" id="tariffInfo${theCount.count}" style="display: none">
+                            <div class="panel-body card-block card-body">
+                                <p><label class="label-info"><fmt:message key="tariff.dailyFee"
+                                                                          bundle="${loc}"/></label>
+                                        ${tariff.dailyFee}</p>
+                                <p><label class="label-info">
+                                    <fmt:message key="tariff.trafficLimit" bundle="${loc}"/></label>
+                                        ${tariff.trafficLimit}</p>
+                                <p><label class="label-info"><fmt:message key="tariff.speedIn" bundle="${loc}"/></label>
+                                        ${tariff.speedIn}</p>
+                                <p><label class="label-info"><fmt:message key="tariff.speedOut"
+                                                                          bundle="${loc}"/></label>
+                                        ${tariff.speedOut}</p>
+                                <p><label class="label-info"><fmt:message key="tariff.overrunFee"
+                                                                          bundle="${loc}"/></label>
+                                        ${tariff.overrunFee}</p>
+                                    <%--sale--%>
+                            </div>
                         </div>
                     </div>
-                </div>
                 </c:if>
             </c:forEach>
         </div>
@@ -101,11 +109,13 @@
                         </div>
                         <div class="panel" id="tariffInfo${theCount.count}" style="display: none">
                             <div class="panel-body card-block card-body">
-                                <p><label class="label-info"><fmt:message key="tariff.dailyFee" bundle="${loc}"/></label>
+                                <p><label class="label-info"><fmt:message key="tariff.dailyFee"
+                                                                          bundle="${loc}"/></label>
                                         ${tariff.dailyFee}</p>
                                 <p><label class="label-info"><fmt:message key="tariff.speedIn" bundle="${loc}"/></label>
                                         ${tariff.speedIn}</p>
-                                <p><label class="label-info"><fmt:message key="tariff.speedOut" bundle="${loc}"/></label>
+                                <p><label class="label-info"><fmt:message key="tariff.speedOut"
+                                                                          bundle="${loc}"/></label>
                                         ${tariff.speedOut}</p>
                                     <%--sale--%>
                             </div>
@@ -115,8 +125,6 @@
             </c:forEach>
         </div>
     </div>
-</div>
-<div class="navbar navbar-fixed-bottom bg-primary">
     <%@include file="fragment/footer.jspf" %>
 </div>
 

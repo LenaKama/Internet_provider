@@ -2,29 +2,36 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+
+
 <html>
 <head>
     <%@include file="part/bundle.jsp" %>
 
-    <fmt:message key="page.home.title" bundle="${loc}" var="title"/>
+    <fmt:message key="sign_in.authentication" bundle="${loc}" var="sign_in"/>
+    <fmt:message key="client_account.title" bundle="${loc}" var="account"/>
+    <c:choose>
+        <c:when test="${sessionScope.usRole eq 'quest'}">
+            <c:set var="title" value="${sign_in}"/>
+        </c:when>
+        <c:otherwise>
+            <c:set var="title" value="${account}"/>
+        </c:otherwise>
+    </c:choose>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <link href="../css/bootstrap/bootstrap.min.css" rel="stylesheet">
-
     <link href="../css/bootstrap/bootstrap-theme.min.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat+Alternates" rel="stylesheet">
-
     <link href="../css/style.css" rel="stylesheet">
-
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/icon.png" type="image/x-icon">
 
     <title>${title}</title>
 
     <script>
         //       $(document).ready(function() {
-        jQuery(document).ready(function ($) {
+      /*  jQuery(document).ready(function ($) {
 
             alert('ready');
 //           $("#editButton").click(edit);
@@ -55,40 +62,67 @@
             var input = $('<input type="text" placeholder="' + text + '" />')
             $('.editText').text('').append(input);
         }
+       */
     </script>
 
 </head>
-<body class="bg-faded">
+<body>
+<%--<div id="myCarousel" class="carousel container slide">--%>
+    <%--<div class="carousel-inner">--%>
+        <%--<div class="active item one"></div>--%>
+        <%--<div class="item two"></div>--%>
+        <%--<div class="item three"></div>--%>
+    <%--</div>--%>
+<%--</div>--%>
 <%@include file="part/header.jsp" %>
 <div class="container">
-${message}
-    <label class="control-label" style="display: inline-block">
-        <p class="textinfo" style="display: inline-block">Saghir</p>
-        <i class="icon-star"></i></label>
-    <div class="controls">
-        <button id="edit" class="btn" onclick="edit1()">Edit</button>
-    </div>
-
-    <button id="somebutton">press here</button>
-    <div id="somediv"></div>
     <c:choose>
         <c:when test="${sessionScope.usRole eq 'quest'}">
             <%@include file="sign_in.jsp" %>
         </c:when>
         <c:when test="${sessionScope.usRole eq 'admin'}">
             <%@include file="part/admin_menu.jsp" %>
+            <%@include file="part/general.jsp"%>
         </c:when>
         <c:when test="${sessionScope.usRole eq 'client'}">
             <%@include file="part/client-menu.jsp" %>
+            <%@include file="part/general.jsp"%>
         </c:when>
     </c:choose>
 </div>
-<div class="navbar navbar-fixed-bottom bg-primary">
-    <%@include file="fragment/footer.jspf" %>
-</div>
 
-<script src="../js/bootstrap/jquery.min.js"></script>
 <script src="../js/bootstrap/bootstrap.min.js"></script>
+<script src="../js/bootstrap/jquery.min.js"></script>
+<script src="../js/carousel.js"></script>
+<script src="../js/script.js"></script>
+<script>
+    function trackChange(value){
+        $.get("AjaxHandler", {"checkLogin":value}, function (responseText) {
+            if (responseText === "false") {
+                document.getElementById("errorLogin").style.display = 'block';
+                document.getElementById("submit_registration").setAttribute("disabled", "")
+            } else {
+                document.getElementById("errorLogin").style.display = 'none';
+                document.getElementById("submit_registration").removeAttribute("disabled");
+            }
+        });
+        }
+        /*
+    $(document).ready(function () {
+        $('#somebutton').onmousedown(function () {
+            alert("pressed");
+            $.get("AjaxHandler", function (responseText) {
+                if (responseText === "false") {
+                    document.getElementById("errorLogin").style.display = 'block';
+                    document.getElementById("submit_registration").setAttribute("disabled", "")
+                } else {
+                    alert("else");
+                    document.getElementById("submit_registration").removeAttribute("disabled");
+                }
+            });
+        });
+    });*/
 
+</script>
 </body>
 </html>

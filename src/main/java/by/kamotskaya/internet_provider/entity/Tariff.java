@@ -1,13 +1,13 @@
 package by.kamotskaya.internet_provider.entity;
 
-import java.util.Date;
+import java.sql.Date;
 
 /**
  * @author Lena Kamotskaya
  */
 public class Tariff extends Entity{
 
-    private String id;//?
+    private int tId;
     private String tName;
     private double connectionPayment;
     private double dailyFee;
@@ -30,12 +30,12 @@ public class Tariff extends Entity{
         this.overrunFee = overrunFee;
     }
 
-    public String getId() {
-        return id;
+    public int gettId() {
+        return tId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setTid(int tId) {
+        this.tId = tId;
     }
 
     public String gettName() {

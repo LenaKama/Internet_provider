@@ -11,5 +11,4 @@ public interface BaseDAO<T extends Entity> {
     void add(T entity) throws DAOException;
     void delete(String us_login) throws DAOException;
     void update(T entity) throws DAOException;
-
 }

@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html;charset=UTF-8" isELIgnored="false"%>
+<%@ page language="java" contentType="text/html;charset=UTF-8" isELIgnored="false" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -21,39 +21,64 @@
 <%--<c:set var="curImg" value="${imgRU}"/>--%>
 <%--</c:otherwise>--%>
 <%--</c:choose>--%>
+<c:choose>
+    <c:when test="${empty activeClass}">
+        <c:set var="active_class" value="sign_in"/>
+    </c:when>
+    <c:otherwise>
+        <c:set var="active_class" value="${activeClass}"/>
+    </c:otherwise>
+</c:choose>
+<c:set var="active_locale" value="${sessionScope.welcomeLocale}"/>
+
 <script>
-    $( "#nav-item" ).on( "click", function() {
-        $( this ).toggleClass( "active" );
-    });
+    window.onload = function () {
+        document.getElementById("${active_class}").classList.add('active');
+        document.getElementById("${active_locale}").classList.add('active');
+    };
+    function changeLocale(locale) {
+        if (locale === 'ru_RU') {
+            //alert(locale);
+            <fmt:setLocale value="ru_RU" scope="session"/>
+            ${active_locale}
+            = 'ru_RU';
+            <c:set var="active_locale" scope="session" value="ru_RU"/>;
+            <c:set var="usLocale" scope="session" value="ru_RU"/>;
+        } else {
+            // alert(locale + "ru")
+            <fmt:setLocale value="en_US" scope="session"/>
+            <c:set var="active_locale" scope="session" value="en_US"/>;
+            <c:set var="usLocale" scope="session" value="en_US"/>
+        }
+    }
 </script>
-<nav class="navbar navbar-static-top bg-primary">
-    <div class="container">
+<nav id="my_header" class="navbar navbar-static-top">
+    <div class="container" style="background-color: transparent">
         <form action="/Controller" method="post">
-            <input type="hidden" name="command" value="redirect"/>
+            <input type="hidden" name="command" value="show_welcome_page"/>
             <input class="imgLogo" type="image" src="${imgLogo}" onclick="$(this).parent('form').submit()"/>
         </form>
-        ${pagename}
         <div class="collapse navbar-collapse navHeaderCollapse" id="myNavbar">
             <ul class="nav navbar-nav ml-auto mr-auto">
-                <li class="nav-item">
+                <li id="sign_in" class="nav-item">
                     <form action="/Controller" method="post">
-                        <input type="hidden" name="command" value="show_sign_in"/>
-                        <input class="active" type="submit" value="${sign_in}"/>
+                        <input type="hidden" name="command" value="show_welcome_page"/>
+                        <input type="submit" value="${sign_in}"/>
                     </form>
                 </li>
-                <li class="nav-item">
+                <li id="tariffs" class="nav-item">
                     <form action="/Controller" method="post">
                         <input type="hidden" name="command" value="show_tariffs"/>
                         <input type="submit" value="${tariffs}"/>
                     </form>
                 </li>
-                <li class="nav-item">
+                <li id="news" class="nav-item">
                     <form action="/Controller" method="post">
                         <input type="hidden" name="command" value="show_news"/>
-                        <input type="submit" value="${news}"/>
+                        <input class="active" type="submit" value="${news}"/>
                     </form>
                 </li>
-                <li class="nav-item">
+                <li id="about_us" class="nav-item">
                     <form action="/Controller" method="post">
                         <input type="hidden" name="command" value="show_about_us"/>
                         <input type="submit" value="${about_us}"/>
@@ -61,23 +86,21 @@
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li class="nav-item active">
-                    <form class="locale" action="/Controller" method="post">
-                        <input type="hidden" name="command" value="change_locale"/>
-                        <input type="hidden" name="locale" value="ru_RU">
-                        <input type="hidden" name="previousPage" value="${url}">
-                        <input type="image" src="${imgRU}" onclick="$(this).parent('form').submit()"/>
-                    </form>
+                <li id="ru_RU" class="nav-item locale">
+                    <input type="hidden" name="command" value="change_locale"/>
+                    <input type="hidden" name="locale" value="ru_RU">
+                    <input type="hidden" name="previousPage" value="${url}">
+                    <input type="image" src="${imgRU}" onclick="changeLocale('ru_RU')"/>
                 </li>
-                <li class="nav-item">
-                    <form class="locale" action="/Controller" method="post">
-                        <input type="hidden" name="command" value="change_locale"/>
-                        <input type="hidden" name="locale" value="en_US">
-                        <input type="hidden" name="previousPage" value="${url}">
-                        <input type="image" src="${imgEN}" onclick="$(this).parent('form').submit()"/>
-                    </form>
+                <li id="en_US" class="nav-item locale">
+                    <input type="hidden" name="command" value="change_locale"/>
+                    <input type="hidden" name="locale" value="en_US">
+                    <input type="hidden" name="previousPage" value="${url}">
+                    <input type="image" src="${imgEN}" onclick="changeLocale('en_US')"/>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
+
+<%--$(this).parent('form').submit()--%>

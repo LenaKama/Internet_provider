@@ -11,9 +11,9 @@ public class User extends Entity {
     private String usSurname;
     private String usEmail;
     private String usPassport;
-    private String usRole;       ////generate
+    private String usRole;
     private boolean usBan;
-    private int tariffId;  //???
+    private int tId;
 
     public String getUsLogin() {
         return usLogin;
@@ -79,12 +79,12 @@ public class User extends Entity {
         this.usBan = usBan;
     }
 
-    public int getTariffId() {
-        return tariffId;
+    public int getTId() {
+        return tId;
     }
 
-    public void setTariffId(int tariffId) {
-        this.tariffId = tariffId;
+    public void setTId(int tId) {
+        this.tId = tId;
     }
 
     @Override
@@ -98,7 +98,7 @@ public class User extends Entity {
                 ", usPassport='" + usPassport + '\'' +
                 ", usRole='" + usRole + '\'' +
                 ", usBan=" + usBan +
-                ", tariff=" + tariffId +
+                ", tariff=" + tId +
                 '}';
     }
 }
