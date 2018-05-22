@@ -111,6 +111,11 @@ public class UserDAO implements BaseDAO<User> {
         }
     }
 
+    /**
+     *
+     * @param user
+     * @throws DAOException
+     */
     @Override
     public void update(User user) throws DAOException {
         try (ProxyConnection connection = connectionPool.takeConnection();
