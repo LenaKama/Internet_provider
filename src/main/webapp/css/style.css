@@ -147,7 +147,7 @@
 }
 /*client_menu*/
 .menu-item {
-    border-radius: 5%;
+    border-radius: 30%;
 }
 /*general*/
 #transfer_form input[type="image"] {

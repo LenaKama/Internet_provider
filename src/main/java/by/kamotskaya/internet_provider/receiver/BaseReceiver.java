@@ -22,6 +22,7 @@ public class BaseReceiver {
         String pageUrl = content.getRequestParameters().get("previousPage")[0];
         pageUrl = pageUrl.substring(pageUrl.indexOf("jsp"));
         content.putSessionAttribute("usLocale", locale);
+        content.putSessionAttribute("active_locale", locale);
         LOGGER.log(Level.INFO, "Change the locale, pageUrl - " + pageUrl);
 
         return new CommandResult(CommandResult.ResponseType.FORWARD, pageUrl);

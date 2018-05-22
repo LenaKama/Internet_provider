@@ -29,42 +29,6 @@
 
     <title>${title}</title>
 
-    <script>
-        //       $(document).ready(function() {
-      /*  jQuery(document).ready(function ($) {
-
-            alert('ready');
-//           $("#editButton").click(edit);
-
-//           $(document).on('click', '#somebutton', function () {
-            $("#somebutton").click(function () {
-                //        $(document).on('click','ul li', function(){
-//               document.getElementById("somebutton").onclick = function(){ show();}
-//            function show() {
-//            $(document).on("click", "#somebutton", function () {
-//                alert("hey");
-                $.get("Controller?type=ajax&command=check_login", function (responseText) {
-                    if (responseText == "true") {
-                        $("#somediv").text(responseText);
-                    } else {
-                        $("#somediv").text("false");
-                    }
-                });
-            });
-        });
-        function edit1() {
-            var text = $('.textinfo').text();
-            var input = $('<input type="text" placeholder="' + text + '" />')
-            $('.textinfo').text('').append(input);
-        }
-        function edit() {
-            var text = $('.editText').text();
-            var input = $('<input type="text" placeholder="' + text + '" />')
-            $('.editText').text('').append(input);
-        }
-       */
-    </script>
-
 </head>
 <body>
 <%--<div id="myCarousel" class="carousel container slide">--%>
@@ -76,6 +40,12 @@
 <%--</div>--%>
 <%@include file="part/header.jsp" %>
 <div class="container">
+    <%--<span id="edit" onclick="justEdit('edit')">Click to edit</span>--%>
+    <%--<label class="control-label lbl" id="txt" onclick="edit2('txt')">Saghir</label>--%>
+    <%--<input id="lll" type="text" placeholder="edit me" style="display: none;"/>--%>
+    <%--<div class="controls">--%>
+        <%--<span class="btn" onclick="edit2('txt')">Edit</span>--%>
+    <%--</div>--%>
     <c:choose>
         <c:when test="${sessionScope.usRole eq 'quest'}">
             <%@include file="sign_in.jsp" %>
@@ -85,44 +55,63 @@
             <%@include file="part/general.jsp"%>
         </c:when>
         <c:when test="${sessionScope.usRole eq 'client'}">
-            <%@include file="part/client-menu.jsp" %>
+            <%@include file="part/client_menu.jsp" %>
             <%@include file="part/general.jsp"%>
         </c:when>
     </c:choose>
+    <%--<%@include file="fragment/footer.jspf"%>--%>
 </div>
 
 <script src="../js/bootstrap/bootstrap.min.js"></script>
 <script src="../js/bootstrap/jquery.min.js"></script>
+<script src="../js/ajax.js"></script>
 <script src="../js/carousel.js"></script>
 <script src="../js/script.js"></script>
-<script>
-    function trackChange(value){
-        $.get("AjaxHandler", {"checkLogin":value}, function (responseText) {
-            if (responseText === "false") {
-                document.getElementById("errorLogin").style.display = 'block';
-                document.getElementById("submit_registration").setAttribute("disabled", "")
-            } else {
-                document.getElementById("errorLogin").style.display = 'none';
-                document.getElementById("submit_registration").removeAttribute("disabled");
-            }
-        });
-        }
-        /*
-    $(document).ready(function () {
-        $('#somebutton').onmousedown(function () {
-            alert("pressed");
-            $.get("AjaxHandler", function (responseText) {
-                if (responseText === "false") {
-                    document.getElementById("errorLogin").style.display = 'block';
-                    document.getElementById("submit_registration").setAttribute("disabled", "")
-                } else {
-                    alert("else");
-                    document.getElementById("submit_registration").removeAttribute("disabled");
-                }
-            });
-        });
-    });*/
 
+<script>
+    function edit2(val) {
+        var text = $('#val').text();
+        var t = document.getElementById("val").text();
+        var input = $('<input type="text" placeholder="' + text + '" />');
+        alert("text - "+text+"t - "+t);
+        $('#val').text('').append(input);
+    }
+    $(document).ready(function () {
+        $('#edit1').click(function () {
+            var text = $('#txt').text();
+            var input = $('<input type="text" placeholder="' + text + '" />')
+            $('#txt').text('').append(input);
+        });
+        $('.lbl').click(function () {
+            var text = $(this).text();
+            alert("text - "+ text);
+          //  document.getElementsByClassName("lbl").style.display= 'none';
+            document.getElementById("lll").style.display= 'block';
+            });
+        $('.lbl').click(function () {
+            var $text = $(this).text(),
+                $input = $('<input type="text" />');
+            alert("pressed");
+            $text.hide()
+                .after($input);
+
+            $input.val($text.html()).show().focus()
+                .keypress(function (e) {
+                    var key = e.which;
+                    if (key == 13) // enter key
+                    {
+                        $input.hide();
+                        $text.html($input.val())
+                            .show();
+                        return false;
+                    }
+                })
+                .focusout(function () {
+                    $input.hide();
+                    $text.show();
+                })
+        });
+    });
 </script>
 </body>
 </html>

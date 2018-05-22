@@ -10,7 +10,8 @@ public class PagePath {
     public static final String TARIFFS = "jsp/tariffs.jsp";
     public static final String NEWS = "jsp/news.jsp";
     public static final String ABOUT_US = "jsp/about_us.jsp";
-    public static final String CLIENT = "jsp/client.jsp";
+    public static final String CLIENTS = "jsp/part/clients.jsp";
+    public static final String ADMINS = "jsp/part/admins.jsp";
     public static final String GENERAL = "jsp/part/general.jsp";
     public static final String MESSAGES = "jsp/part/messages.jsp";
     public static final String TRAFFIC_STATUS = "jsp/part/traffic_status.jsp";

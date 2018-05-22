@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<footer class="navbar navbar-fixed-bottom" style="bottom:0;position: fixed">
+<footer class="navbar-static-bottom" style="bottom:0;position: fixed">
     <div class="text-center" style="margin-left: 100px;margin-right: 100px;">
     <fmt:message key="page.footer.text" bundle="${loc}"/>
     </div>

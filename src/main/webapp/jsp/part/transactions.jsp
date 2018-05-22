@@ -21,7 +21,7 @@
 <body>
 <%@include file="header.jsp" %>
 <div class="container">
-<%@include file="client-menu.jsp"%>
+<%@include file="client_menu.jsp"%>
 <table class="table">
     <thead>
     <tr>

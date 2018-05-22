@@ -23,7 +23,7 @@ public class TariffDAO implements BaseDAO<Tariff> {
     public final static String ADD_NEW_TARIFF = "INSERT INTO tariff(t_name, connection_payment, daily_fee, traffic_limit, speed_in, speed_out, overrun_fee) VALUES(?, ?, ?, ?, ?, ?, ?)";
     public final static String UPDATE_TARIFF = "UPDATE TABLE tariff SET t_name = ?, connection_payment = ?, daily_fee = ?, traffic_limit = ?, speed_in = ?, speed_out = ?, overrun_fee = ?, sale_percent = ?, sale_expiration_date = ? WHERE t_id = ?";
     public final static String DELETE_TARIFF = "ALTER TABLE tariff DELETE FROM tariff WHERE t_id = ?";
-    public final static String FIND_ID_BY_NAME = "SELECT t_id FROM tariff where t_name = ?";
+    public final static String FIND_TARIFF_BY_ID = "SELECT * FROM tariff where t_id = ?";
     public final static String SELECT_ALL = "SELECT * FROM tariff";
     public final static String SELECT_TARIFFS_WITH_SALES = "SELECT  t.t_name, t.daily_fee, t.sale_percent, t.daily_fee * (1 - t.sale_percent/100) AS new_daily_fee\n" +
             "  FROM tariff t\n" +
@@ -63,7 +63,6 @@ public class TariffDAO implements BaseDAO<Tariff> {
 
     @Override
     public void update(Tariff tariff) throws DAOException {
-        int tId = (int) this.findIdByName(tariff.gettName()).get();///????????????
         try (ProxyConnection connection = connectionPool.takeConnection();
             PreparedStatement statement = connection.prepareStatement(UPDATE_TARIFF)) {
             statement.setString(1, tariff.gettName());
@@ -101,6 +100,7 @@ public class TariffDAO implements BaseDAO<Tariff> {
             ResultSet resultSet = statement.executeQuery(SELECT_ALL);
             while (resultSet.next()) {
                 Tariff tariff = new Tariff();
+                tariff.setTid(resultSet.getInt("t_id"));
                 tariff.settName(resultSet.getString("t_name"));
                 tariff.setConnectionPayment(resultSet.getDouble("connection_payment"));
                 tariff.setDailyFee(resultSet.getDouble("daily_fee"));
@@ -118,28 +118,25 @@ public class TariffDAO implements BaseDAO<Tariff> {
         return tariffs;
     }
 
-    public Optional findIdByName(String tName) throws DAOException {
-        Optional optionalId = Optional.empty();
+    public Tariff findTariffById(int tId) throws DAOException {
+        Tariff tariff = new Tariff();
         try (ProxyConnection connection = connectionPool.takeConnection();
-            PreparedStatement statement = connection.prepareStatement(FIND_ID_BY_NAME)) {
-            statement.setString(1, tName);
+            PreparedStatement statement = connection.prepareStatement(FIND_TARIFF_BY_ID)) {
+            statement.setInt(1, tId);
             ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                optionalId = Optional.of(resultSet.getInt("t_id"));
-            }
+            resultSet.next();
+            tariff.settName(resultSet.getString("t_name"));
+            tariff.setConnectionPayment(resultSet.getDouble("connection_payment"));
+            tariff.setDailyFee(resultSet.getDouble("daily_fee"));
+            tariff.setTrafficLimit(resultSet.getInt("traffic_limit"));
+            tariff.setSpeedIn(resultSet.getString("speed_in"));
+            tariff.setSpeedOut(resultSet.getString("speed_out"));
+            tariff.setOverrunFee(resultSet.getDouble("overrun_fee"));
+           // tariff.setSalePercent(resultSet.getInt("sale_percent"));
+            //tariff.setSaleExpirationDate(resultSet.getDate("sale_expiration_date"));
         } catch (SQLException e) {
             throw new DAOException("Exception from TariffDAO:", e);
         }
-        return optionalId;
+        return tariff;
     }
-/*
-    public void addSale(String tName) {
-        if( stringToUse.isPresent() )
-            3
-        {
-            4
-            System.out.println(stringToUse.get());
-            5
-    }
-    */
 }

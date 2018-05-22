@@ -28,13 +28,13 @@
 <body>
 <%@include file="header.jsp" %>
 <div class="container">
-<%@include file="client-menu.jsp"%>
+<%@include file="client_menu.jsp"%>
 <form class="form-horizontal">
     <div class="profile_photo">
         <img src="${imgAvatar}"/>
     </div>
-    <%--<button class="btn btn-default" style="display:block;height:50px;width:200px" onclick="document.getElementById('getFile').click()">${avatarButton}</button>--%>
-    <%--<input type='file' id="getFile" style="display:none">--%>
+    <button class="btn btn-default" style="display:block;height:50px;width:200px" onclick="document.getElementById('getFile').click()">${avatarButton}</button>
+    <input type='file' id="getFile" style="display:none">
 
     <div class="form-group">
         <label class="control-label col-sm-1" for="login" style="display: inline-block">
@@ -54,7 +54,8 @@
         <label class="control-label col-sm-1" for="email" style="display: inline-block">
             <fmt:message key="form.usEmail" bundle="${loc}"/></label>
         <div class="col-sm-10">
-            <p id="email" class="form-control-static editText">${user.usEmail}</p>
+            <label id="email" class="form-control-static editText" onclick="edit('email')">${user.usEmail}</label>
+       <input type="text" placeholder="${newUsValue}" style="display: none"/>
         </div>
     </div>
     <div class="form-group">
@@ -86,6 +87,7 @@
     </button>
 
 </form>
+    <span class="edit-on-click">Click to edit</span>
 
     <%@include file="../fragment/footer.jspf"%>
 </div>
@@ -93,14 +95,40 @@
 <script src="../../js/bootstrap/jquery.min.js"></script>
 <script src="../../js/bootstrap/bootstrap.min.js"></script>
 <script>
+  $(document).ready(function() {
+        $('.edit-on-click').click(function() {
+            var $text = $(this),
+                $input = $('<input type="text" />');
+
+            $text.hide()
+                .after($input);
+
+            $input.val($text.html()).show().focus()
+                .keypress(function(e) {
+                    var key = e.which;
+                    if (key == 13) // enter key
+                    {
+                        $input.hide();
+                        $text.html($input.val())
+                            .show();
+                        return false;
+                    }
+                })
+                .focusout(function() {
+                    $input.hide();
+                    $text.show();
+                })
+        });
+    });
     function edit1() {
         document.getElementsByClassName('info-field').style.display='none';
         document.getElementsByClassName('edit-field').style.display='block';
     }
-    function edit() {
-        var text = $('.editText').text();
-        var input = $('<input type="text" placeholder="' + text + '" />')
-        $('.editText').text('').append(input);
+    function edit(id) {
+        var text = document.getElementById('id').text();
+        alert(text);
+        var input = $('<input type="text" placeholder="' + text + '" />');
+        document.getElementById(id).text('').append(input);
     }
 </script>
 </body>

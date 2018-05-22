@@ -30,6 +30,7 @@ public class RoleFilter implements Filter {
         HttpSession session = httpRequest.getSession();
 
         session.setAttribute(ParamName.WELCOME_LOCALE, "en_US");
+        session.setAttribute("active_locale", ParamName.WELCOME_LOCALE);
 
         String usAvatar = (String) session.getAttribute("usAvatar");
         if(usAvatar == null || usAvatar.isEmpty()) {

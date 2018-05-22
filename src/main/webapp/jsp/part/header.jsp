@@ -29,28 +29,13 @@
         <c:set var="active_class" value="${activeClass}"/>
     </c:otherwise>
 </c:choose>
-<c:set var="active_locale" value="${sessionScope.welcomeLocale}"/>
 
 <script>
     window.onload = function () {
         document.getElementById("${active_class}").classList.add('active');
         document.getElementById("${active_locale}").classList.add('active');
     };
-    function changeLocale(locale) {
-        if (locale === 'ru_RU') {
-            //alert(locale);
-            <fmt:setLocale value="ru_RU" scope="session"/>
-            ${active_locale}
-            = 'ru_RU';
-            <c:set var="active_locale" scope="session" value="ru_RU"/>;
-            <c:set var="usLocale" scope="session" value="ru_RU"/>;
-        } else {
-            // alert(locale + "ru")
-            <fmt:setLocale value="en_US" scope="session"/>
-            <c:set var="active_locale" scope="session" value="en_US"/>;
-            <c:set var="usLocale" scope="session" value="en_US"/>
-        }
-    }
+
 </script>
 <nav id="my_header" class="navbar navbar-static-top">
     <div class="container" style="background-color: transparent">
@@ -86,21 +71,22 @@
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li id="ru_RU" class="nav-item locale">
+                <form id="ru_RU" class="nav-item locale" action="/Controller" method="post">
                     <input type="hidden" name="command" value="change_locale"/>
                     <input type="hidden" name="locale" value="ru_RU">
                     <input type="hidden" name="previousPage" value="${url}">
-                    <input type="image" src="${imgRU}" onclick="changeLocale('ru_RU')"/>
-                </li>
-                <li id="en_US" class="nav-item locale">
+                    <input type="image" src="${imgRU}" onclick="this.form.submit()"/>
+                </form>
+                <form id="en_US" class="nav-item locale" action="/Controller" method="post">
                     <input type="hidden" name="command" value="change_locale"/>
                     <input type="hidden" name="locale" value="en_US">
                     <input type="hidden" name="previousPage" value="${url}">
-                    <input type="image" src="${imgEN}" onclick="changeLocale('en_US')"/>
-                </li>
+                    <input type="image" src="${imgEN}" onclick="$(this).parent('form').submit()"/>
+                </form>
             </ul>
         </div>
     </div>
 </nav>
-
+<script>
+</script>
 <%--$(this).parent('form').submit()--%>

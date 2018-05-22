@@ -18,6 +18,12 @@ public class GoToPageReceiver {
 
     public static CommandResult goToWelcomePage(RequestContent content) {
         content.putRequestAttribute(ParamName.ACTIVE_CLASS, "sign_in");
+        try {
+            UserReceiver.loadGeneralUserInfo(content);
+        } catch (DAOException e) {
+            content.putRequestAttribute("errorMessage", "Error while loading user's information.");
+            return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.ERROR);
+        }
         return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.WELCOME);
     }
 
@@ -57,17 +63,14 @@ public class GoToPageReceiver {
     }
 
     public static CommandResult goToGeneral(RequestContent content) {
-        TransactionDAO transactionDAO = new TransactionDAO();
-        content.putSessionAttribute(ParamName.ACTIVE_MENU, "general");
-        String usLogin = String.valueOf(RequestContent.getSessionAttributes().get(ParamName.US_LOGIN));
-        SessionDAO sessionDAO = new SessionDAO();
         try {
-            content.putSessionAttribute("currentBalance", transactionDAO.findCurrentBalance(usLogin));
+            UserReceiver.loadGeneralUserInfo(content);
         } catch (DAOException e) {
+            content.putRequestAttribute("errorMessage", "Error while loading user's information.");
             return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.ERROR);
         }
-        return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.CLIENT);
-
+        content.putSessionAttribute(ParamName.ACTIVE_MENU, "general");
+        return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.WELCOME);
     }
 
     public static CommandResult goToMessages(RequestContent content) {
@@ -111,4 +114,27 @@ public class GoToPageReceiver {
         }
         return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.ACCOUNT_SETTINGS);
     }
+
+    public static CommandResult goToClients(RequestContent content) {
+        content.putRequestAttribute(ParamName.ACTIVE_MENU, "clients");
+        UserDAO userDAO = new UserDAO();
+        try {
+            content.putRequestAttribute("clients", userDAO.findAllClients());
+        } catch (DAOException e) {
+            return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.ERROR);
+        }
+        return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.CLIENTS);
+    }
+
+    public static CommandResult goToAdmins(RequestContent content) {
+        content.putRequestAttribute(ParamName.ACTIVE_MENU, "admins");
+        UserDAO userDAO = new UserDAO();
+        try {
+            content.putRequestAttribute("admins", userDAO.findAllAdmins());
+        } catch (DAOException e) {
+            return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.ERROR);
+        }
+        return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.ADMINS);
+    }
 }
+

@@ -7,13 +7,9 @@
     <%@include file="part/bundle.jsp" %>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <link href="../css/bootstrap/bootstrap.min.css" rel="stylesheet">
-
     <link href="../css/bootstrap/bootstrap-theme.min.css" rel="stylesheet">
-
     <link href="https://fonts.googleapis.com/css?family=Montserrat+Alternates" rel="stylesheet">
-
     <link href="../css/style.css" rel="stylesheet">
 
     <fmt:message key="page.registration.title" bundle="${loc}" var="title"/>
@@ -29,7 +25,7 @@
         <div class="col-sm-7">
             <input id="usLogin" type="text" name="usLogin"
                    title='<fmt:message key="form.usLogin.title" bundle="${loc}"/>'
-                   required pattern="^[a-zA-Z]{1}[a-zA-Z0-9_]{3,}" onkeyup="trackChange(this.value)">
+                   required pattern="^[a-zA-Z]{1}[a-zA-Z0-9_]{3,}" onkeyup="checkUsLogin(this.value)">
             <small class="text-muted" id="errorLogin" style="display: none; color:red;">
                 <fmt:message key="form.errorLogin" bundle="${loc}"/>
             </small>
@@ -82,14 +78,7 @@
     </div>
     </div>
     <button id="submit_registration" class="btn btn-default" type="submit">
-        <fmt:message key="form.button.enter" bundle="${loc}"/></button>
+        <fmt:message key="registration.button.register" bundle="${loc}"/></button>
 </form>
-
-<script src="../js/bootstrap/jquery.min.js"></script>
-<script src="../js/bootstrap/bootstrap.min.js"></script>
-<script src="../js/ajax.js"></script>
-<script src="../js/carousel.js"></script>
-<script src="../js/script.js"></script>
-
 </body>
 </html>

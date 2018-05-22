@@ -25,7 +25,7 @@ public class UserDAO implements BaseDAO<User> {
     public final static String ADD_NEW_CLIENT = "INSERT INTO user(us_login, us_password, us_email, us_name, us_surname, us_passport, us_role, us_ban) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
     public final static String FIND_PASSWORD_BY_LOGIN = "SELECT us_password FROM user WHERE us_login = ?";
     public final static String GET_USER_INFO = "SELECT * FROM user WHERE us_login = ?";
-    public final static String SELECT_ALL_USERS = "SELECT * FROM user";
+    public final static String SELECT_ALL_CLIENTS = "SELECT * FROM user WHERE us_role = 'client'";
     public final static String UPDATE_USER = "UPDATE TABLE user SET us_password = ?, us_email = ?, us_name = ?, us_surname = ?, us_passport = ?, us_role = ?, us_ban = ? t_id = ? WHERE us_login = ?";
     public final static String DELETE_USER = "ALTER TABLE user DELETE FROM user WHERE us_login = ?";
     public final static String SELECT_ALL_US_LOGINS = "SELECT us_login FROM user";
@@ -53,28 +53,51 @@ public class UserDAO implements BaseDAO<User> {
         }
     }
 
-    public List<User> findAllUsers() throws DAOException {
-        List<User> users = new ArrayList<>();
+    public List<User> findAllAdmins() throws DAOException {
+        List<User> admins = new ArrayList<>();
         try (ProxyConnection connection = connectionPool.takeConnection();
              Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(SELECT_ALL_USERS);
+            ResultSet resultSet = statement.executeQuery(SELECT_ALL_CLIENTS);
             while (resultSet.next()) {
-                User user = new User();
-                user.setUsLogin(resultSet.getString("us_login"));
-                user.setUsPassword(resultSet.getString("us_password"));//for what?
-                user.setUsEmail(resultSet.getString("us_email"));
-                user.setUsName(resultSet.getString("us_name"));
-                user.setUsSurname(resultSet.getString("us_surname"));
-                user.setUsPassport(resultSet.getString("us_passport"));
-                user.setUsRole(resultSet.getString("us_role"));
-                user.setUsBan(resultSet.getBoolean("us_ban"));
-                user.setTId(resultSet.getInt("t_id"));
-                users.add(user);
+                User admin = new User();
+                admin.setUsLogin(resultSet.getString("us_login"));
+                admin.setUsPassword(resultSet.getString("us_password"));//for what?
+                admin.setUsEmail(resultSet.getString("us_email"));
+                admin.setUsName(resultSet.getString("us_name"));
+                admin.setUsSurname(resultSet.getString("us_surname"));
+                admin.setUsPassport(resultSet.getString("us_passport"));
+                admin.setUsRole(resultSet.getString("us_role"));
+                admin.setUsBan(resultSet.getBoolean("us_ban"));
+                admin.setTId(resultSet.getInt("t_id"));
+                admins.add(admin);
             }
         } catch (SQLException e) {
             throw new DAOException("Exception from UserDAO:", e);
         }
-        return users;
+        return admins;
+    }
+    public List<User> findAllClients() throws DAOException {
+        List<User> clients = new ArrayList<>();
+        try (ProxyConnection connection = connectionPool.takeConnection();
+             Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(SELECT_ALL_CLIENTS);
+            while (resultSet.next()) {
+                User client = new User();
+                client.setUsLogin(resultSet.getString("us_login"));
+                client.setUsPassword(resultSet.getString("us_password"));//for what?
+                client.setUsEmail(resultSet.getString("us_email"));
+                client.setUsName(resultSet.getString("us_name"));
+                client.setUsSurname(resultSet.getString("us_surname"));
+                client.setUsPassport(resultSet.getString("us_passport"));
+                client.setUsRole(resultSet.getString("us_role"));
+                client.setUsBan(resultSet.getBoolean("us_ban"));
+                client.setTId(resultSet.getInt("t_id"));
+                clients.add(client);
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Exception from UserDAO:", e);
+        }
+        return clients;
     }
 
     @Override

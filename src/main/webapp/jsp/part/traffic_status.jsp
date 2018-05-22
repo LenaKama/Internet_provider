@@ -20,7 +20,7 @@
 <body>
 <%@include file="header.jsp" %>
 <div class="container">
-<%@include file="client-menu.jsp"%>
+<%@include file="client_menu.jsp"%>
     <label class="label-default text-center" style="background-color: rgba(5, 250, 224, 0.5);"><fmt:message key="traffic_status.uploaded" bundle="${loc}"/></label>
 <div class="progress">
     <div class="progress-bar" role="progressbar" aria-valuenow="${trafficInStatus}"

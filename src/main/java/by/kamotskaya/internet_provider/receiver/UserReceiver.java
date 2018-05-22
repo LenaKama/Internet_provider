@@ -4,15 +4,14 @@ import by.kamotskaya.internet_provider.command.CommandResult;
 import by.kamotskaya.internet_provider.constant.PagePath;
 import by.kamotskaya.internet_provider.constant.ParamName;
 import by.kamotskaya.internet_provider.controller.RequestContent;
-import by.kamotskaya.internet_provider.dao.impl.OpeningBalanceDAO;
-import by.kamotskaya.internet_provider.dao.impl.SessionDAO;
-import by.kamotskaya.internet_provider.dao.impl.TransactionDAO;
-import by.kamotskaya.internet_provider.dao.impl.UserDAO;
+import by.kamotskaya.internet_provider.dao.impl.*;
 import by.kamotskaya.internet_provider.entity.User;
 import by.kamotskaya.internet_provider.exception.DAOException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import javax.servlet.http.HttpSession;
 
 
 /**
@@ -24,7 +23,8 @@ public class UserReceiver {
 
     private static UserDAO userDAO = new UserDAO();
 
-    public UserReceiver() {}
+    public UserReceiver() {
+    }
 
     public static CommandResult authenticate(RequestContent content) {
 
@@ -36,33 +36,40 @@ public class UserReceiver {
         LOGGER.log(Level.DEBUG, usPassword + " - usPassword");
 
         TransactionDAO transactionDAO = new TransactionDAO();
-
+        TariffDAO tariffDAO = new TariffDAO();
         try {
-            if (passwordGenerator.authenticate(usPassword,userDAO.findPasswordByLogin(usLogin))) {
-               LOGGER.log(Level.DEBUG, userDAO.findPasswordByLogin(usLogin) + " - from userDAO");
+            if (passwordGenerator.authenticate(usPassword, userDAO.findPasswordByLogin(usLogin))) {
+                LOGGER.log(Level.DEBUG, userDAO.findPasswordByLogin(usLogin) + " - from userDAO");
 
-               User user = userDAO.createUserBean(usLogin);
+                User user = userDAO.createUserBean(usLogin);
                 content.putSessionAttribute("user", user);
-                if(user.getUsRole().equals("admin")) {
-                    content.putRequestAttribute("userList", userDAO.findAllUsers());
-                }
-                if(user.getUsRole().equals("client")) {}
-                if (user.getTId() != 0) {
-                    content.putSessionAttribute("currentBalance", transactionDAO.findCurrentBalance(usLogin));
-                }
-                content.putSessionAttribute("currentTariff", user.getTId());
                 RequestContent.getSessionAttributes().put("usLogin", usLogin);
-                 content.putSessionAttribute("usRole", user.getUsRole());
-             } else {
+                content.putSessionAttribute("usRole", user.getUsRole());
+                loadGeneralUserInfo(content);
+            } else {
                 content.putRequestAttribute("message", "Wrong user credentials.");
-             }
+            }
         } catch (DAOException e) {
-            LOGGER.catching(e);
+            content.putRequestAttribute("errorMessage", "Error while authenticating the user.");
+            return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.ERROR);
         }
         return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.WELCOME);
     }
 
-        public static CommandResult register(RequestContent content) {
+    public static void loadGeneralUserInfo(RequestContent content) throws DAOException {
+        TransactionDAO transactionDAO = new TransactionDAO();
+        TariffDAO tariffDAO = new TariffDAO();
+        String usLogin = content.getRequestParameters().get("usLogin")[0];
+        User user = userDAO.createUserBean(usLogin);
+        if (user.getUsRole().equals("client")) {
+        }
+        if (user.getTId() != 0) {
+            content.putRequestAttribute("currentBalance", transactionDAO.findCurrentBalance(usLogin));
+            content.putRequestAttribute("currentTariff", tariffDAO.findTariffById(user.getTId()));
+        }
+    }
+
+    public static CommandResult register(RequestContent content) {
 
         String usLogin = content.getRequestParameters().get("usLogin")[0];
         String usPassword = content.getRequestParameters().get("usPassword")[0];
@@ -72,6 +79,8 @@ public class UserReceiver {
         String usPassport = content.getRequestParameters().get("usPassport")[0];
 
         PasswordGenerator passwordGenerator = new PasswordGenerator();
+
+        RequestContent.getSession();
 
         User user = new User();
         user.setUsLogin(usLogin);
@@ -111,11 +120,11 @@ public class UserReceiver {
 
     public static CommandResult showUserList(RequestContent content) {
         try {
-        content.putRequestAttribute("userList", userDAO.findAllUsers());
-    } catch (DAOException e) {
-        content.putRequestAttribute("errorMessage", "Error while loading list of users");
-        return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.ERROR);
-    }
+            content.putRequestAttribute("userList", userDAO.findAllClients());
+        } catch (DAOException e) {
+            content.putRequestAttribute("errorMessage", "Error while loading list of users");
+            return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.ERROR);
+        }
         return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.WELCOME);
     }
 
@@ -134,5 +143,11 @@ public class UserReceiver {
             return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.ERROR);
         }
         return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.WELCOME);
+    }
+
+    public static CommandResult logOut(RequestContent content) {
+        content.putSessionAttribute("usRole", "quest");
+        RequestContent.getSession().invalidate();
+        return new CommandResult(CommandResult.ResponseType.REDIRECT, PagePath.WELCOME);
     }
 }

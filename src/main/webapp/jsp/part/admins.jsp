@@ -4,8 +4,6 @@
     <title>Title</title>
 </head>
 <body>
-<%@include file="header.jsp"%>
-<%@include file="client_menu.jsp"%>
-<%@include file="../fragment/footer.jspf"%>
+
 </body>
 </html>

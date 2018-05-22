@@ -43,14 +43,27 @@
             <c:when test="${empty currentTariff}">
                 <fmt:message key="general.empty.tariff" bundle="${loc}"/>
                 <form action="/Controller" method="post">
-                    <input type="hidden" name="command" value="go_to_tariffs"/>
+                    <input type="hidden" name="command" value="show_tariffs"/>
                 <button class="btn" type="submit"><fmt:message key="general.button.choose.tariff" bundle="${loc}"/></button>
                 </form>
             </c:when>
             <c:otherwise>
-                ${currentTariff}
+                ${currentTariff.tName}
             </c:otherwise>
-        </c:choose>${current_tariff}</div>
+        </c:choose>
+    </div>
+</div>
+<div class="row">
+    <label class="col-sm-2" for="tariff_limit"><fmt:message key="general.tariff.limit" bundle="${loc}"/></label>
+    <div id="tariff_limit" class="col-sm-3">${currentTariff.trafficLimit}</div>
+</div>
+<div class="row">
+    <label class="col-sm-2" for="speed_in"><fmt:message key="general.tariff.speed_in" bundle="${loc}"/></label>
+    <div id="speed_in" class="col-sm-3">${currentTariff.speedIn}</div>
+</div>
+<div class="row">
+    <label class="col-sm-2" for="speed_out"><fmt:message key="general.tariff.speed_out" bundle="${loc}"/></label>
+    <div id="speed_out" class="col-sm-3">${currentTariff.speedOut}</div>
 </div>
 <div class="row">
     <label class="col-sm-2" for="curBalance"><fmt:message key="general.current_balance" bundle="${loc}"/></label>
@@ -85,6 +98,5 @@
         </form>
     </div>
 </div>
-<%@include file="../fragment/footer.jspf"%>
 
 

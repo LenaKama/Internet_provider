@@ -52,4 +52,10 @@
                 <input type="submit" value='<fmt:message key="client_account.nav.accountSettings" bundle="${loc}"/>'/>
             </form>
         </li>
+    <li id="logout" class="menu-item">
+        <form action="/Controller" method="post">
+            <input type="hidden" name="command" value="log_out">
+            <input type="submit" value='<fmt:message key="menu.logout" bundle="${loc}"/>'/>
+        </form>
+    </li>
 </ul>

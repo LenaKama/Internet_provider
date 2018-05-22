@@ -21,7 +21,7 @@ public class TariffReceiver {
     private static TariffDAO tariffDAO = new TariffDAO();
 
     public TariffReceiver() {}
-
+/*
     public static CommandResult addNewTariff(RequestContent content) {
 
         String tName = content.getRequestParameters().get("t_name")[0];
@@ -65,4 +65,6 @@ public class TariffReceiver {
         }
         return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.TARIFFS);
     }
+    */
 }
+
