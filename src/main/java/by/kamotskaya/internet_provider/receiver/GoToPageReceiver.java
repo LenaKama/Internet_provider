@@ -19,7 +19,7 @@ public class GoToPageReceiver {
     public static CommandResult goToWelcomePage(RequestContent content) {
         content.putRequestAttribute(ParamName.ACTIVE_CLASS, "sign_in");
         try {
-            UserReceiver.loadGeneralUserInfo(content);
+            content = UserReceiver.loadGeneralUserInfo(content);
         } catch (DAOException e) {
             content.putRequestAttribute("errorMessage", "Error while loading user's information.");
             return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.ERROR);
@@ -63,13 +63,13 @@ public class GoToPageReceiver {
     }
 
     public static CommandResult goToGeneral(RequestContent content) {
+        content.putSessionAttribute(ParamName.ACTIVE_MENU, "general");
         try {
-            UserReceiver.loadGeneralUserInfo(content);
+            content = UserReceiver.loadGeneralUserInfo(content);
         } catch (DAOException e) {
             content.putRequestAttribute("errorMessage", "Error while loading user's information.");
             return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.ERROR);
         }
-        content.putSessionAttribute(ParamName.ACTIVE_MENU, "general");
         return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.WELCOME);
     }
 

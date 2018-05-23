@@ -26,7 +26,7 @@ public class UserDAO implements BaseDAO<User> {
     public final static String FIND_PASSWORD_BY_LOGIN = "SELECT us_password FROM user WHERE us_login = ?";
     public final static String GET_USER_INFO = "SELECT * FROM user WHERE us_login = ?";
     public final static String SELECT_ALL_CLIENTS = "SELECT * FROM user WHERE us_role = 'client'";
-    public final static String UPDATE_USER = "UPDATE TABLE user SET us_password = ?, us_email = ?, us_name = ?, us_surname = ?, us_passport = ?, us_role = ?, us_ban = ? t_id = ? WHERE us_login = ?";
+    public final static String UPDATE_USER = "UPDATE user SET us_password = ?, us_email = ?, us_name = ?, us_surname = ?, us_passport = ?, us_role = ?, us_ban = ?, t_id = ? WHERE us_login = ?";
     public final static String DELETE_USER = "ALTER TABLE user DELETE FROM user WHERE us_login = ?";
     public final static String SELECT_ALL_US_LOGINS = "SELECT us_login FROM user";
 

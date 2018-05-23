@@ -46,4 +46,5 @@ public class ParamName {
     public static final String UPLOAD_SPEED = "uploadSpeed";
 
     public static final String WELCOME_LOCALE = "welcomeLocale";
+    public static final String ERROR_MESSAGE = "errorMessage";
 }

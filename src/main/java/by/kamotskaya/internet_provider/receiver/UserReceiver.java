@@ -33,19 +33,15 @@ public class UserReceiver {
 
         PasswordGenerator passwordGenerator = new PasswordGenerator();
 
-        LOGGER.log(Level.DEBUG, usPassword + " - usPassword");
-
         TransactionDAO transactionDAO = new TransactionDAO();
         TariffDAO tariffDAO = new TariffDAO();
         try {
             if (passwordGenerator.authenticate(usPassword, userDAO.findPasswordByLogin(usLogin))) {
-                LOGGER.log(Level.DEBUG, userDAO.findPasswordByLogin(usLogin) + " - from userDAO");
-
                 User user = userDAO.createUserBean(usLogin);
                 content.putSessionAttribute("user", user);
                 RequestContent.getSessionAttributes().put("usLogin", usLogin);
                 content.putSessionAttribute("usRole", user.getUsRole());
-                loadGeneralUserInfo(content);
+                content = loadGeneralUserInfo(content);
             } else {
                 content.putRequestAttribute("message", "Wrong user credentials.");
             }
@@ -56,10 +52,10 @@ public class UserReceiver {
         return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.WELCOME);
     }
 
-    public static void loadGeneralUserInfo(RequestContent content) throws DAOException {
+    public static RequestContent loadGeneralUserInfo(RequestContent content) throws DAOException {
         TransactionDAO transactionDAO = new TransactionDAO();
         TariffDAO tariffDAO = new TariffDAO();
-        String usLogin = content.getRequestParameters().get("usLogin")[0];
+        String usLogin = String.valueOf(RequestContent.getSessionAttributes().get(ParamName.US_LOGIN));
         User user = userDAO.createUserBean(usLogin);
         if (user.getUsRole().equals("client")) {
         }
@@ -67,6 +63,7 @@ public class UserReceiver {
             content.putRequestAttribute("currentBalance", transactionDAO.findCurrentBalance(usLogin));
             content.putRequestAttribute("currentTariff", tariffDAO.findTariffById(user.getTId()));
         }
+        return content;
     }
 
     public static CommandResult register(RequestContent content) {
@@ -80,7 +77,7 @@ public class UserReceiver {
 
         PasswordGenerator passwordGenerator = new PasswordGenerator();
 
-        RequestContent.getSession();
+        RequestContent.getSession();////////////////////
 
         User user = new User();
         user.setUsLogin(usLogin);
@@ -107,12 +104,33 @@ public class UserReceiver {
         return null;
     }
 
+
+    public static CommandResult updateUser(RequestContent content) {
+        String usLogin = String.valueOf(RequestContent.getSessionAttributes().get(ParamName.US_LOGIN));
+        try {
+            User user = userDAO.createUserBean(usLogin);
+            user.setUsEmail(content.getRequestParameters().get("usEmail")[0]);
+            user.setUsName(content.getRequestParameters().get("usName")[0]);
+            user.setUsSurname(content.getRequestParameters().get("usSurname")[0]);
+            user.setUsPassport(content.getRequestParameters().get("usPassport")[0]);
+
+            // String usLogin = content.getRequestParameters().get("usLogin")[0];
+            // String usPassword = content.getRequestParameters().get("usPassword")[0];
+
+            userDAO.update(user);
+        } catch (DAOException e) {
+            content.putRequestAttribute(ParamName.ERROR_MESSAGE, "Error while deleting the user.");
+            return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.ERROR);
+        }
+        return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.WELCOME);
+    }
+
     public static CommandResult deleteUser(RequestContent content) {
         String login = content.getRequestParameters().get("loginForDelete")[0];
         try {
             userDAO.delete(login);
         } catch (DAOException e) {
-            LOGGER.catching(e);
+            content.putRequestAttribute(ParamName.ERROR_MESSAGE, "Error while deleting the user.");
             return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.ERROR);
         }
         return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.WELCOME);
@@ -139,10 +157,10 @@ public class UserReceiver {
             userDAO.update(user);
             content.putSessionAttribute("user", user);
         } catch (DAOException e) {
-            content.putRequestAttribute("errorMessage", "Error while updating user");
+            content.putRequestAttribute("errorMessage", "Error while updating user.");
             return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.ERROR);
         }
-        return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.WELCOME);
+        return GoToPageReceiver.goToWelcomePage(content);
     }
 
     public static CommandResult logOut(RequestContent content) {
@@ -150,4 +168,5 @@ public class UserReceiver {
         RequestContent.getSession().invalidate();
         return new CommandResult(CommandResult.ResponseType.REDIRECT, PagePath.WELCOME);
     }
+
 }

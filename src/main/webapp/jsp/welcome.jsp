@@ -62,6 +62,9 @@
     <%--<%@include file="fragment/footer.jspf"%>--%>
 </div>
 
+<span class="edit-on-click">Click to edit</span>
+
+
 <script src="../js/bootstrap/bootstrap.min.js"></script>
 <script src="../js/bootstrap/jquery.min.js"></script>
 <script src="../js/ajax.js"></script>
@@ -88,7 +91,7 @@
           //  document.getElementsByClassName("lbl").style.display= 'none';
             document.getElementById("lll").style.display= 'block';
             });
-        $('.lbl').click(function () {
+        $('.edit-on-click').click(function () {
             var $text = $(this).text(),
                 $input = $('<input type="text" />');
             alert("pressed");

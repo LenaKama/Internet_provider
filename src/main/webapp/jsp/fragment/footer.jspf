@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<footer class="navbar-static-bottom" style="bottom:0;position: fixed">
-    <div class="text-center" style="margin-left: 100px;margin-right: 100px;">
+<footer style="bottom:0;position: absolute;">
+    <div class="text-center">
     <fmt:message key="page.footer.text" bundle="${loc}"/>
     </div>
 </footer>

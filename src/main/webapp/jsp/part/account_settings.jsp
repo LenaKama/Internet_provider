@@ -28,102 +28,107 @@
 <body>
 <%@include file="header.jsp" %>
 <div class="container">
-<%@include file="client_menu.jsp"%>
-<form class="form-horizontal">
-    <div class="profile_photo">
-        <img src="${imgAvatar}"/>
-    </div>
-    <button class="btn btn-default" style="display:block;height:50px;width:200px" onclick="document.getElementById('getFile').click()">${avatarButton}</button>
-    <input type='file' id="getFile" style="display:none">
-
-    <div class="form-group">
-        <label class="control-label col-sm-1" for="login" style="display: inline-block">
-            <fmt:message key="form.usLogin" bundle="${loc}"/></label>
-        <div class="col-sm-10">
-            <p id="login" class="form-control-static">${user.usLogin}</p>
+    <%@include file="client_menu.jsp" %>
+    <form class="form-horizontal" action="/Controller" method="post">
+        <input type="hidden" name="command" value="update_user">
+        <div class="profile_photo">
+            <img src="${imgAvatar}"/>
         </div>
-    </div>
-    <%--<div class="form-group">--%>
+        <button class="btn btn-default" style="display:block;height:50px;width:200px"
+                onclick="document.getElementById('getFile').click()">${avatarButton}</button>
+        <input type='file' id="getFile" style="display:none">
+
+        <div class="form-group">
+            <label class="control-label col-sm-1" for="login" style="display: inline-block">
+                <fmt:message key="form.usLogin" bundle="${loc}"/></label>
+            <div class="col-sm-10">
+                <p id="login" name="usLogin" class="form-control-static">${user.usLogin}</p>
+            </div>
+        </div>
+        <%--<div class="form-group">--%>
         <%--<label class="control-label col-sm-1" for="password" style="display: inline-block">--%>
-            <%--<fmt:message key="form.usPassword" bundle="${loc}"/></label>--%>
+        <%--<fmt:message key="form.usPassword" bundle="${loc}"/></label>--%>
         <%--<div class="col-sm-10">--%>
-            <%--<label id="password" class="form-control info-field">${user.usPassword}</label>--%>
+        <%--<label id="password" class="form-control info-field">${user.usPassword}</label>--%>
         <%--</div>--%>
-    <%--</div>--%>
-    <div class="form-group">
-        <label class="control-label col-sm-1" for="email" style="display: inline-block">
-            <fmt:message key="form.usEmail" bundle="${loc}"/></label>
-        <div class="col-sm-10">
-            <label id="email" class="form-control-static editText" onclick="edit('email')">${user.usEmail}</label>
-       <input type="text" placeholder="${newUsValue}" style="display: none"/>
+        <%--</div>--%>
+        <div class="form-group">
+            <label class="control-label col-sm-1" for="email" style="display: inline-block">
+                <fmt:message key="form.usEmail" bundle="${loc}"/></label>
+            <div class="col-sm-10 field">
+                <p id="email" class="form-control-static info-field">${user.usEmail}</p>
+                <input type="text" name="usEmail" class="edit-field" value="${user.usEmail}" style="display: none"/>
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label class="control-label col-sm-1" for="name" style="display: inline-block">
-            <fmt:message key="form.usName" bundle="${loc}"/></label>
-        <div class="col-sm-10">
-            <p id="name" class="form-control-static editText">${user.usName}</p>
+        <div class="form-group">
+            <label class="control-label col-sm-1" for="name" style="display: inline-block">
+                <fmt:message key="form.usName" bundle="${loc}"/></label>
+            <div class="col-sm-10 field">
+                <p id="name" class="form-control-static info-field">${user.usName}</p>
+                <input type="text" name="usName" class="edit-field" value="${user.usName}" style="display: none"/>
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label class="control-label col-sm-1" for="surname" style="display: inline-block">
-            <fmt:message key="form.usSurname" bundle="${loc}"/></label>
-        <div class="col-sm-10">
-            <p id="surname" class="form-control-static editText">${user.usSurname}</p>
+        <div class="form-group">
+            <label class="control-label col-sm-1" for="surname" style="display: inline-block">
+                <fmt:message key="form.usSurname" bundle="${loc}"/></label>
+            <div class="col-sm-10 field">
+                <p id="surname" class="form-control-static info-field">${user.usSurname}</p>
+                <input type="text" name="usSurname" class="edit-field" value="${user.usSurname}" style="display: none"/>
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label class="control-label col-sm-1" for="passport" style="display: inline-block">
-            <fmt:message key="form.usPassport" bundle="${loc}"/></label>
-        <div class="col-sm-10">
-            <p id="passport" class="form-control-static editText" style="display: none">${user.usPassport}</p>
+        <div class="form-group">
+            <label class="control-label col-sm-1" for="passport" style="display: inline-block">
+                <fmt:message key="form.usPassport" bundle="${loc}"/></label>
+            <div class="col-sm-10 field">
+                <p id="passport" class="form-control-static info-field">${user.usPassport}</p>
+                <input type="text" name="usPassport" class="edit-field" value="${user.usPassport}" style="display: none"/>
+            </div>
         </div>
-    </div>
 
-    <button type="button" id="editButton" class="btn" onclick="edit1()">Edit</button>
-
-    <button id="submitButton" class="btn btn-default" type="submit">
-        <fmt:message key="form.button.save" bundle="${loc}"/>
-    </button>
-
-</form>
-    <span class="edit-on-click">Click to edit</span>
-
-    <%@include file="../fragment/footer.jspf"%>
+        <button id="saveButton" class="btn btn-default" type="submit" disabled>
+            <fmt:message key="form.button.save" bundle="${loc}"/>
+        </button>
+    </form>
+    <%--<%@include file="../fragment/footer.jspf"%>--%>
 </div>
 
 <script src="../../js/bootstrap/jquery.min.js"></script>
 <script src="../../js/bootstrap/bootstrap.min.js"></script>
 <script>
-  $(document).ready(function() {
-        $('.edit-on-click').click(function() {
-            var $text = $(this),
-                $input = $('<input type="text" />');
+    $('.edit-on-click').click(function () {
+        alert("click");
+        var $text = $(this),
+            $input = $('<input type="text" />');
 
-            $text.hide()
-                .after($input);
+        $text.hide()
+            .after($input);
 
-            $input.val($text.html()).show().focus()
-                .keypress(function(e) {
-                    var key = e.which;
-                    if (key == 13) // enter key
-                    {
-                        $input.hide();
-                        $text.html($input.val())
-                            .show();
-                        return false;
-                    }
-                })
-                .focusout(function() {
+        $input.val($text.html()).show().focus()
+            .keypress(function (e) {
+                var key = e.which;
+                if (key == 13) // enter key
+                {
                     $input.hide();
-                    $text.show();
-                })
-        });
+                    $text.html($input.val())
+                        .show();
+                    return false;
+                }
+            })
+            .focusout(function () {
+                $input.hide();
+                $text.show();
+            })
     });
     function edit1() {
-        document.getElementsByClassName('info-field').style.display='none';
-        document.getElementsByClassName('edit-field').style.display='block';
+        document.getElementsByClassName('info-field').style.display = 'none';
+        document.getElementsByClassName('edit-field').style.display = 'block';
     }
+    $('.info-field').click(function () {
+          $('#saveButton').removeAttr("disabled");
+       $(this).hide();
+        $(this).closest('.field').children('.edit-field').show();
+       // $(this).parent().prev
+    });
     function edit(id) {
         var text = document.getElementById('id').text();
         alert(text);
