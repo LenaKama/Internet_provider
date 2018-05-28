@@ -1,9 +1,6 @@
 package by.kamotskaya.internet_provider.command;
 
-import by.kamotskaya.internet_provider.receiver.BaseReceiver;
-import by.kamotskaya.internet_provider.receiver.GoToPageReceiver;
-import by.kamotskaya.internet_provider.receiver.BalanceReceiver;
-import by.kamotskaya.internet_provider.receiver.UserReceiver;
+import by.kamotskaya.internet_provider.receiver.*;
 
 /**
  * @author Lena Kamotskaya
@@ -30,6 +27,7 @@ public enum CommandType {
     SHOW_USER_LIST(UserReceiver::showUserList),
     RECHARGE_ACCOUNT(BalanceReceiver::rechargeAccount),
     CHANGE_TARIFF(UserReceiver::changeTariff),
+    DELETE_TARIFF(TariffReceiver::deleteTariff),
     UPDATE_USER(UserReceiver::updateUser);
 
     private FunctionalCommand command;

@@ -67,7 +67,7 @@
 
 .nav-item input {
     padding: 10px;
-    margin: 5px;
+    /*margin: 5px;*/
     color: black;
 }
 .nav-item input:hover {
@@ -150,7 +150,7 @@
     border-radius: 30%;
 }
 /*general*/
-#transfer_form input[type="image"] {
+#payment_form input[type="image"] {
     height: 50px;
     width: 50px;
 }

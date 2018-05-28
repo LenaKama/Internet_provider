@@ -27,7 +27,7 @@ function checkPasswords() {
 
 }
 $('#charge_button').click(function () {
-    document.getElementById("transfer_form").style.display = 'block';
+    document.getElementById("payment_form").style.display = 'block';
 });
 
 function redact(f, s) {
@@ -56,6 +56,8 @@ document.onkeydown = function(){
 }
 
 function show(form1, form2) {
+    //document.getElementById("transfer_form").style.display = 'none';
+    document.getElementById("transfer_form").style.display = 'block';
     document.getElementById(form1).style.display = 'block';
     document.getElementById(form2).style.display = 'none';
 }

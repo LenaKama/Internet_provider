@@ -47,4 +47,8 @@ public class ParamName {
 
     public static final String WELCOME_LOCALE = "welcomeLocale";
     public static final String ERROR_MESSAGE = "errorMessage";
+    public static final Object QUEST = "quest";
+    public static final Object CLIENT = "client";
+    public static final Object ADMIN = "admin";
+    public static final String ERROR_TRACE = "errorTrace";
 }

@@ -16,20 +16,23 @@ public class PasswordGenerator {
 
     private static byte[] salt = generateSalt();
 
-           private static byte[] generateSalt() {
-               try {
-                   SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
+    private static byte[] generateSalt() {
+        try {
+            SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
 
 // Generate a 8 byte (64 bit) salt as recommended by RSA PKCS5
-                   byte[] salt = new byte[8];
-                   random.nextBytes(salt);
+            byte[] salt = new byte[8];
+            random.nextBytes(salt);
 
-                   return salt;
-               } catch (NoSuchAlgorithmException e) {
-                   LOGGER.catching(e);
-               }
-               return null;
-           }
+            return salt;
+        } catch (NoSuchAlgorithmException e) {
+            LOGGER.catching(e);
+        }
+        return null;
+    }
+
+    public PasswordGenerator() {
+    }
 
     public boolean authenticate(String attemptedPassword, String encryptedPassword) {
 // Encrypt the clear-text password using the same salt that was used to
@@ -66,5 +69,6 @@ public class PasswordGenerator {
 
     public String decryptPassword(String encryptedPassword) {
         String decryptedPassword = null;
-        return decryptedPassword;    }
+        return decryptedPassword;
+    }
 }

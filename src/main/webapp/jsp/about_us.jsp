@@ -9,15 +9,10 @@
     <fmt:message key="page.about_us.title" bundle="${loc}" var="title"/>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <link href="../css/bootstrap/bootstrap.min.css" rel="stylesheet">
-
     <link href="../css/bootstrap/bootstrap-theme.min.css" rel="stylesheet">
-
     <link href="https://fonts.googleapis.com/css?family=Montserrat+Alternates" rel="stylesheet">
-
     <link href="../css/style.css" rel="stylesheet">
-
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/icon.png" type="image/x-icon">
 
     <title>${title}</title>
@@ -34,7 +29,7 @@
     </div>
     <form action="/Controller" method="post">
         <input type="hidden" name="command" value="show_welcome_page"/>
-        <button class="btn btn-primary glyphicon-align-center" type="submit">
+        <button class="btn btn-primary" type="submit">
             <fmt:message key="about_us.button.want_to_connect" bundle="${loc}"/></button>
     </form>
     <div class="our-history">

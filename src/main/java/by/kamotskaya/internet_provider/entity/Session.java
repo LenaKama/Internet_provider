@@ -7,11 +7,22 @@ import java.util.Date;
  */
 public class Session extends Entity {
 
+    private int sessionId;
     private Date sessionStart;
     private Date sessionEnd;
     private int trafficIn;
     private int trafficOut;
     private String usLogin;
+
+    public Session() {}
+
+    public int getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(int sessionId) {
+        this.sessionId = sessionId;
+    }
 
     public Date getSessionStart() {
         return sessionStart;

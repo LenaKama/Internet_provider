@@ -57,30 +57,57 @@
                 <c:if test="${tariff.trafficLimit != 0}">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                                ${tariff.tName}
+                               <c:out value="${tariff.TName}"/>
                             <span class="label label-default">${tariff.connectionPayment}</span>
-                            <button class="btn btn-primary" type="button" onclick="showMore(${theCount.count})">
-                                <i id="angle${theCount.count}" class="fa fa-angle-down glyphicon-align-center"></i>
-                            </button>
+                            <c:if test="${tariff.salePercent != 0}">
+                                <label class="label-danger">
+                                    <c:out value="${tariff.salePercent}% off"/>
+                                </label>
+                            </c:if>
                             <c:if test="${sessionScope.usRole eq 'client'|| sessionScope.usRole eq 'admin'}">
                                 <div class="row col-sm-offset-10">
-                                    <form class="glyphicon-align-right" action="/Controller" method="post">
+                                    <c:if test="${sessionScope.usRole eq 'admin'}">
+                                    <form class="col-md-2" action="/Controller" method="post">
+                                        <input type="hidden" name="command" value="delete_tariff">
+                                        <input type="hidden" name="tId" value="${tariff.TId}"/>
+                                        <button type="submit" class="btn-primary">
+                                            <fmt:message key="tariff.button.delete" bundle="${loc}"/></button>
+                                    </form>
+                                    </c:if>
+                                </div>
+                                <div class="row col-sm-offset-10">
+                                    <form class="col-md-2" action="/Controller" method="post">
                                         <input type="hidden" name="command" value="change_tariff">
-                                        <input type="hidden" name="tId" value="${tariff.tId}"/>
+                                        <input type="hidden" name="tId" value="${tariff.TId}"/>
                                         <button type="submit" class="btn-primary">
                                             <fmt:message key="tariff.button.connect" bundle="${loc}"/></button>
                                     </form>
                                 </div>
                             </c:if>
+                            <button class="btn" type="button" onclick="showMore(${theCount.count})" style="width: 100%; height: 20px;">
+                                <i id="angle${theCount.count}" class="fa fa-angle-down glyphicon-align-center"></i>
+                            </button>
                         </div>
                         <div class="panel" id="tariffInfo${theCount.count}" style="display: none">
                             <div class="panel-body card-block card-body">
-                                <p><label class="label-info">
+                                <div class="form-group">
+                                    <label class="control-label label-primary col-sm-1" style="display: inline-block">
+                                        <fmt:message key="tariff.dailyFee" bundle="${loc}"/></label>
+                                    <div class="col-sm-10 field">
+                                        <p id="email" class="form-control-static info-field">${user.usEmail}</p>
+                                        <input type="text" name="usEmail" class="edit-field" value="${user.usEmail}" style="display: none"/>
+                                    </div>
+                                </div>
+                                <label class="label-primary row col-md-2">
                                     <fmt:message key="tariff.dailyFee" bundle="${loc}"/></label>
-                                        ${tariff.dailyFee}</p>
-                                <p><label class="label-info">
+                                       <div class="col-md-3">
+                                           <c:out value="${tariff.dailyFee}"/>
+                                       </div>
+                                <label class="label-info row col-md-2">
                                     <fmt:message key="tariff.trafficLimit" bundle="${loc}"/></label>
-                                        ${tariff.trafficLimit}</p>
+                                      <div class="col-md-3">
+                                              <c:out value="${tariff.trafficLimit}"/>
+                                      </div>
                                 <p><label class="label-info"><fmt:message key="tariff.speedIn" bundle="${loc}"/></label>
                                         ${tariff.speedIn}</p>
                                 <p><label class="label-info"><fmt:message key="tariff.speedOut"
@@ -92,9 +119,9 @@
                                 <c:if test="${sessionScope.usRole eq 'admin'}">
                                     <form action="/Controller" method="post">
                                         <button class="btn btn-primary" type="button" data-toggle="collapse"
-                                                data-target="#saleInfo" aria-expanded="false" aria-controls="saleInfo">
+                                                data-target="#saleInfo${theCount.count}" aria-expanded="false" aria-controls="saleInfo">
                                             <fmt:message key="tariff.button.add_sale" bundle="${loc}"/></button>
-                                        <div class="collapse" id="saleInfo">
+                                        <div class="collapse" id="saleInfo${theCount.count}">
                                             <div class="card card-body">
                                                 <div class="form-group row">
                                                     <label class="col-sm-2" for="salePercent">
@@ -113,7 +140,7 @@
                                             </div>
                                         </div>
                                             <input type="hidden" name="command" value="add_sale">
-                                            <input type="hidden" name="tId" value="${tariff.tId}"/>
+                                            <input type="hidden" name="tId" value="${tariff.TId}"/>
                                             <button type="submit" class="btn-primary">
                                                 <fmt:message key="form.button.save" bundle="${loc}"/></button>
                                     </form>
@@ -129,7 +156,7 @@
                 <c:if test="${tariff.trafficLimit eq 0}">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                                ${tariff.tName}
+                                ${tariff.TName}
                             <span class="label label-default">${tariff.connectionPayment}</span>
                             <button class="btn btn-primary" type="button" onclick="showMore(${theCount.count})">
                                 <i id="angle${theCount.count}" class="fa fa-angle-down"></i>

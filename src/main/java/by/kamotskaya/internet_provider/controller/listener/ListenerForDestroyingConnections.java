@@ -1,5 +1,6 @@
 package by.kamotskaya.internet_provider.controller.listener;
 
+import by.kamotskaya.internet_provider.exception.ConnectionPoolException;
 import by.kamotskaya.internet_provider.pool.ConnectionPool;
 
 import javax.servlet.ServletContextEvent;
@@ -34,8 +35,8 @@ public class ListenerForDestroyingConnections implements ServletContextListener 
     public void contextDestroyed(ServletContextEvent sce) {
         try {
             ConnectionPool.destroyConnectionPool();
-        } catch (SQLException e) {
-            //////
+        } catch (SQLException | ConnectionPoolException e) {
+            /////
         }
     }
 }

@@ -1,6 +1,7 @@
 package by.kamotskaya.internet_provider.dao.impl;
 
 import by.kamotskaya.internet_provider.entity.User;
+import by.kamotskaya.internet_provider.exception.ConnectionPoolException;
 import by.kamotskaya.internet_provider.exception.DAOException;
 import by.kamotskaya.internet_provider.dao.BaseDAO;
 import by.kamotskaya.internet_provider.pool.ConnectionPool;
@@ -30,9 +31,11 @@ public class UserDAO implements BaseDAO<User> {
     public final static String DELETE_USER = "ALTER TABLE user DELETE FROM user WHERE us_login = ?";
     public final static String SELECT_ALL_US_LOGINS = "SELECT us_login FROM user";
 
-    private final ConnectionPool connectionPool = ConnectionPool.getInstance();
+    private final ConnectionPool connectionPool;
 
-    public UserDAO() {
+    public UserDAO() throws ConnectionPoolException {
+        connectionPool = ConnectionPool.getInstance();
+
     }
 
     @Override

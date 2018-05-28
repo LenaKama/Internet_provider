@@ -1,6 +1,7 @@
 package by.kamotskaya.internet_provider.dao.impl;
 
 import by.kamotskaya.internet_provider.entity.OpeningBalance;
+import by.kamotskaya.internet_provider.exception.ConnectionPoolException;
 import by.kamotskaya.internet_provider.exception.DAOException;
 import by.kamotskaya.internet_provider.pool.ConnectionPool;
 import by.kamotskaya.internet_provider.pool.ProxyConnection;
@@ -21,9 +22,10 @@ public class OpeningBalanceDAO {
     private final static String ADD_NEW_OPENING_BALANCE = "INSERT INTO opening_balance(ob_date, ob_sum, us_login) VALUES(?, ?, ?)";
     private final static String SELECT_LATEST_BALANCE = "SELECT ob_sum FROM opening_balance WHERE MONTH(ob_date) = MONTH(CURDATE()) AND YEAR(ob_date) = YEAR(CURDATE()) AND us_login = ?";
 
-    private final ConnectionPool connectionPool = ConnectionPool.getInstance();
+    private final ConnectionPool connectionPool;
 
-    public OpeningBalanceDAO() {
+    public OpeningBalanceDAO() throws ConnectionPoolException {
+    connectionPool = ConnectionPool.getInstance();
     }
 
     public void add(OpeningBalance openingBalance) throws DAOException {

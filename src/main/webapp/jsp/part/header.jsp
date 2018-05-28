@@ -71,22 +71,25 @@
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <form id="ru_RU" class="nav-item locale" action="/Controller" method="post">
-                    <input type="hidden" name="command" value="change_locale"/>
-                    <input type="hidden" name="locale" value="ru_RU">
-                    <input type="hidden" name="previousPage" value="${url}">
-                    <input type="image" src="${imgRU}" onclick="this.form.submit()"/>
-                </form>
-                <form id="en_US" class="nav-item locale" action="/Controller" method="post">
-                    <input type="hidden" name="command" value="change_locale"/>
-                    <input type="hidden" name="locale" value="en_US">
-                    <input type="hidden" name="previousPage" value="${url}">
-                    <input type="image" src="${imgEN}" onclick="$(this).parent('form').submit()"/>
-                </form>
+                <li>
+                    <form id="ru_RU" class="nav-item locale" action="/Controller" method="post">
+                        <input type="hidden" name="command" value="change_locale"/>
+                        <input type="hidden" name="locale" value="ru_RU">
+                        <input type="hidden" name="previousPage" value="${url}">
+                        <input type="image" src="${imgRU}" onclick="this.form.submit()"/>
+                    </form>
+                </li>
+                <li>
+                    <form id="en_US" class="nav-item locale" action="/Controller" method="post">
+                        <input type="hidden" name="command" value="change_locale"/>
+                        <input type="hidden" name="locale" value="en_US">
+                        <input type="hidden" name="previousPage" value="${url}">
+                        <input type="image" src="${imgEN}" onclick="$(this).parent('form').submit()"/>
+                    </form>
+                </li>
             </ul>
         </div>
     </div>
 </nav>
 <script>
 </script>
-<%--$(this).parent('form').submit()--%>

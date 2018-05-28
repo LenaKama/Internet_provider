@@ -1,5 +1,6 @@
 package by.kamotskaya.internet_provider.pool;
 
+import by.kamotskaya.internet_provider.exception.ConnectionPoolException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -38,14 +39,13 @@ public class ConnectionPool {
 
     }
 
-    public static ConnectionPool getInstance() {
+    public static ConnectionPool getInstance() throws ConnectionPoolException {
         if (!instanceCreated.get()) {
             instanceLock.lock();
-            // try-with-resources when java 9
             try {
                 if (instance == null) {
                     instance = new ConnectionPool();
-                   initializeConnectionPool();
+                    initializeConnectionPool();
                     instanceCreated.compareAndSet(false, true);
                 }
             } finally {
@@ -55,7 +55,7 @@ public class ConnectionPool {
         return instance;
     }
 
-    private static void initializeConnectionPool() {
+    private static void initializeConnectionPool() throws ConnectionPoolException {
         try {
             propertiesReader.read(PROPERTIES_FILE_NAME);
             freeConnections = new ArrayDeque<>(propertiesReader.getPoolSize());
@@ -69,9 +69,8 @@ public class ConnectionPool {
                 ProxyConnection connection = new ProxyConnection(DriverManager.getConnection(url, username, password));
                 freeConnections.add(connection);
             }
-            LOGGER.log(Level.DEBUG, freeConnections.size());
         } catch (SQLException e) {
-            LOGGER.catching(e);
+            throw new ConnectionPoolException("Exception from ConnectionPool.", e);
         }
     }
 
@@ -85,15 +84,15 @@ public class ConnectionPool {
         connectionLock.unlock();
         return connection;
     }
-
-    public static void releaseConnection(ProxyConnection connection) throws SQLException {
-       if (!connection.getAutoCommit()) {
-           connection.setAutoCommit(true);
-       }
+/////////??????????
+    static void releaseConnection(ProxyConnection connection) throws SQLException {
+        if (!connection.getAutoCommit()) {
+            connection.setAutoCommit(true);
+        }
         freeConnections.add(busyConnections.poll());
     }
 
-    public static void destroyConnectionPool() throws SQLException {
+    public static void destroyConnectionPool() throws SQLException, ConnectionPoolException {
         //check if all connections return to the freeConnections
         //locking while polling from freeConnections
         for (int i = 0; i < propertiesReader.getPoolSize(); i++) {
@@ -106,7 +105,7 @@ public class ConnectionPool {
                 DriverManager.deregisterDriver(driver);
             }
         } catch (SQLException e) {
-            LOGGER.catching(e);
+            throw new ConnectionPoolException("Exception from ConnectionPool.", e);
         }
     }
 

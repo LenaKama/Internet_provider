@@ -1,6 +1,7 @@
 package by.kamotskaya.internet_provider.dao.impl;
 
 import by.kamotskaya.internet_provider.entity.Transaction;
+import by.kamotskaya.internet_provider.exception.ConnectionPoolException;
 import by.kamotskaya.internet_provider.exception.DAOException;
 import by.kamotskaya.internet_provider.pool.ConnectionPool;
 import by.kamotskaya.internet_provider.pool.ProxyConnection;
@@ -24,7 +25,11 @@ public class TransactionDAO {
     private final static String ALL_USER_TRANSACTIONS = "SELECT * FROM transaction WHERE us_login = ?";
     private final static String FIND_THIS_MONTH_TRANSACTIONS = "SELECT SUM(tr_sum) FROM transaction WHERE MONTH(tr_date) = MONTH(CURDATE()) AND YEAR(tr_date) = YEAR(CURDATE()) AND us_login = ?";
 
-    private final ConnectionPool connectionPool = ConnectionPool.getInstance();
+    private final ConnectionPool connectionPool;
+
+    public TransactionDAO() throws ConnectionPoolException {
+        connectionPool = ConnectionPool.getInstance();
+    }
 
     public void add(Transaction transaction) throws DAOException {
         try (ProxyConnection connection = connectionPool.takeConnection()) {
@@ -58,15 +63,15 @@ public class TransactionDAO {
     }
 
     public Double findCurrentBalance(String usLogin) throws DAOException {
-        OpeningBalanceDAO openingBalanceDAO = new OpeningBalanceDAO();
         Double curBalance;
         try (ProxyConnection connection = connectionPool.takeConnection();
              PreparedStatement statement = connection.prepareStatement(FIND_THIS_MONTH_TRANSACTIONS)) {
+            OpeningBalanceDAO openingBalanceDAO = new OpeningBalanceDAO();
             statement.setString(1, usLogin);
             ResultSet resultSet = statement.executeQuery();
             resultSet.next();
             curBalance = openingBalanceDAO.findOpeningBalance(usLogin) + resultSet.getDouble(1);
-        } catch (SQLException e) {
+        } catch (SQLException | ConnectionPoolException e) {
             throw new DAOException("Exception from TransactionDAO", e);
         }
         return curBalance;

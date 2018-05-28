@@ -1,10 +1,14 @@
 package by.kamotskaya.internet_provider.pool;
 
 
+import by.kamotskaya.internet_provider.exception.ConnectionPoolException;
+
 import java.sql.*;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
+
+import static by.kamotskaya.internet_provider.pool.ConnectionPool.releaseConnection;
 
 /**
  * @author Lena Kamotskaya
@@ -12,14 +16,16 @@ import java.util.concurrent.Executor;
 public class ProxyConnection implements Connection {
 
     private Connection connection;
+    private ConnectionPool connectionPool;
 
-    ProxyConnection(Connection connection) {
+    ProxyConnection(Connection connection) throws ConnectionPoolException {
         this.connection = connection;
+        connectionPool = ConnectionPool.getInstance();
     }
 
     @Override
     public void close() throws SQLException {
-        ConnectionPool.getInstance().releaseConnection(this);
+        connectionPool.releaseConnection(this);
     }
 
     void closeConnection() throws SQLException {

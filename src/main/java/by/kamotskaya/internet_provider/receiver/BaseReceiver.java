@@ -13,9 +13,6 @@ public class BaseReceiver {
 
     private static final Logger LOGGER = LogManager.getLogger(BaseReceiver.class);
 
-    public BaseReceiver() {
-    }
-
     public static CommandResult changeLocale(RequestContent content) {
 
         String locale = content.getRequestParameters().get("locale")[0];

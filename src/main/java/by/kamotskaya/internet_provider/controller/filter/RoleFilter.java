@@ -1,6 +1,7 @@
 package by.kamotskaya.internet_provider.controller.filter;
 
 import by.kamotskaya.internet_provider.constant.ParamName;
+import by.kamotskaya.internet_provider.controller.RequestContent;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -39,7 +40,8 @@ public class RoleFilter implements Filter {
 
         String role = (String) session.getAttribute(ParamName.US_ROLE);
         if (role == null || role.isEmpty()) {
-            session.setAttribute(ParamName.US_ROLE, "quest");
+            session.setAttribute(ParamName.US_ROLE, ParamName.QUEST);
+            RequestContent.getSessionAttributes().put(ParamName.US_ROLE, ParamName.QUEST);
         }
 
         chain.doFilter(httpRequest, response);

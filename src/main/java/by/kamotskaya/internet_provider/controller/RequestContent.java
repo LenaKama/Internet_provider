@@ -13,14 +13,11 @@ public class RequestContent {
     private Map<String, String[]> requestParameters = new HashMap<>();
     private Map<String, Object> requestAttributes = new HashMap<>();
     private static Map<String, Object> sessionAttributes = new HashMap<>();
-    private static HttpSession session;
-    private static HttpServletRequest request;
 
     public RequestContent() {
     }
 
     public RequestContent(HttpServletRequest request) {
-        this.request = request;
         requestParameters = request.getParameterMap();
     }
 
@@ -53,11 +50,4 @@ public class RequestContent {
         return sessionAttributes;
     }
 
-    public static HttpSession getSession() {
-        return request.getSession();
-    }
-
-    public static void setSession(HttpSession session) {
-        RequestContent.session = session;
-    }
 }

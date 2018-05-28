@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<footer style="bottom:0;position: absolute;">
+<footer style="bottom:0;position: static;">
     <div class="text-center">
     <fmt:message key="page.footer.text" bundle="${loc}"/>
     </div>

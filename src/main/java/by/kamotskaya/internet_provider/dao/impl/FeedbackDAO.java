@@ -2,6 +2,7 @@ package by.kamotskaya.internet_provider.dao.impl;
 
 import by.kamotskaya.internet_provider.dao.BaseDAO;
 import by.kamotskaya.internet_provider.entity.Feedback;
+import by.kamotskaya.internet_provider.exception.ConnectionPoolException;
 import by.kamotskaya.internet_provider.exception.DAOException;
 import by.kamotskaya.internet_provider.pool.ConnectionPool;
 import by.kamotskaya.internet_provider.pool.ProxyConnection;
@@ -19,10 +20,14 @@ public class FeedbackDAO implements BaseDAO<Feedback> {
     private static final Logger LOGGER = LogManager.getLogger(FeedbackDAO.class);
 
     public final static String ADD_NEW_FEEDBACK = "INSERT INTO feedback(f_name, f_email, f_message) VALUES(?, ?, ?)";
-    //  public final static String UPDATE_FEEDBACK = "UPDATE TABLE feedback SET f_name = ?, f_email = ?, us_email = ?, us_name = ?, us_surname = ?, us_passport = ?, us_role = ?, us_ban = ? WHERE us_login = ?";
+    //  public final static String UPDATE_FEEDBACK = "UPDATE eedback SET f_name = ?, f_email = ?, us_email = ?, us_name = ?, us_surname = ?, us_passport = ?, us_role = ?, us_ban = ? WHERE us_login = ?";
     public final static String DELETE_FEEDBACK = "ALTER TABLE feedback DELETE FROM feedback WHERE f_id = ?";
 
-    private final ConnectionPool connectionPool = ConnectionPool.getInstance();
+    private final ConnectionPool connectionPool;
+
+    public FeedbackDAO() throws ConnectionPoolException {
+        connectionPool = ConnectionPool.getInstance();
+    }
 
     @Override
     public void add(Feedback feedback) throws DAOException {
@@ -33,7 +38,7 @@ public class FeedbackDAO implements BaseDAO<Feedback> {
             statement.setString(3, feedback.getfMessage());
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new DAOException("Exception from TariffDAO:", e);
+            throw new DAOException("Exception from FeedbackDAO:", e);
         }
     }
 
