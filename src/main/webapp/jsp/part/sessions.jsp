@@ -6,20 +6,24 @@
 <head>
     <%@include file="bundle.jsp" %>
     <link href="${pageContext.request.contextPath}/css/bootstrap/bootstrap.min.css" rel="stylesheet">
-
     <link href="${pageContext.request.contextPath}/css/bootstrap/bootstrap-theme.min.css" rel="stylesheet">
-
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-
     <link href="https://fonts.googleapis.com/css?family=Montserrat+Alternates" rel="stylesheet">
-
     <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
-    <title>Title</title>
+    <fmt:message key="page.sessions.title" bundle="${loc}" var="title"/>
+    <title>${title}</title>
 </head>
 <body>
 <%@include file="header.jsp" %>
 <div class="container">
-<%@include file="client_menu.jsp"%>
+<c:choose>
+    <c:when test="${sessionScope.usRole eq 'admin'}">
+        <%@include file="admin_menu.jsp" %>
+    </c:when>
+    <c:otherwise>
+        <%@include file="client_menu.jsp" %>
+    </c:otherwise>
+</c:choose>
 <table class="table">
     <thead>
     <tr>

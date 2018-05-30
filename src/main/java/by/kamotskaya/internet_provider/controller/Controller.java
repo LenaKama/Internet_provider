@@ -4,6 +4,7 @@ import by.kamotskaya.internet_provider.command.CommandFactory;
 import by.kamotskaya.internet_provider.command.CommandResult;
 import by.kamotskaya.internet_provider.command.FunctionalCommand;
 
+import by.kamotskaya.internet_provider.pool.BalanceCheckerThread;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

@@ -13,13 +13,9 @@
 
     <fmt:message key="client_account.title" bundle="${loc}" var="title"/>
     <link href="${pageContext.request.contextPath}/css/bootstrap/bootstrap.min.css" rel="stylesheet">
-
     <link href="${pageContext.request.contextPath}/css/bootstrap/bootstrap-theme.min.css" rel="stylesheet">
-
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-
     <link href="https://fonts.googleapis.com/css?family=Montserrat+Alternates" rel="stylesheet">
-
     <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
 
     <title>${title}</title>
@@ -92,49 +88,18 @@
     <%--<%@include file="../fragment/footer.jspf"%>--%>
 </div>
 
-<script src="../../js/bootstrap/jquery.min.js"></script>
-<script src="../../js/bootstrap/bootstrap.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/bootstrap/jquery.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/bootstrap/bootstrap.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/ajax.js"></script>
+<script src="${pageContext.request.contextPath}/js/carousel.js"></script>
+<script src="${pageContext.request.contextPath}/js/script.js"></script>
 <script>
-    $('.edit-on-click').click(function () {
-        alert("click");
-        var $text = $(this),
-            $input = $('<input type="text" />');
 
-        $text.hide()
-            .after($input);
-
-        $input.val($text.html()).show().focus()
-            .keypress(function (e) {
-                var key = e.which;
-                if (key == 13) // enter key
-                {
-                    $input.hide();
-                    $text.html($input.val())
-                        .show();
-                    return false;
-                }
-            })
-            .focusout(function () {
-                $input.hide();
-                $text.show();
-            })
-    });
-    function edit1() {
-        document.getElementsByClassName('info-field').style.display = 'none';
-        document.getElementsByClassName('edit-field').style.display = 'block';
-    }
     $('.info-field').click(function () {
-          $('#saveButton').removeAttr("disabled");
-       $(this).hide();
+        $('#saveButton').removeAttr("disabled");
+        $(this).hide();
         $(this).closest('.field').children('.edit-field').show();
-       // $(this).parent().prev
     });
-    function edit(id) {
-        var text = document.getElementById('id').text();
-        alert(text);
-        var input = $('<input type="text" placeholder="' + text + '" />');
-        document.getElementById(id).text('').append(input);
-    }
 </script>
 </body>
 </html>

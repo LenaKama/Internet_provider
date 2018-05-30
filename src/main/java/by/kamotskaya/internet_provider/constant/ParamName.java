@@ -51,4 +51,6 @@ public class ParamName {
     public static final Object CLIENT = "client";
     public static final Object ADMIN = "admin";
     public static final String ERROR_TRACE = "errorTrace";
+    public static final String USER = "user";
+    public static final String USER_FEEDBACKS = "userFeedbacks";
 }

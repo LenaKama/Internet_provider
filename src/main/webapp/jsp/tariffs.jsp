@@ -6,36 +6,15 @@
     <%@include file="part/bundle.jsp" %>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <link href="../css/bootstrap/bootstrap.min.css" rel="stylesheet">
-
     <link href="../css/bootstrap/bootstrap-theme.min.css" rel="stylesheet">
-
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-
     <link href="https://fonts.googleapis.com/css?family=Montserrat+Alternates" rel="stylesheet">
-
     <link href="../css/style.css" rel="stylesheet">
 
     <fmt:message key="page.tariffs.title" bundle="${loc}" var="title"/>
     <title>${title}</title>
 
-    <script>
-        function showMore(count) {
-            var angleStatus = document.getElementById("angle" + count).className;
-            if (angleStatus === "fa fa-angle-down") {
-                document.getElementById("angle" + count).className = "fa fa-angle-up";
-            } else {
-                document.getElementById("angle" + count).className = "fa fa-angle-down";
-            }
-            var info = document.getElementById("tariffInfo" + count);
-            if (info.style.display === "none") {
-                info.style.display = "inline";
-            } else {
-                info.style.display = "none";
-            }
-        }
-    </script>
 </head>
 <body>
 <%@include file="part/header.jsp" %>
@@ -55,127 +34,14 @@
         <div class="tab-pane fade in active" id="limited" role="tabpanel">
             <c:forEach items="${requestScope.tariffList}" var="tariff" varStatus="theCount">
                 <c:if test="${tariff.trafficLimit != 0}">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                               <c:out value="${tariff.TName}"/>
-                            <span class="label label-default">${tariff.connectionPayment}</span>
-                            <c:if test="${tariff.salePercent != 0}">
-                                <label class="label-danger">
-                                    <c:out value="${tariff.salePercent}% off"/>
-                                </label>
-                            </c:if>
-                            <c:if test="${sessionScope.usRole eq 'client'|| sessionScope.usRole eq 'admin'}">
-                                <div class="row col-sm-offset-10">
-                                    <c:if test="${sessionScope.usRole eq 'admin'}">
-                                    <form class="col-md-2" action="/Controller" method="post">
-                                        <input type="hidden" name="command" value="delete_tariff">
-                                        <input type="hidden" name="tId" value="${tariff.TId}"/>
-                                        <button type="submit" class="btn-primary">
-                                            <fmt:message key="tariff.button.delete" bundle="${loc}"/></button>
-                                    </form>
-                                    </c:if>
-                                </div>
-                                <div class="row col-sm-offset-10">
-                                    <form class="col-md-2" action="/Controller" method="post">
-                                        <input type="hidden" name="command" value="change_tariff">
-                                        <input type="hidden" name="tId" value="${tariff.TId}"/>
-                                        <button type="submit" class="btn-primary">
-                                            <fmt:message key="tariff.button.connect" bundle="${loc}"/></button>
-                                    </form>
-                                </div>
-                            </c:if>
-                            <button class="btn" type="button" onclick="showMore(${theCount.count})" style="width: 100%; height: 20px;">
-                                <i id="angle${theCount.count}" class="fa fa-angle-down glyphicon-align-center"></i>
-                            </button>
-                        </div>
-                        <div class="panel" id="tariffInfo${theCount.count}" style="display: none">
-                            <div class="panel-body card-block card-body">
-                                <div class="form-group">
-                                    <label class="control-label label-primary col-sm-1" style="display: inline-block">
-                                        <fmt:message key="tariff.dailyFee" bundle="${loc}"/></label>
-                                    <div class="col-sm-10 field">
-                                        <p id="email" class="form-control-static info-field">${user.usEmail}</p>
-                                        <input type="text" name="usEmail" class="edit-field" value="${user.usEmail}" style="display: none"/>
-                                    </div>
-                                </div>
-                                <label class="label-primary row col-md-2">
-                                    <fmt:message key="tariff.dailyFee" bundle="${loc}"/></label>
-                                       <div class="col-md-3">
-                                           <c:out value="${tariff.dailyFee}"/>
-                                       </div>
-                                <label class="label-info row col-md-2">
-                                    <fmt:message key="tariff.trafficLimit" bundle="${loc}"/></label>
-                                      <div class="col-md-3">
-                                              <c:out value="${tariff.trafficLimit}"/>
-                                      </div>
-                                <p><label class="label-info"><fmt:message key="tariff.speedIn" bundle="${loc}"/></label>
-                                        ${tariff.speedIn}</p>
-                                <p><label class="label-info"><fmt:message key="tariff.speedOut"
-                                                                          bundle="${loc}"/></label>
-                                        ${tariff.speedOut}</p>
-                                <p><label class="label-info"><fmt:message key="tariff.overrunFee"
-                                                                          bundle="${loc}"/></label>
-                                        ${tariff.overrunFee}</p>
-                                <c:if test="${sessionScope.usRole eq 'admin'}">
-                                    <form action="/Controller" method="post">
-                                        <button class="btn btn-primary" type="button" data-toggle="collapse"
-                                                data-target="#saleInfo${theCount.count}" aria-expanded="false" aria-controls="saleInfo">
-                                            <fmt:message key="tariff.button.add_sale" bundle="${loc}"/></button>
-                                        <div class="collapse" id="saleInfo${theCount.count}">
-                                            <div class="card card-body">
-                                                <div class="form-group row">
-                                                    <label class="col-sm-2" for="salePercent">
-                                                        <fmt:message key="tariff.sale.percent" bundle="${loc}"/></label>
-                                                    <div class="col-sm-3">
-                                                        <input id="salePercent" type="text" name="salePercent"/>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label class="col-sm-2" for="saleExpirationDate">
-                                                        <fmt:message key="tariff.sale.expiration_date" bundle="${loc}"/></label>
-                                                    <div class="col-sm-3">
-                                                        <input id="saleExpirationDate" type="text" name="saleExpirationDate"/>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                            <input type="hidden" name="command" value="add_sale">
-                                            <input type="hidden" name="tId" value="${tariff.TId}"/>
-                                            <button type="submit" class="btn-primary">
-                                                <fmt:message key="form.button.save" bundle="${loc}"/></button>
-                                    </form>
-                                </c:if>
-                            </div>
-                        </div>
-                    </div>
+                    <%@include file="part/tariff_list.jsp" %>
                 </c:if>
             </c:forEach>
         </div>
         <div class="tab-pane fade" id="unlimited" role="tabpanel">
             <c:forEach items="${requestScope.tariffList}" var="tariff" varStatus="theCount">
-                <c:if test="${tariff.trafficLimit eq 0}">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                                ${tariff.TName}
-                            <span class="label label-default">${tariff.connectionPayment}</span>
-                            <button class="btn btn-primary" type="button" onclick="showMore(${theCount.count})">
-                                <i id="angle${theCount.count}" class="fa fa-angle-down"></i>
-                            </button>
-                        </div>
-                        <div class="panel" id="tariffInfo${theCount.count}" style="display: none">
-                            <div class="panel-body card-block card-body">
-                                <p><label class="label-info"><fmt:message key="tariff.dailyFee"
-                                                                          bundle="${loc}"/></label>
-                                        ${tariff.dailyFee}</p>
-                                <p><label class="label-info"><fmt:message key="tariff.speedIn" bundle="${loc}"/></label>
-                                        ${tariff.speedIn}</p>
-                                <p><label class="label-info"><fmt:message key="tariff.speedOut"
-                                                                          bundle="${loc}"/></label>
-                                        ${tariff.speedOut}</p>
-                                    <%--sale--%>
-                            </div>
-                        </div>
-                    </div>
+                <c:if test="${tariff.trafficLimit == 0}">
+                    <%@include file="part/tariff_list.jsp" %>
                 </c:if>
             </c:forEach>
         </div>
@@ -185,6 +51,34 @@
 
 <script src="../js/bootstrap/jquery.min.js"></script>
 <script src="../js/bootstrap/bootstrap.min.js"></script>
+<script src="../js/ajax.js"></script>
+<script src="../js/carousel.js"></script>
+<script src="../js/script.js"></script>
 
+
+<script>
+    function changeTariff(tId) {
+        if (confirm('Are you sure you want to change your tariff?')) {
+            alert("Done");
+            $.get("AjaxHandler", {"command": "changeTariff", "tId": tId}, function (responseText) {
+                if (responseText === "true") {
+                    alert("Tariff is successfully changed.");
+                } else {
+                    alert("There isn't enough money on your account.")
+                }
+            });
+        } else {
+
+        }
+    }
+
+    $('.info-field').click(function () {
+        if (${sessionScope.usRole eq 'admin'}) {
+            $(this).hide();
+            $(this).closest('.field').children('.edit-field').show();
+            $(this).closest('#panel_info').children('.saveButton').removeAttr("disabled");
+        }
+    });
+</script>
 </body>
 </html>

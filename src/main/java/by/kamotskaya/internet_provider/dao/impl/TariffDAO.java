@@ -19,12 +19,12 @@ public class TariffDAO {
 
     private static final Logger LOGGER = LogManager.getLogger(TariffDAO.class);
 
-    public final static String ADD_NEW_TARIFF = "INSERT INTO tariff(t_name, connection_payment, daily_fee, traffic_limit, speed_in, speed_out, overrun_fee) VALUES(?, ?, ?, ?, ?, ?, ?)";
-    public final static String UPDATE_TARIFF = "UPDATE tariff SET t_name = ?, connection_payment = ?, daily_fee = ?, traffic_limit = ?, speed_in = ?, speed_out = ?, overrun_fee = ?, sale_percent = ?, sale_expiration_date = ? WHERE t_id = ?";
-    public final static String DELETE_TARIFF = "DELETE FROM tariff WHERE t_id = ?";
-    public final static String FIND_TARIFF_BY_ID = "SELECT * FROM tariff where t_id = ?";
-    public final static String SELECT_ALL = "SELECT * FROM tariff";
-    public final static String SELECT_TARIFFS_WITH_SALES = "SELECT  t.t_name, t.daily_fee, t.sale_percent, t.daily_fee * (1 - t.sale_percent/100) AS new_daily_fee\n" +
+    private final static String ADD_NEW_TARIFF = "INSERT INTO tariff(t_name, connection_payment, daily_fee, traffic_limit, speed_in, speed_out, overrun_fee) VALUES(?, ?, ?, ?, ?, ?, ?)";
+    private final static String UPDATE_TARIFF = "UPDATE tariff SET t_name = ?, connection_payment = ?, daily_fee = ?, traffic_limit = ?, speed_in = ?, speed_out = ?, overrun_fee = ?, sale_percent = ?, sale_expiration_date = ? WHERE t_id = ?";
+    private final static String DELETE_TARIFF = "DELETE FROM tariff WHERE t_id = ?";
+    private final static String FIND_TARIFF_BY_ID = "SELECT * FROM tariff where t_id = ?";
+    private final static String SELECT_ALL = "SELECT * FROM tariff";
+    private final static String SELECT_TARIFFS_WITH_SALES = "SELECT  t.t_name, t.daily_fee, t.sale_percent, t.daily_fee * (1 - t.sale_percent/100) AS new_daily_fee\n" +
             "  FROM tariff t\n" +
             "  WHERE t.sale_percent IS NOT NULL\n" +
             "  AND t.sale_expiration_date >= CURDATE()\n";
@@ -81,7 +81,7 @@ public class TariffDAO {
         }
     }
 
-    public List<String> findSales() throws DAOException {
+    public List<String> aSales() throws DAOException {
         List<String> salesInfo = new ArrayList<>();
         try (ProxyConnection connection = connectionPool.takeConnection();
              Statement statement = connection.createStatement()) {
@@ -125,6 +125,7 @@ public class TariffDAO {
             statement.setInt(1, tId);
             ResultSet resultSet = statement.executeQuery();
             resultSet.next();
+            tariff.setTId(tId);
             tariff.setTName(resultSet.getString("t_name"));
             tariff.setConnectionPayment(resultSet.getDouble("connection_payment"));
             tariff.setDailyFee(resultSet.getDouble("daily_fee"));
@@ -132,8 +133,8 @@ public class TariffDAO {
             tariff.setSpeedIn(resultSet.getString("speed_in"));
             tariff.setSpeedOut(resultSet.getString("speed_out"));
             tariff.setOverrunFee(resultSet.getDouble("overrun_fee"));
-           // tariff.setSalePercent(resultSet.getInt("sale_percent"));
-            //tariff.setSaleExpirationDate(resultSet.getDate("sale_expiration_date"));
+            tariff.setSalePercent(resultSet.getInt("sale_percent"));
+            tariff.setSaleExpirationDate(resultSet.getDate("sale_expiration_date"));
         } catch (SQLException e) {
             throw new DAOException("Exception from TariffDAO:", e);
         }

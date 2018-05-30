@@ -4,8 +4,10 @@ import by.kamotskaya.internet_provider.entity.User;
 import by.kamotskaya.internet_provider.exception.ConnectionPoolException;
 import by.kamotskaya.internet_provider.exception.DAOException;
 import by.kamotskaya.internet_provider.dao.BaseDAO;
+import by.kamotskaya.internet_provider.pool.BalanceCheckerThread;
 import by.kamotskaya.internet_provider.pool.ConnectionPool;
 import by.kamotskaya.internet_provider.pool.ProxyConnection;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -23,13 +25,13 @@ public class UserDAO implements BaseDAO<User> {
 
     private static final Logger LOGGER = LogManager.getLogger(UserDAO.class);
 
-    public final static String ADD_NEW_CLIENT = "INSERT INTO user(us_login, us_password, us_email, us_name, us_surname, us_passport, us_role, us_ban) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
-    public final static String FIND_PASSWORD_BY_LOGIN = "SELECT us_password FROM user WHERE us_login = ?";
-    public final static String GET_USER_INFO = "SELECT * FROM user WHERE us_login = ?";
-    public final static String SELECT_ALL_CLIENTS = "SELECT * FROM user WHERE us_role = 'client'";
-    public final static String UPDATE_USER = "UPDATE user SET us_password = ?, us_email = ?, us_name = ?, us_surname = ?, us_passport = ?, us_role = ?, us_ban = ?, t_id = ? WHERE us_login = ?";
-    public final static String DELETE_USER = "ALTER TABLE user DELETE FROM user WHERE us_login = ?";
-    public final static String SELECT_ALL_US_LOGINS = "SELECT us_login FROM user";
+    private final static String ADD_NEW_CLIENT = "INSERT INTO user(us_login, us_password, us_email, us_name, us_surname, us_passport, us_role, us_ban) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+    private final static String FIND_PASSWORD_BY_LOGIN = "SELECT us_password FROM user WHERE us_login = ?";
+    private final static String GET_USER_INFO = "SELECT * FROM user WHERE us_login = ?";
+    private final static String SELECT_ALL_CLIENTS = "SELECT * FROM user WHERE us_role = 'client'";
+    private final static String UPDATE_USER = "UPDATE user SET us_password = ?, us_email = ?, us_name = ?, us_surname = ?, us_passport = ?, us_role = ?, us_ban = ?, t_id = ? WHERE us_login = ?";
+    private final static String DELETE_USER = "ALTER TABLE user DELETE FROM user WHERE us_login = ?";
+    private final static String SELECT_ALL_US_LOGINS = "SELECT us_login FROM user";
 
     private final ConnectionPool connectionPool;
 
@@ -79,6 +81,7 @@ public class UserDAO implements BaseDAO<User> {
         }
         return admins;
     }
+
     public List<User> findAllClients() throws DAOException {
         List<User> clients = new ArrayList<>();
         try (ProxyConnection connection = connectionPool.takeConnection();
@@ -115,7 +118,6 @@ public class UserDAO implements BaseDAO<User> {
     }
 
     /**
-     *
      * @param user
      * @throws DAOException
      */
@@ -188,5 +190,19 @@ public class UserDAO implements BaseDAO<User> {
             throw new DAOException("Exception from UserDAO: ", e);
         }
         return true;
+    }
+
+    public List<String> findAllUsLogins() {
+        List<String> usLogins = new ArrayList<>();
+        try (ProxyConnection connection = connectionPool.takeConnection();
+             Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(SELECT_ALL_US_LOGINS);
+            while (resultSet.next()) {
+                usLogins.add(resultSet.getString("us_login"));
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.ERROR, "Error while loading users' list.");
+        }
+        return usLogins;
     }
 }

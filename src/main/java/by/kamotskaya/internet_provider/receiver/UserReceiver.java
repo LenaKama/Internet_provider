@@ -10,6 +10,7 @@ import by.kamotskaya.internet_provider.entity.Session;
 import by.kamotskaya.internet_provider.entity.User;
 import by.kamotskaya.internet_provider.exception.ConnectionPoolException;
 import by.kamotskaya.internet_provider.exception.DAOException;
+import by.kamotskaya.internet_provider.pool.BalanceCheckerThread;
 import by.kamotskaya.internet_provider.pool.PaymentThread;
 import com.sun.org.apache.regexp.internal.RE;
 import org.apache.logging.log4j.Level;
@@ -30,13 +31,16 @@ public class UserReceiver {
     public static CommandResult authenticate(RequestContent content) {
 
 
+        new Thread(new BalanceCheckerThread()).start();
+
+
         new Thread(new PaymentThread()).start();
 
         String usLogin = content.getRequestParameters().get("usLogin")[0];
         String usPassword = content.getRequestParameters().get("usPassword")[0];
 
         PasswordGenerator passwordGenerator = new PasswordGenerator();
-LOGGER.log(Level.DEBUG, "in authenticate");
+        LOGGER.log(Level.DEBUG, "in authenticate");
         Session session = new Session();
         session.setUsLogin(usLogin);
         try {
@@ -97,15 +101,15 @@ LOGGER.log(Level.DEBUG, "in authenticate");
         user.setUsRole("client");
         user.setUsBan(false);
 //////// при регистрации создавать пустые поля в таблицах openning balance and transactions sessions
-       try {
-           OpeningBalanceDAO openingBalanceDAO = new OpeningBalanceDAO();
-           OpeningBalance openingBalance = new OpeningBalance();
-           openingBalance.setObDate(Date.valueOf(LocalDate.now()));
-           openingBalance.setObSum(0);
-           openingBalance.setUsLogin(usLogin);
+        try {
+            OpeningBalanceDAO openingBalanceDAO = new OpeningBalanceDAO();
+            OpeningBalance openingBalance = new OpeningBalance();
+            openingBalance.setObDate(Date.valueOf(LocalDate.now()));
+            openingBalance.setObSum(0);
+            openingBalance.setUsLogin(usLogin);
 
-           UserDAO userDAO = new UserDAO();
-           userDAO.add(user);
+            UserDAO userDAO = new UserDAO();
+            userDAO.add(user);
             openingBalanceDAO.add(openingBalance);
         } catch (DAOException | ConnectionPoolException e) {
             content.putRequestAttribute("errorMessage", "Error while adding a new user.");
@@ -135,7 +139,7 @@ LOGGER.log(Level.DEBUG, "in authenticate");
 
             userDAO.update(user);
         } catch (DAOException | ConnectionPoolException e) {
-            content.putRequestAttribute(ParamName.ERROR_MESSAGE, "Error while deleting the user.");
+            content.putRequestAttribute(ParamName.ERROR_MESSAGE, "Error while updating the user.");
             return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.ERROR);
         }
         return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.WELCOME);

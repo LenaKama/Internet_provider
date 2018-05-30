@@ -8,6 +8,7 @@ import by.kamotskaya.internet_provider.dao.impl.TariffDAO;
 import by.kamotskaya.internet_provider.entity.Tariff;
 import by.kamotskaya.internet_provider.exception.ConnectionPoolException;
 import by.kamotskaya.internet_provider.exception.DAOException;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -69,12 +70,35 @@ public class TariffReceiver {
             Tariff tariff = tariffDAO.findTariffById(tId);
             tariff.setSalePercent(Integer.parseInt(content.getRequestParameters().get("salePercent")[0]));
             tariff.setSaleExpirationDate(Date.valueOf(content.getRequestParameters().get("saleExpirationDate")[0]));
+            tariff.setConnectionPayment(tariff.getConnectionPayment() - tariff.getSalePercent() * tariff.getConnectionPayment() / 100);
             tariffDAO.update(tariff);
         } catch (DAOException | ConnectionPoolException e) {
-            content.putRequestAttribute("errorMessage", "Error is occurred while finding a tariff.");
+            content.putRequestAttribute("errorMessage", "Error is occurred while adding a sale.");
             return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.ERROR);
         }
-        return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.TARIFFS);
+        return GoToPageReceiver.goToTariffs(content);
+    }
+
+    public static CommandResult updateTariff(RequestContent content) {
+        int tId = Integer.parseInt(content.getRequestParameters().get("tId")[0]);
+        System.out.println("tId - "+tId);
+        try {
+            TariffDAO tariffDAO = new TariffDAO();
+            Tariff tariff = tariffDAO.findTariffById(tId);
+            tariff.setTName(content.getRequestParameters().get("tName")[0]);
+            tariff.setConnectionPayment(Double.parseDouble(content.getRequestParameters().get("connectionPayment")[0]));
+            tariff.setDailyFee(Double.parseDouble(content.getRequestParameters().get("dailyFee")[0]));
+            tariff.setTrafficLimit(Integer.parseInt(content.getRequestParameters().get("trafficLimit")[0]));
+            tariff.setSpeedIn(content.getRequestParameters().get("speedIn")[0]);
+            tariff.setSpeedOut(content.getRequestParameters().get("speedOut")[0]);
+            tariff.setOverrunFee(Double.parseDouble(content.getRequestParameters().get("overrunFee")[0]));
+            LOGGER.log(Level.DEBUG, "new tariff - " + tariff.toString());
+            tariffDAO.update(tariff);
+        } catch (ConnectionPoolException | DAOException e) {
+            content.putRequestAttribute(ParamName.ERROR_MESSAGE, "Error while updating a tariff.");
+            return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.ERROR);
+        }
+        return GoToPageReceiver.goToTariffs(content);
     }
 }
 

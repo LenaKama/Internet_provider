@@ -3,6 +3,7 @@
     font-size: 15px;
     color: black;
 }
+
 .container {
     /*padding-top: 20px;*/
     background-color: rgba(5, 250, 224, 0.1);
@@ -12,6 +13,7 @@
 #my_header {
     background-color: rgba(5, 250, 224, 0.4);
 }
+
 /*welcome*/
 .carousel {
     z-index: -99;
@@ -67,9 +69,10 @@
 
 .nav-item input {
     padding: 10px;
-    /*margin: 5px;*/
+    margin: 5px;
     color: black;
 }
+
 .nav-item input:hover {
     border: 3px solid #05fae0;
 }
@@ -77,9 +80,11 @@
 .menu-item.active input {
     border: 3px solid #05fae0;
 }
+
 .menu-item input:hover {
     border: 3px solid #05fae0;
 }
+
 .locale input[type="image"] {
     height: 40px;
     width: 60px;
@@ -121,23 +126,15 @@
 .form-registration:hover {
     opacity: 0.8;
 }
+
 /*tariffs*/
-.myPanel {
-    border: 1px solid grey;
-    border-radius: 10%;
-    box-shadow: 0px 0px 4px #ccc;
-    margin: 3%;
+#panel_info label {
+    display: inline-block;
+    margin-left: 15px;
 }
 
-.myPanel .heading {
-    display: inline;
-    background: deepskyblue;
-    border-radius: 10%;
-    color: #2b669a;
-}
-
-.myPanel .body {
-    padding: 10px 20px;
+.label-default {
+    background-color: lightgrey;
 }
 
 /*about_us*/
@@ -145,10 +142,12 @@
     padding: 50px;
     box-sizing: border-box;
 }
+
 /*client_menu*/
 .menu-item {
     border-radius: 30%;
 }
+
 /*general*/
 #payment_form input[type="image"] {
     height: 50px;
@@ -158,4 +157,56 @@
 .profile_photo img {
     height: 100px;
     width: 100px;
+}
+
+/*feedback*/
+#feedback_form {
+    position: fixed;
+    bottom: 0px;
+    width: 250px;
+    border: 2px solid #05fae0;
+    padding: 0px;
+}
+
+#feedback_form p {
+    margin: 0px;
+    background-color: #05fae0;
+    text-align: center;
+    padding: 10px;
+    cursor: pointer;
+}
+
+#feedback {
+    display: none;
+}
+
+#feedback_form input[type="text"] {
+    width: 220px;
+    margin-left: 15px;
+    height: 35px;
+    margin-top: 10px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 2px solid silver;
+}
+
+#feedback_form textarea {
+    width: 220px;
+    margin-left: 15px;
+    height: 100px;
+    margin-top: 10px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 2px solid silver;
+}
+
+#submit_feedback {
+    width: 120px;
+    margin-left: 65px;
+    background-color: rgba(5, 250, 224, 0.4);
+    border: none;
+    height: 35px;
+    font-size: 18px;
+    margin-top: 10px;
+    border-radius: 5px;
 }

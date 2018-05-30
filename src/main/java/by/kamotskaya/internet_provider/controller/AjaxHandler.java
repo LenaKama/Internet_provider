@@ -38,11 +38,21 @@ public class AjaxHandler extends HttpServlet {
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        String usLogin = request.getParameter("checkLogin");
-        AjaxReceiver ajaxReceiver = new AjaxReceiver();
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(ajaxReceiver.checkLogin(usLogin));
+
+        AjaxReceiver ajaxReceiver = new AjaxReceiver();
+        String command = request.getParameter("command");
+        switch (command) {
+            case "checkLogin":
+                String usLogin = request.getParameter("checkLogin");
+                response.getWriter().write(ajaxReceiver.checkLogin(usLogin));
+                break;
+            case "changeTariff":
+                int tId = Integer.parseInt(request.getParameter("tId"));
+                response.getWriter().write(ajaxReceiver.changeTariff(tId));
+                break;
+        }
     }
 
     @Override

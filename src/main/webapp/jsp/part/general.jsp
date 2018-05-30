@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
+<%@ taglib prefix="ctg" uri="customtags"%>
 
 <c:set var="credit_cards" scope="page" value="${pageContext.request.contextPath}/img/credit_cards.png"/>
 <c:set var="m_banking" scope="page" value="${pageContext.request.contextPath}/img/m_banking.png"/>
@@ -97,5 +98,5 @@
     <button class="form-group btn btn-primary" type="submit">
         <fmt:message key="general.button.submit" bundle="${loc}"/></button>
 </form>
-
+<ctg:hello/>
 

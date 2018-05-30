@@ -10,9 +10,6 @@ $(document).on("change", "#usLogin", function () {
         }
     });
 });
-$('#usLogin').onchange(function () {
-    alert("changed");
-});
 /*
  function checkLogin() {
  var login = $("#usLogin").val();

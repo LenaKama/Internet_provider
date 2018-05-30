@@ -8,7 +8,7 @@ import javax.servlet.jsp.tagext.TagSupport;
  */
 public class RoleTag extends TagSupport {
 
-    private String role;
+    private String role = "admin";
 
     public void setRole(String role) {
         this.role = role;
@@ -17,7 +17,7 @@ public class RoleTag extends TagSupport {
     public int doStartTag() throws JspException {
         try {
             String to = null;
-            if ("administrator".equalsIgnoreCase(role)) {
+            if ("admin".equalsIgnoreCase(role)) {
                 to = "Hello, " + role;
             } else {
                 to = "Welcome, " + role;

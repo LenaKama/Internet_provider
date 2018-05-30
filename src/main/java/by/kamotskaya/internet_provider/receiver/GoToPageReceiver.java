@@ -4,10 +4,7 @@ import by.kamotskaya.internet_provider.command.CommandResult;
 import by.kamotskaya.internet_provider.constant.PagePath;
 import by.kamotskaya.internet_provider.constant.ParamName;
 import by.kamotskaya.internet_provider.controller.RequestContent;
-import by.kamotskaya.internet_provider.dao.impl.SessionDAO;
-import by.kamotskaya.internet_provider.dao.impl.TariffDAO;
-import by.kamotskaya.internet_provider.dao.impl.TransactionDAO;
-import by.kamotskaya.internet_provider.dao.impl.UserDAO;
+import by.kamotskaya.internet_provider.dao.impl.*;
 import by.kamotskaya.internet_provider.entity.User;
 import by.kamotskaya.internet_provider.exception.ConnectionPoolException;
 import by.kamotskaya.internet_provider.exception.DAOException;
@@ -81,7 +78,18 @@ public class GoToPageReceiver {
     }
 
     public static CommandResult goToMessages(RequestContent content) {
+        ////admin page
         content.putRequestAttribute(ParamName.ACTIVE_MENU, "messages");
+        String usLogin = String.valueOf(RequestContent.getSessionAttributes().get(ParamName.US_LOGIN));
+        try {
+            FeedbackDAO feedbackDAO = new FeedbackDAO();
+            List userFeedbacks = feedbackDAO.loadUserFeedbacks(usLogin);
+            Collections.reverse(userFeedbacks);
+            content.putRequestAttribute(ParamName.USER_FEEDBACKS, userFeedbacks);
+        } catch (DAOException | ConnectionPoolException e) {
+            content.putRequestAttribute("errorMessage", "Error while loading user's information.");
+            return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.ERROR);
+        }
         return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.MESSAGES);
     }
 
@@ -90,7 +98,9 @@ public class GoToPageReceiver {
         String usLogin = String.valueOf(RequestContent.getSessionAttributes().get(ParamName.US_LOGIN));
         try {
             SessionDAO sessionDAO = new SessionDAO();
-            content.putRequestAttribute("sessionList", sessionDAO.createSessionList(usLogin));
+            List sessionList = sessionDAO.createSessionList(usLogin);
+            Collections.reverse(sessionList);
+            content.putRequestAttribute("sessionList", sessionList);
         } catch (DAOException | ConnectionPoolException e) {
             content.putRequestAttribute(ParamName.ERROR_MESSAGE, "Error while creating list of sessions.");
             return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.ERROR);

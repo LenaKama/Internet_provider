@@ -10,7 +10,7 @@
     <uri>customtags</uri>
     <tag>
         <name>info-time</name>
-        <tag-class>by.kamotskaya.internet_provider.tag.RoleTag</tag-class>
+        <tag-class>by.kamotskaya.internet_provider.tag.TimeTag</tag-class>
         <body-content>empty</body-content>
     </tag>
 
@@ -18,10 +18,5 @@
     <name>hello</name>
     <tag-class>by.kamotskaya.internet_provider.tag.RoleTag</tag-class>
     <body-content>empty</body-content>
-    <attribute>
-    <name>usRole</name>
-        <required>true</required>
-        <rtexprvalue>true</rtexprvalue>
-    </attribute>
     </tag>
 </taglib>

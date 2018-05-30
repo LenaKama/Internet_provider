@@ -37,6 +37,6 @@ public class BalanceReceiver {
             content.putRequestAttribute("errorMessage", "Error while recharging your account");
             return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.ERROR);
         }
-        return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.WELCOME);
+        return GoToPageReceiver.goToWelcomePage(content);
     }
 }

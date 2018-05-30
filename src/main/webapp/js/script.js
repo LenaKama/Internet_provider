@@ -6,7 +6,7 @@ $('#register_button').click(function () {
     document.getElementById("registration_form").style.display = "block";
 });
 function checkUsLogin(usLogin){
-    $.get("AjaxHandler", {"checkLogin":usLogin}, function (responseText) {
+    $.get("AjaxHandler", {"checkLogin":usLogin, "command":"checkLogin"}, function (responseText) {
         if (responseText === "false") {
             document.getElementById("errorLogin").style.display = 'block';
             document.getElementById("submit_registration").setAttribute("disabled", "")
@@ -29,16 +29,11 @@ function checkPasswords() {
 $('#charge_button').click(function () {
     document.getElementById("payment_form").style.display = 'block';
 });
-
-function redact(f, s) {
-    var email = document.getElementById("profile-" + s);
-    email.removeAttribute("disabled");
-    var form = document.getElementById("form-" + s);
-    var btn = document.createElement('input');
-    btn.type = "submit";
-    form.appendChild(btn);
-    f.style.display = "none";
-}
+//
+// $("#feedback_button").click(function() {
+//     $("#feedback_form").slideToggle();
+//     $("#feedback_form").css.display;
+// });
 
 document.onkeydown = function(){
     switch (event.keyCode){
@@ -53,7 +48,7 @@ document.onkeydown = function(){
                 return false;
             }
     }
-}
+};
 
 function show(form1, form2) {
     //document.getElementById("transfer_form").style.display = 'none';
@@ -64,3 +59,18 @@ function show(form1, form2) {
 document.getElementById("uploadBtn").onchange = function () {
     document.getElementById("uploadFile").value = this.value;
 };
+function showMore(count) {
+    var angleStatus = document.getElementById("angle" + count).className;
+    if (angleStatus === "fa fa-angle-down") {
+        document.getElementById("angle" + count).className = "fa fa-angle-up";
+    } else {
+        document.getElementById("angle" + count).className = "fa fa-angle-down";
+    }
+    var info = document.getElementById("tariffInfo" + count);
+    if (info.style.display === "none") {
+        document.getElementById("tariffInfo" + count).style.display = "inline";
+    } else {
+        document.getElementById("tariffInfo" + count).style.display = "none";
+    }
+}
+

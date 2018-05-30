@@ -110,5 +110,19 @@ public class Tariff extends Entity{
         return salePercent;
     }
 
-
+    @Override
+    public String toString() {
+        return "Tariff{" +
+                "tId=" + tId +
+                ", tName='" + tName + '\'' +
+                ", connectionPayment=" + connectionPayment +
+                ", dailyFee=" + dailyFee +
+                ", trafficLimit=" + trafficLimit +
+                ", speedIn='" + speedIn + '\'' +
+                ", speedOut='" + speedOut + '\'' +
+                ", overrunFee=" + overrunFee +
+                ", salePercent=" + salePercent +
+                ", saleExpirationDate=" + saleExpirationDate +
+                '}';
+    }
 }

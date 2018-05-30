@@ -5,6 +5,7 @@ package by.kamotskaya.internet_provider.entity;
  */
 public class Feedback extends Entity {
 
+    private int fId;
     private String fName;
     private String fEmail;
     private String fMessage;
@@ -12,6 +13,14 @@ public class Feedback extends Entity {
     private String usLogin;
 
     public Feedback() {}
+
+    public int getfId() {
+        return fId;
+    }
+
+    public void setfId(int fId) {
+        this.fId = fId;
+    }
 
     public String getfName() {
         return fName;

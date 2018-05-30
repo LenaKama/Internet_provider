@@ -28,7 +28,10 @@ public enum CommandType {
     RECHARGE_ACCOUNT(BalanceReceiver::rechargeAccount),
     CHANGE_TARIFF(UserReceiver::changeTariff),
     DELETE_TARIFF(TariffReceiver::deleteTariff),
-    UPDATE_USER(UserReceiver::updateUser);
+    UPDATE_TARIFF(TariffReceiver::updateTariff),
+    UPDATE_USER(UserReceiver::updateUser),
+    ADD_SALE(TariffReceiver::addSale),
+    ADD_FEEDBACK(FeedbackReceiver::addFeedback);
 
     private FunctionalCommand command;
 

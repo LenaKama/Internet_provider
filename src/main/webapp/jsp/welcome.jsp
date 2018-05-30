@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
+<%@ taglib prefix="ctg" uri="customtags" %>
 
 
 <html>
@@ -28,93 +28,63 @@
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/icon.png" type="image/x-icon">
 
     <title>${title}</title>
-
+<script>
+    $(window).load(function () {
+        $('.carousel').carousel({interval: 5000});
+    });
+</script>
 </head>
 <body>
-<%--<div id="myCarousel" class="carousel container slide">--%>
-    <%--<div class="carousel-inner">--%>
-        <%--<div class="active item one"></div>--%>
-        <%--<div class="item two"></div>--%>
-        <%--<div class="item three"></div>--%>
-    <%--</div>--%>
-<%--</div>--%>
+<c:if test="${sessionScope.usRole eq 'quest'}">
+<div id="myCarousel" class="carousel container slide">
+    <div class="carousel-inner">
+        <div class="active item one"></div>
+        <div class="item two"></div>
+        <div class="item three"></div>
+    </div>
+</div>
+</c:if>
 <%@include file="part/header.jsp" %>
 <div class="container">
-    <%--<span id="edit" onclick="justEdit('edit')">Click to edit</span>--%>
-    <%--<label class="control-label lbl" id="txt" onclick="edit2('txt')">Saghir</label>--%>
-    <%--<input id="lll" type="text" placeholder="edit me" style="display: none;"/>--%>
-    <%--<div class="controls">--%>
-        <%--<span class="btn" onclick="edit2('txt')">Edit</span>--%>
-    <%--</div>--%>
     <c:choose>
         <c:when test="${sessionScope.usRole eq 'quest'}">
             <%@include file="sign_in.jsp" %>
         </c:when>
         <c:when test="${sessionScope.usRole eq 'admin'}">
             <%@include file="part/admin_menu.jsp" %>
-            <%@include file="part/general.jsp"%>
+            <%@include file="part/general.jsp" %>
         </c:when>
         <c:when test="${sessionScope.usRole eq 'client'}">
             <%@include file="part/client_menu.jsp" %>
-            <%@include file="part/general.jsp"%>
+            <%@include file="part/general.jsp" %>
         </c:when>
     </c:choose>
     <%--<%@include file="fragment/footer.jspf"%>--%>
+    <div style="margin-left: 800px">
+        <%@include file="part/feedback_form.jsp" %>
+    </div>
 </div>
-
-<span class="edit-on-click">Click to edit</span>
 
 
 <script src="../js/bootstrap/bootstrap.min.js"></script>
 <script src="../js/bootstrap/jquery.min.js"></script>
 <script src="../js/ajax.js"></script>
-<script src="../js/carousel.js"></script>
+<%--<script src="../js/carousel.js"></script>--%>
 <script src="../js/script.js"></script>
-
 <script>
-    function edit2(val) {
-        var text = $('#val').text();
-        var t = document.getElementById("val").text();
-        var input = $('<input type="text" placeholder="' + text + '" />');
-        alert("text - "+text+"t - "+t);
-        $('#val').text('').append(input);
-    }
-    $(document).ready(function () {
-        $('#edit1').click(function () {
-            var text = $('#txt').text();
-            var input = $('<input type="text" placeholder="' + text + '" />')
-            $('#txt').text('').append(input);
-        });
-        $('.lbl').click(function () {
-            var text = $(this).text();
-            alert("text - "+ text);
-          //  document.getElementsByClassName("lbl").style.display= 'none';
-            document.getElementById("lll").style.display= 'block';
-            });
-        $('.edit-on-click').click(function () {
-            var $text = $(this).text(),
-                $input = $('<input type="text" />');
-            alert("pressed");
-            $text.hide()
-                .after($input);
-
-            $input.val($text.html()).show().focus()
-                .keypress(function (e) {
-                    var key = e.which;
-                    if (key == 13) // enter key
-                    {
-                        $input.hide();
-                        $text.html($input.val())
-                            .show();
-                        return false;
-                    }
-                })
-                .focusout(function () {
-                    $input.hide();
-                    $text.show();
-                })
-        });
+//    $(document).ready(function() {
+//        $('.carousel').carousel({interval: 5000});
+//    });
+    $("#feedback_button").click(function () {
+        $("#feedback").slideToggle();
+//        $("#feedback").css.display='block';
     });
+
+    function sendFeedback(parent) {
+        parent.children('#check').text ="hey";
+//        $.get("AjaxHandler", {"checkLogin":usLogin, "command":"checkLogin"}, function (responseText) {
+//            if (responseText === "false") {
+    }
 </script>
 </body>
 </html>
