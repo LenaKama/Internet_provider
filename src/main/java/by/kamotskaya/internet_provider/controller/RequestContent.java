@@ -1,9 +1,7 @@
 package by.kamotskaya.internet_provider.controller;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Lena Kamotskaya
@@ -12,13 +10,18 @@ public class RequestContent {
 
     private Map<String, String[]> requestParameters = new HashMap<>();
     private Map<String, Object> requestAttributes = new HashMap<>();
-    private static Map<String, Object> sessionAttributes = new HashMap<>();
+    private Map<String, Object> sessionAttributes = new HashMap<>();
 
     public RequestContent() {
     }
 
     public RequestContent(HttpServletRequest request) {
         requestParameters = request.getParameterMap();
+        Enumeration<String> attributeNames = request.getSession().getAttributeNames();
+        List<String> names = Collections.list(attributeNames);
+        for (String name: names) {
+            sessionAttributes.put(name, request.getSession().getAttribute(name));
+        }
     }
 
     public void putRequestAttribute(String name, Object value) {
@@ -43,11 +46,11 @@ public class RequestContent {
         this.requestParameters = requestParameters;
     }
 
-    public void setRequestAttributes() {
-    }
-
-    public static Map<String, Object> getSessionAttributes() {
+    public Map<String, Object> getSessionAttributes() {
         return sessionAttributes;
     }
 
+    public void setSessionAttributes(Map<String, Object> sessionAttributes) {
+        this.sessionAttributes = sessionAttributes;
+    }
 }

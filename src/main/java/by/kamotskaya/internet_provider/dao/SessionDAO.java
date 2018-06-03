@@ -1,4 +1,4 @@
-package by.kamotskaya.internet_provider.dao.impl;
+package by.kamotskaya.internet_provider.dao;
 
 import by.kamotskaya.internet_provider.entity.Session;
 import by.kamotskaya.internet_provider.exception.ConnectionPoolException;
@@ -24,7 +24,6 @@ public class SessionDAO {
 
     private final static String ADD_NEW_SESSION = "INSERT INTO session(session_start, us_login) VALUES(CURRENT_TIMESTAMP, ?)";
     private final static String END_SESSION = "UPDATE session SET session_end = CURRENT_TIMESTAMP , traffic_in = ?, traffic_out = ? WHERE us_login = ?";
-    private final static String SELECT_LAST_ID = "SELECT LAST_INSERT_ID() FROM session";
     private final static String ALL_USER_SESSIONS = "SELECT * FROM session WHERE us_login = ?";
     private final static String SELECT_TRAFFIC_IN = "SELECT SUM(traffic_in) FROM session WHERE us_login = ? AND YEAR(session_start) = YEAR(CURDATE()) AND MONTH(session_start) = MONTH(CURDATE())";
     private final static String SELECT_TRAFFIC_OUT = "SELECT SUM(traffic_out) FROM session WHERE us_login = ? AND YEAR(session_start) = YEAR(CURDATE()) AND MONTH(session_start) = MONTH(CURDATE())";
@@ -37,12 +36,10 @@ public class SessionDAO {
 
     public Session startSession(Session session) throws DAOException {
         try (ProxyConnection connection = connectionPool.takeConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(ADD_NEW_SESSION, Statement.RETURN_GENERATED_KEYS);
-             Statement statement = connection.createStatement()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(ADD_NEW_SESSION, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, session.getUsLogin());
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
-            //statement.executeQuery(SELECT_LAST_ID);
             resultSet.next();
             int sessionId = resultSet.getInt(1);
             session.setSessionId(sessionId);

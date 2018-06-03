@@ -1,5 +1,6 @@
-package by.kamotskaya.internet_provider.dao.impl;
+package by.kamotskaya.internet_provider.dao;
 
+import by.kamotskaya.internet_provider.constant.ParamName;
 import by.kamotskaya.internet_provider.entity.Transaction;
 import by.kamotskaya.internet_provider.exception.ConnectionPoolException;
 import by.kamotskaya.internet_provider.exception.DAOException;
@@ -24,6 +25,7 @@ public class TransactionDAO {
     private final static String ADD_NEW_TRANSACTION = "INSERT INTO transaction(tr_date, tr_sum, tr_info, us_login) VALUES(CURRENT_DATE, ?, ?, ?)";
     private final static String ALL_USER_TRANSACTIONS = "SELECT * FROM transaction WHERE us_login = ?";
     private final static String FIND_THIS_MONTH_TRANSACTIONS = "SELECT SUM(tr_sum) FROM transaction WHERE MONTH(tr_date) = MONTH(CURDATE()) AND YEAR(tr_date) = YEAR(CURDATE()) AND us_login = ?";
+    private final static String SELECT_DAILY_TRANSACTIONS = "SELECT * FROM transaction WHERE tr_date =  CURRENT_DATE AND tr_info = ? AND us_login = ?";
 
     private final ConnectionPool connectionPool;
 
@@ -62,18 +64,32 @@ public class TransactionDAO {
         return transactions;
     }
 
-    public Double findCurrentBalance(String usLogin) throws DAOException {
+    public Double findCurrentBalance(String usLogin, double openingBalance) throws DAOException {
         Double curBalance;
         try (ProxyConnection connection = connectionPool.takeConnection();
              PreparedStatement statement = connection.prepareStatement(FIND_THIS_MONTH_TRANSACTIONS)) {
-            OpeningBalanceDAO openingBalanceDAO = new OpeningBalanceDAO();
             statement.setString(1, usLogin);
             ResultSet resultSet = statement.executeQuery();
             resultSet.next();
-            curBalance = openingBalanceDAO.findOpeningBalance(usLogin) + resultSet.getDouble(1);
-        } catch (SQLException | ConnectionPoolException e) {
+            curBalance = openingBalance + resultSet.getDouble(1);
+        } catch (SQLException e) {
             throw new DAOException("Exception from TransactionDAO", e);
         }
         return curBalance;
+    }
+
+    public boolean checkTransaction(String usLogin) throws DAOException {
+        try (ProxyConnection connection = connectionPool.takeConnection();
+             PreparedStatement statement = connection.prepareStatement(SELECT_DAILY_TRANSACTIONS)) {
+            statement.setString(1, ParamName.PAYMENT_INFO);
+            statement.setString(2, usLogin);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Exception from TransactionDAO", e);
+        }
+        return false;
     }
 }

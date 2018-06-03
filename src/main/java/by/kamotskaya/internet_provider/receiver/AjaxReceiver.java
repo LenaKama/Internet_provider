@@ -1,12 +1,10 @@
 package by.kamotskaya.internet_provider.receiver;
 
-import by.kamotskaya.internet_provider.command.CommandResult;
-import by.kamotskaya.internet_provider.constant.PagePath;
 import by.kamotskaya.internet_provider.constant.ParamName;
 import by.kamotskaya.internet_provider.controller.RequestContent;
-import by.kamotskaya.internet_provider.dao.impl.TariffDAO;
-import by.kamotskaya.internet_provider.dao.impl.TransactionDAO;
-import by.kamotskaya.internet_provider.dao.impl.UserDAO;
+import by.kamotskaya.internet_provider.dao.TariffDAO;
+import by.kamotskaya.internet_provider.dao.TransactionDAO;
+import by.kamotskaya.internet_provider.dao.UserDAO;
 import by.kamotskaya.internet_provider.entity.User;
 import by.kamotskaya.internet_provider.exception.ConnectionPoolException;
 import by.kamotskaya.internet_provider.exception.DAOException;
@@ -39,11 +37,11 @@ public class AjaxReceiver {
         }
         return response;
     }
-
+/*
     public String changeTariff(int tId) {
         String response = null;
-        String usLogin = String.valueOf(RequestContent.getSessionAttributes().get(ParamName.US_LOGIN));
-        User user = (User) RequestContent.getSessionAttributes().get(ParamName.USER);
+        String usLogin = String.valueOf(content.getSessionAttributes().get(ParamName.US_LOGIN));
+        User user = (User) content.getSessionAttributes().get(ParamName.USER);
         try {
             TransactionDAO transactionDAO = new TransactionDAO();
             TariffDAO tariffDAO = new TariffDAO();
@@ -58,4 +56,5 @@ public class AjaxReceiver {
         }
         return response;
     }
+    */
 }

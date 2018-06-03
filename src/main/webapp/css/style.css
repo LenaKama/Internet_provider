@@ -6,7 +6,7 @@
 
 .container {
     /*padding-top: 20px;*/
-    background-color: rgba(5, 250, 224, 0.1);
+    /*background-color: rgba(5, 250, 224, 0.1);*/
     border-radius: 10px 10px 0 0;
 }
 
@@ -77,12 +77,16 @@
     border: 3px solid #05fae0;
 }
 
+.menu-item {
+    border-radius: 20%;
+    background-color: #05fae0;
+}
 .menu-item.active input {
-    border: 3px solid #05fae0;
+    border: 3px solid rgba(20, 113, 216, 0.99);
 }
 
 .menu-item input:hover {
-    border: 3px solid #05fae0;
+    border: 5px solid rgba(20, 113, 216, 0.99);
 }
 
 .locale input[type="image"] {
@@ -164,6 +168,7 @@
     position: fixed;
     bottom: 0px;
     width: 250px;
+    border-radius: 20px 20px 0 0;
     border: 2px solid #05fae0;
     padding: 0px;
 }
@@ -178,6 +183,7 @@
 
 #feedback {
     display: none;
+    border-radius: 0 0 20px 20px;
 }
 
 #feedback_form input[type="text"] {

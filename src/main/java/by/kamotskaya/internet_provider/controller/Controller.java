@@ -4,7 +4,6 @@ import by.kamotskaya.internet_provider.command.CommandFactory;
 import by.kamotskaya.internet_provider.command.CommandResult;
 import by.kamotskaya.internet_provider.command.FunctionalCommand;
 
-import by.kamotskaya.internet_provider.pool.BalanceCheckerThread;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -45,7 +44,7 @@ public class Controller extends HttpServlet {
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        RequestContent content = new RequestContent(request);
+            RequestContent content = new RequestContent(request);
             FunctionalCommand command = CommandFactory.getINSTANCE().getCommand(content);
             CommandResult result = command.apply(content);
             request = content.update(request);

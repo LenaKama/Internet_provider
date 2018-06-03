@@ -5,11 +5,13 @@ import by.kamotskaya.internet_provider.pool.ConnectionPool;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import javax.servlet.annotation.WebListener;
 import java.sql.SQLException;
 
 /**
  * @author Lena Kamotskaya
  */
+@WebListener
 public class ListenerForDestroyingConnections implements ServletContextListener {
 
     /*
@@ -21,7 +23,11 @@ public class ListenerForDestroyingConnections implements ServletContextListener 
      */
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-      // ConnectionPool.initializeConnectionPool();
+        try {
+            ConnectionPool.getInstance().initializeConnectionPool();
+        } catch (ConnectionPoolException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -34,9 +40,9 @@ public class ListenerForDestroyingConnections implements ServletContextListener 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
         try {
-            ConnectionPool.destroyConnectionPool();
+            ConnectionPool.getInstance().destroyConnectionPool();
         } catch (SQLException | ConnectionPoolException e) {
-            /////
+
         }
     }
 }

@@ -10,7 +10,7 @@ public enum CommandType {
     CHANGE_LOCALE(BaseReceiver::changeLocale),
     SHOW_WELCOME_PAGE(GoToPageReceiver::goToWelcomePage),
     SHOW_TARIFFS(GoToPageReceiver::goToTariffs),
-    SHOW_NEWS(GoToPageReceiver::goToNews),
+    SHOW_HELP(GoToPageReceiver::goToHelp),
     SHOW_ABOUT_US(GoToPageReceiver::goToAboutUs),
     SHOW_GENERAL(GoToPageReceiver::goToGeneral),
     SHOW_MESSAGES(GoToPageReceiver::goToMessages),
@@ -20,18 +20,18 @@ public enum CommandType {
     SHOW_ACCOUNT_SETTINGS(GoToPageReceiver::goToAccountSettings),
     SHOW_CLIENTS(GoToPageReceiver::goToClients),
     AUTHENTICATE(UserReceiver::authenticate),
-    CHECK_LOGIN(UserReceiver::checkLogin),
     REGISTER(UserReceiver::register),
     LOG_OUT(UserReceiver::logOut),
     DELETE_USER(UserReceiver::deleteUser),
-    SHOW_USER_LIST(UserReceiver::showUserList),
     RECHARGE_ACCOUNT(BalanceReceiver::rechargeAccount),
+    ADD_NEW_TARIFF(TariffReceiver::addNewTariff),
     CHANGE_TARIFF(UserReceiver::changeTariff),
     DELETE_TARIFF(TariffReceiver::deleteTariff),
     UPDATE_TARIFF(TariffReceiver::updateTariff),
     UPDATE_USER(UserReceiver::updateUser),
     ADD_SALE(TariffReceiver::addSale),
-    ADD_FEEDBACK(FeedbackReceiver::addFeedback);
+    ADD_FEEDBACK(FeedbackReceiver::addFeedback),
+    REPLY_ON_FEEDBACK(FeedbackReceiver::replyOnFeedback);
 
     private FunctionalCommand command;
 

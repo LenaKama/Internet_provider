@@ -8,7 +8,7 @@ public class PagePath {
     public static final String WELCOME = "jsp/welcome.jsp";
     public static final String SIGN_IN = "jsp/sign_in.jsp";
     public static final String TARIFFS = "jsp/tariffs.jsp";
-    public static final String NEWS = "jsp/news.jsp";
+    public static final String HELP = "jsp/help.jsp";
     public static final String ABOUT_US = "jsp/about_us.jsp";
     public static final String CLIENTS = "jsp/part/clients.jsp";
     public static final String ADMINS = "jsp/part/admins.jsp";

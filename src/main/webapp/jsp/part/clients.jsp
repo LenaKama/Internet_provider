@@ -5,7 +5,7 @@
 <head>
     <%@include file="bundle.jsp" %>
 
-    <fmt:message key="page.clients.title" bundle="${loc}" var="title"/>
+    <fmt:message key="menu.clients" bundle="${loc}" var="title"/>
     <link href="${pageContext.request.contextPath}/css/bootstrap/bootstrap.min.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/bootstrap/bootstrap-theme.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">

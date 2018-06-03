@@ -11,7 +11,7 @@
     <c:set var="imgAvatar" value="${pageContext.request.contextPath}/img/anonym.jpg"/>
     <fmt:message key="general.button.loadAvatar" bundle="${loc}" var="avatarButton"/>
 
-    <fmt:message key="client_account.title" bundle="${loc}" var="title"/>
+    <fmt:message key="user_account.title" bundle="${loc}" var="title"/>
     <link href="${pageContext.request.contextPath}/css/bootstrap/bootstrap.min.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/bootstrap/bootstrap-theme.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
@@ -24,7 +24,7 @@
 <body>
 <%@include file="header.jsp" %>
 <div class="container">
-    <%@include file="client_menu.jsp" %>
+    <%@include file="menu.jsp" %>
     <form class="form-horizontal" action="/Controller" method="post">
         <input type="hidden" name="command" value="update_user">
         <div class="profile_photo">

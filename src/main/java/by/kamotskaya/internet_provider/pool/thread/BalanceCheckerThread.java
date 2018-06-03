@@ -1,7 +1,7 @@
-package by.kamotskaya.internet_provider.pool;
+package by.kamotskaya.internet_provider.pool.thread;
 
-import by.kamotskaya.internet_provider.dao.impl.TransactionDAO;
-import by.kamotskaya.internet_provider.dao.impl.UserDAO;
+import by.kamotskaya.internet_provider.dao.TransactionDAO;
+import by.kamotskaya.internet_provider.dao.UserDAO;
 import by.kamotskaya.internet_provider.entity.User;
 import by.kamotskaya.internet_provider.exception.ConnectionPoolException;
 import by.kamotskaya.internet_provider.exception.DAOException;
@@ -20,8 +20,10 @@ public class BalanceCheckerThread implements Runnable {
             //while (true) {
                 System.out.println("in while");
                 for (String usLogin : userDAO.findAllUsLogins()) {
-                    User user = userDAO.createUserBean(usLogin);
-                    if (transactionDAO.findCurrentBalance(usLogin) < 0) {
+                    System.out.println("current usLogin - " + usLogin);
+                    User user = userDAO.createUserBean("login");
+                    if (transactionDAO.findCurrentBalance("login", 50) < 0) {
+                        System.out.println("settin true");
                         user.setUsBan(true);
 
                     } else {
@@ -33,7 +35,7 @@ public class BalanceCheckerThread implements Runnable {
                 TimeUnit.MINUTES.sleep(1);
           //  }
         } catch (ConnectionPoolException | DAOException e) {
-            ///
+            System.out.println("exception");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

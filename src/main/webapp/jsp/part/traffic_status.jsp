@@ -6,13 +6,9 @@
 <head>
     <%@include file="bundle.jsp" %>
     <link href="${pageContext.request.contextPath}/css/bootstrap/bootstrap.min.css" rel="stylesheet">
-
     <link href="${pageContext.request.contextPath}/css/bootstrap/bootstrap-theme.min.css" rel="stylesheet">
-
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-
     <link href="https://fonts.googleapis.com/css?family=Montserrat+Alternates" rel="stylesheet">
-
     <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
     <fmt:message key="page.tariffs.title" bundle="${loc}" var="title"/>
     <title>${title}</title>
@@ -20,7 +16,7 @@
 <body>
 <%@include file="header.jsp" %>
 <div class="container">
-<%@include file="client_menu.jsp"%>
+<%@include file="menu.jsp"%>
     <label class="label-default text-center" style="background-color: rgba(5, 250, 224, 0.5);"><fmt:message key="traffic_status.uploaded" bundle="${loc}"/></label>
 <div class="progress">
     <div class="progress-bar" role="progressbar" aria-valuenow="${trafficInStatus}"

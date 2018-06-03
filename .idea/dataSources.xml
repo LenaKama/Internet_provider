@@ -13,6 +13,7 @@
         <property name="characterEncoding" value="utf8" />
         <property name="characterSetResults" value="utf8" />
         <property name="yearIsDateType" value="false" />
+        <property name="clobCharacterEncoding" value="utf8" />
       </driver-properties>
     </data-source>
   </component>

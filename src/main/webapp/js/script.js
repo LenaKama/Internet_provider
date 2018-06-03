@@ -1,6 +1,9 @@
 /**
  * Created by Администратор on 10.05.2018.
  */
+$("#feedback_button").click(function () {
+    $("#feedback").slideToggle();
+});
 $('#register_button').click(function () {
     document.getElementById("sign_form").style.display = 'none';
     document.getElementById("registration_form").style.display = "block";
@@ -71,6 +74,15 @@ function showMore(count) {
         document.getElementById("tariffInfo" + count).style.display = "inline";
     } else {
         document.getElementById("tariffInfo" + count).style.display = "none";
+    }
+}
+
+function showReplyForm(val) {
+    var form = document.getElementById("reply_form" + val);
+    if (form.style.display === "none") {
+        document.getElementById("reply_form" + val).style.display = "inline";
+    } else {
+        document.getElementById("reply_form" + val).style.display = "none";
     }
 }
 

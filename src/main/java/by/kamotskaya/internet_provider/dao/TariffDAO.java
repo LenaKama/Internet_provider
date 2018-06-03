@@ -1,4 +1,4 @@
-package by.kamotskaya.internet_provider.dao.impl;
+package by.kamotskaya.internet_provider.dao;
 
 import by.kamotskaya.internet_provider.entity.Tariff;
 import by.kamotskaya.internet_provider.exception.ConnectionPoolException;
@@ -24,11 +24,9 @@ public class TariffDAO {
     private final static String DELETE_TARIFF = "DELETE FROM tariff WHERE t_id = ?";
     private final static String FIND_TARIFF_BY_ID = "SELECT * FROM tariff where t_id = ?";
     private final static String SELECT_ALL = "SELECT * FROM tariff";
-    private final static String SELECT_TARIFFS_WITH_SALES = "SELECT  t.t_name, t.daily_fee, t.sale_percent, t.daily_fee * (1 - t.sale_percent/100) AS new_daily_fee\n" +
-            "  FROM tariff t\n" +
-            "  WHERE t.sale_percent IS NOT NULL\n" +
-            "  AND t.sale_expiration_date >= CURDATE()\n";
-    public final static String ADD_SALE = "ALTER TABLE tariff SET sale_percent = ? SET sale_expiration_date = ? SET daily_fee = ? WHERE t_id = ?";
+   public final static String ADD_SALE = "ALTER TABLE tariff SET sale_percent = ? SET sale_expiration_date = ? SET daily_fee = ? WHERE t_id = ?";
+    private final static String FIND_DAILY_FEE = "SELECT daily_fee FROM tariff WHERE t_id = ?";
+    private final static String FIND_OVERRUN_FEE = "SELECT overrun_fee FROM tariff WHERE t_id = ?";
 
     private final ConnectionPool connectionPool;
 
@@ -38,7 +36,7 @@ public class TariffDAO {
 
     public void add(Tariff tariff) throws DAOException {
         try (ProxyConnection connection = connectionPool.takeConnection();
-            PreparedStatement statement = connection.prepareStatement(ADD_NEW_TARIFF)) {
+             PreparedStatement statement = connection.prepareStatement(ADD_NEW_TARIFF)) {
             statement.setString(1, tariff.getTName());
             statement.setDouble(2, tariff.getConnectionPayment());
             statement.setDouble(3, tariff.getDailyFee());
@@ -53,18 +51,18 @@ public class TariffDAO {
     }
 
     public void delete(int tId) throws DAOException {
-            try (ProxyConnection connection = connectionPool.takeConnection();
-                 PreparedStatement statement = connection.prepareStatement(DELETE_TARIFF)) {
-                statement.setInt(1, tId);
-                statement.executeUpdate();
-            } catch (SQLException e) {
-                throw new DAOException("Exception from UserDAO: ", e);
-            }
+        try (ProxyConnection connection = connectionPool.takeConnection();
+             PreparedStatement statement = connection.prepareStatement(DELETE_TARIFF)) {
+            statement.setInt(1, tId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DAOException("Exception from UserDAO: ", e);
+        }
     }
 
     public void update(Tariff tariff) throws DAOException {
         try (ProxyConnection connection = connectionPool.takeConnection();
-            PreparedStatement statement = connection.prepareStatement(UPDATE_TARIFF)) {
+             PreparedStatement statement = connection.prepareStatement(UPDATE_TARIFF)) {
             statement.setString(1, tariff.getTName());
             statement.setDouble(2, tariff.getConnectionPayment());
             statement.setDouble(3, tariff.getDailyFee());
@@ -81,22 +79,10 @@ public class TariffDAO {
         }
     }
 
-    public List<String> aSales() throws DAOException {
-        List<String> salesInfo = new ArrayList<>();
-        try (ProxyConnection connection = connectionPool.takeConnection();
-             Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(SELECT_TARIFFS_WITH_SALES);
-            while (resultSet.next()) {}
-        } catch (SQLException e) {
-            throw new DAOException("Exception from TariffDAO:", e);
-        }
-        return salesInfo;
-        }
-
     public List<Tariff> findAllTariffs() throws DAOException {
         List<Tariff> tariffs = new ArrayList<>();
         try (ProxyConnection connection = connectionPool.takeConnection();
-            Statement statement = connection.createStatement()) {
+             Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(SELECT_ALL);
             while (resultSet.next()) {
                 Tariff tariff = new Tariff();
@@ -121,7 +107,7 @@ public class TariffDAO {
     public Tariff findTariffById(int tId) throws DAOException {
         Tariff tariff = new Tariff();
         try (ProxyConnection connection = connectionPool.takeConnection();
-            PreparedStatement statement = connection.prepareStatement(FIND_TARIFF_BY_ID)) {
+             PreparedStatement statement = connection.prepareStatement(FIND_TARIFF_BY_ID)) {
             statement.setInt(1, tId);
             ResultSet resultSet = statement.executeQuery();
             resultSet.next();
@@ -140,4 +126,5 @@ public class TariffDAO {
         }
         return tariff;
     }
+
 }

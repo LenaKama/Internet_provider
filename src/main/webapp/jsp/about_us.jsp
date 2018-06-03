@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
@@ -24,7 +24,10 @@
         <input type="hidden" name="command" value="show_welcome_page"/>
         <input class="imgLogo" type="image" src="${imgLogo}" onclick="$(this).parent('form').submit()"/>
     </form>
-    <div class="about-us">
+    <div class="about-us text-center form-group">
+        <fmt:message key="page.about_us.slogan" bundle="${loc}"/>
+    </div>
+    <div class="form-group center-block" style="margin: 30px">
         <fmt:message key="page.about_us.info" bundle="${loc}"/>
     </div>
     <form action="/Controller" method="post">
@@ -32,8 +35,8 @@
         <button class="btn btn-primary" type="submit">
             <fmt:message key="about_us.button.want_to_connect" bundle="${loc}"/></button>
     </form>
-    <div class="our-history">
-
+    <div class="our-contacts">
+        <fmt:message key="about_us.contacts" bundle="${loc}"/>
     </div>
 </div>
 </body>

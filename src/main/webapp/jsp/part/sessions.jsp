@@ -21,14 +21,14 @@
         <%@include file="admin_menu.jsp" %>
     </c:when>
     <c:otherwise>
-        <%@include file="client_menu.jsp" %>
+        <%@include file="menu.jsp" %>
     </c:otherwise>
 </c:choose>
 <table class="table">
     <thead>
     <tr>
         <th scope="col"><fmt:message key="sessions.table.sessionBeginning" bundle="${loc}"/></th>
-        <th scope="col"><fmt:message key="sessions.table.duration" bundle="${loc}"/></th>
+        <th scope="col"><fmt:message key="sessions.table.sessionEnding" bundle="${loc}"/></th>
         <th scope="col"><fmt:message key="sessions.table.uploadingTraffic" bundle="${loc}"/></th>
         <th scope="col"><fmt:message key="sessions.table.downloadingTraffic" bundle="${loc}"/></th>
     </tr>

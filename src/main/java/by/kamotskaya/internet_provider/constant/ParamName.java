@@ -5,17 +5,11 @@ package by.kamotskaya.internet_provider.constant;
  */
 public class ParamName {
 
-    public static final String APARTMENTS = "apartments";
-    public static final String BLOCK = "block";
-    public static final String BUILDING = "building";
-    public static final String CITY = "city";
-    public static final String CONTRACT = "contract";
-    public static final String CONTRACT_ERROR = "contractError";
-    public static final String CUSTOMER = "customer";
-    public static final String CUSTOMER_LIST = "customerList";
-    public static final String CUSTOMER_TO_APPROVE = "customerToApprove";
-    public static final String DESCRIPTION = "description";
-    public static final String DOWNLOAD_SPEED = "downloadSpeed";
+    public static final String DB_DRIVER = "db.driver";
+    public static final String DB_URL = "db.url";
+    public static final String DB_USERNAME = "db.username";
+    public static final String DB_PASSWORD = "db.password";
+    public static final String DB_POLL_SIZE = "db.poolSize";
 
     public static final String US_LOGIN = "usLogin";
     public static final String US_PASSWORD = "usPassword";
@@ -53,4 +47,28 @@ public class ParamName {
     public static final String ERROR_TRACE = "errorTrace";
     public static final String USER = "user";
     public static final String USER_FEEDBACKS = "userFeedbacks";
+    public static final String UNREPLIED_FEEDBACKS = "unrepliedFeedbacks";
+    public static final String US_LOCALE = "usLocale";
+    public static final String ACTIVE_LOCALE = "activeLocale";
+    public static final String CURRENT_SESSION = "currentSession";
+
+    public static final String F_NAME = "fName";
+    public static final String F_EMAIL = "fEmail";
+    public static final String F_MESSAGE = "fMessage";
+    public static final String F_ANSWER = "fAnswer";
+
+    public static final String PAYMENT_INFO = "Daily fee";
+    public static final String CURRENT_BALANCE = "currentBalance" ;
+    public static final String CURRENT_TARIFF = "currentTariff";
+    public static final String WRONG_USER_CREDENTIALS = "wrongUserCredentials";
+
+    public static final String T_NAME = "tName";
+    public static final String CONNECTION_PAYMENT = "connectionPayment";
+    public static final String DAILY_FEE = "dailyFee";
+    public static final String TRAFFIC_LIMIT = "trafficLimit";
+    public static final String SPEED_OUT = "speedIn";
+    public static final String SPEED_IN = "speedOut";
+    public static final String OVERRUN_FEE = "overrunFee";
+
+    public static int FIRST_MONTH_DAY = 1;
 }

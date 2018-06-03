@@ -4,15 +4,14 @@ import by.kamotskaya.internet_provider.command.CommandResult;
 import by.kamotskaya.internet_provider.constant.PagePath;
 import by.kamotskaya.internet_provider.constant.ParamName;
 import by.kamotskaya.internet_provider.controller.RequestContent;
-import by.kamotskaya.internet_provider.dao.impl.*;
+import by.kamotskaya.internet_provider.dao.*;
 import by.kamotskaya.internet_provider.entity.OpeningBalance;
 import by.kamotskaya.internet_provider.entity.Session;
 import by.kamotskaya.internet_provider.entity.User;
 import by.kamotskaya.internet_provider.exception.ConnectionPoolException;
 import by.kamotskaya.internet_provider.exception.DAOException;
-import by.kamotskaya.internet_provider.pool.BalanceCheckerThread;
-import by.kamotskaya.internet_provider.pool.PaymentThread;
-import com.sun.org.apache.regexp.internal.RE;
+import by.kamotskaya.internet_provider.pool.thread.OpeningBalanceController;
+import by.kamotskaya.internet_provider.pool.thread.PaymentThread;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -31,32 +30,27 @@ public class UserReceiver {
     public static CommandResult authenticate(RequestContent content) {
 
 
-        new Thread(new BalanceCheckerThread()).start();
+        //new Thread(new BalanceCheckerThread()).start();
 
-
+        new Thread(new OpeningBalanceController()).start();
         new Thread(new PaymentThread()).start();
 
-        String usLogin = content.getRequestParameters().get("usLogin")[0];
-        String usPassword = content.getRequestParameters().get("usPassword")[0];
+        String usLogin = content.getRequestParameters().get(ParamName.US_LOGIN)[0];
+        String usPassword = content.getRequestParameters().get(ParamName.US_PASSWORD)[0];
 
         PasswordGenerator passwordGenerator = new PasswordGenerator();
         LOGGER.log(Level.DEBUG, "in authenticate");
-        Session session = new Session();
-        session.setUsLogin(usLogin);
         try {
             UserDAO userDAO = new UserDAO();
             if (passwordGenerator.authenticate(usPassword, userDAO.findPasswordByLogin(usLogin))) {
-                SessionDAO sessionDAO = new SessionDAO();
                 User user = userDAO.createUserBean(usLogin);
-                content.putSessionAttribute("user", user);
-                RequestContent.getSessionAttributes().put(ParamName.US_LOGIN, usLogin);
+                content.putSessionAttribute(ParamName.USER, user);
                 content.putSessionAttribute(ParamName.US_LOGIN, usLogin);
                 content.putSessionAttribute(ParamName.US_ROLE, user.getUsRole());
-                content = loadGeneralUserInfo(content);
-                // RequestContent.getSessionAttributes().put(ParamName.US_ROLE, user.getUsRole());
-                content.putSessionAttribute("currentSession", sessionDAO.startSession(session));
+                loadGeneralUserInfo(content);
+                startUserSession(content);
             } else {
-                content.putRequestAttribute("message", "Wrong user credentials.");
+                content.putRequestAttribute(ParamName.WRONG_USER_CREDENTIALS, true);
             }
         } catch (DAOException | ConnectionPoolException e) {
             content.putRequestAttribute(ParamName.ERROR_MESSAGE, "Error while authenticating the user.");
@@ -66,27 +60,35 @@ public class UserReceiver {
         return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.WELCOME);
     }
 
-    public static RequestContent loadGeneralUserInfo(RequestContent content) throws DAOException, ConnectionPoolException {
+    static void loadGeneralUserInfo(RequestContent content) throws DAOException, ConnectionPoolException {
         TransactionDAO transactionDAO = new TransactionDAO();
         TariffDAO tariffDAO = new TariffDAO();
-        String usLogin = String.valueOf(RequestContent.getSessionAttributes().get(ParamName.US_LOGIN));
+        String usLogin = String.valueOf(content.getSessionAttributes().get(ParamName.US_LOGIN));
+        OpeningBalanceDAO openingBalanceDAO = new OpeningBalanceDAO();
         UserDAO userDAO = new UserDAO();
         User user = userDAO.createUserBean(usLogin);
         if (user.getTId() != 0) {
-            content.putRequestAttribute("currentBalance", transactionDAO.findCurrentBalance(usLogin));
-            content.putRequestAttribute("currentTariff", tariffDAO.findTariffById(user.getTId()));
+            content.putRequestAttribute(ParamName.CURRENT_BALANCE, transactionDAO.findCurrentBalance(usLogin, openingBalanceDAO.findOpeningBalance(usLogin, true).get()));
+            content.putRequestAttribute(ParamName.CURRENT_TARIFF, tariffDAO.findTariffById(user.getTId()));
         }
-        return content;
+    }
+
+    private static void startUserSession(RequestContent content) throws ConnectionPoolException, DAOException {
+        String usLogin = String.valueOf(content.getSessionAttributes().get(ParamName.US_LOGIN));
+        SessionDAO sessionDAO = new SessionDAO();
+        Session session = new Session();
+        session.setUsLogin(usLogin);
+        content.putSessionAttribute(ParamName.CURRENT_SESSION, sessionDAO.startSession(session));
     }
 
     public static CommandResult register(RequestContent content) {
 
-        String usLogin = content.getRequestParameters().get("usLogin")[0];
-        String usPassword = content.getRequestParameters().get("usPassword")[0];
-        String usName = content.getRequestParameters().get("usName")[0];
-        String usSurname = content.getRequestParameters().get("usSurname")[0];
-        String usEmail = content.getRequestParameters().get("usEmail")[0];
-        String usPassport = content.getRequestParameters().get("usPassport")[0];
+        String usLogin = content.getRequestParameters().get(ParamName.US_LOGIN)[0];
+        String usPassword = content.getRequestParameters().get(ParamName.US_PASSWORD)[0];
+        String usName = content.getRequestParameters().get(ParamName.US_NAME)[0];
+        String usSurname = content.getRequestParameters().get(ParamName.US_SURNAME)[0];
+        String usEmail = content.getRequestParameters().get(ParamName.US_EMAIL)[0];
+        String usPassport = content.getRequestParameters().get(ParamName.US_PASSPORT)[0];
 
         PasswordGenerator passwordGenerator = new PasswordGenerator();
 
@@ -112,27 +114,21 @@ public class UserReceiver {
             userDAO.add(user);
             openingBalanceDAO.add(openingBalance);
         } catch (DAOException | ConnectionPoolException e) {
-            content.putRequestAttribute("errorMessage", "Error while adding a new user.");
+            content.putRequestAttribute(ParamName.ERROR_MESSAGE, "Error while adding a new user.");
             return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.ERROR);
         }
         return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.WELCOME);
     }
 
-    public static CommandResult checkLogin(RequestContent content) {
-        content.putSessionAttribute("loginExists", "true");
-        return null;
-    }
-
-
     public static CommandResult updateUser(RequestContent content) {
-        String usLogin = String.valueOf(RequestContent.getSessionAttributes().get(ParamName.US_LOGIN));
+        String usLogin = String.valueOf(content.getSessionAttributes().get(ParamName.US_LOGIN));
         try {
             UserDAO userDAO = new UserDAO();
             User user = userDAO.createUserBean(usLogin);
-            user.setUsEmail(content.getRequestParameters().get("usEmail")[0]);
-            user.setUsName(content.getRequestParameters().get("usName")[0]);
-            user.setUsSurname(content.getRequestParameters().get("usSurname")[0]);
-            user.setUsPassport(content.getRequestParameters().get("usPassport")[0]);
+            user.setUsEmail(content.getRequestParameters().get(ParamName.US_EMAIL)[0]);
+            user.setUsName(content.getRequestParameters().get(ParamName.US_NAME)[0]);
+            user.setUsSurname(content.getRequestParameters().get(ParamName.US_SURNAME)[0]);
+            user.setUsPassport(content.getRequestParameters().get(ParamName.US_PASSPORT)[0]);
 
             // String usLogin = content.getRequestParameters().get("usLogin")[0];
             // String usPassword = content.getRequestParameters().get("usPassword")[0];
@@ -157,21 +153,10 @@ public class UserReceiver {
         return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.WELCOME);
     }
 
-    public static CommandResult showUserList(RequestContent content) {
-        try {
-            UserDAO userDAO = new UserDAO();
-            content.putRequestAttribute("userList", userDAO.findAllClients());
-        } catch (DAOException | ConnectionPoolException e) {
-            content.putRequestAttribute("errorMessage", "Error while loading list of users");
-            return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.ERROR);
-        }
-        return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.WELCOME);
-    }
-
     public static CommandResult changeTariff(RequestContent content) {
         int tId = Integer.parseInt(content.getRequestParameters().get("tId")[0]);
         LOGGER.log(Level.DEBUG, "tId -" + tId);
-        String usLogin = String.valueOf(RequestContent.getSessionAttributes().get(ParamName.US_LOGIN));
+        String usLogin = String.valueOf(content.getRequestParameters().get(ParamName.US_LOGIN)[0]);
         try {
             UserDAO userDAO = new UserDAO();
             User user = userDAO.createUserBean(usLogin);
@@ -186,8 +171,8 @@ public class UserReceiver {
     }
 
     public static CommandResult logOut(RequestContent content) {
-        content.putSessionAttribute("usRole", "quest");
-        Session currentSession = (Session) RequestContent.getSessionAttributes().get("currentSession");
+        content.putSessionAttribute(ParamName.US_ROLE, ParamName.QUEST);
+        Session currentSession = (Session) content.getSessionAttributes().get("currentSession");
         try {
             SessionDAO sessionDAO = new SessionDAO();
             sessionDAO.endSession(currentSession);

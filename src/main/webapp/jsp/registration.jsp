@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" language="java" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
@@ -34,51 +34,74 @@
     <div class="form-group row">
         <label class="col-sm-4" for="usPassword"><fmt:message key="form.usPassword" bundle="${loc}"/></label>
         <div class="col-sm-7">
-        <input id="usPassword" type="password" name="usPassword"
-               title='<fmt:message key="form.usPassword.helpMessage" bundle="${loc}"/>' required
-               pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z*]{4,}"/>
-    </div>
+            <input id="usPassword" type="password" name="usPassword"
+                   title='<fmt:message key="form.usPassword.helpMessage" bundle="${loc}"/>' required
+                   data-placement="right" data-toggle="tooltip" pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z*]{4,}"/>
+        </div>
     </div>
     <div class="form-group row">
         <label class="col-sm-4" for="usPassword_repeat"><fmt:message key="form.usPassword.repeat"
                                                                      bundle="${loc}"/></label>
         <div class="col-sm-7">
-        <input id='usPassword_repeat' type="password" required
-               title='<fmt:message key="form.usPassword.repeat.title" bundle="${loc}"/>'
-               pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z*]{6,}" onkeyup="checkPasswords()"/>
-    </div>
+            <input id='usPassword_repeat' type="password" required
+                   title='<fmt:message key="form.usPassword.repeat.title" bundle="${loc}"/>'
+                   pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z*]{6,}" onkeyup="checkPasswords()"/>
+        </div>
     </div>
     <div class="form-group row">
         <label class="col-sm-4" for="usName"><fmt:message key="form.usName" bundle="${loc}"/></label>
         <div class="col-sm-7">
             <input id="usName" type="text" name="usName" required
-               title='<fmt:message key="form.usName.title" bundle="${loc}"/>'/>
-    </div>
+                   title='<fmt:message key="form.usName.title" bundle="${loc}"/>'/>
+        </div>
     </div>
     <div class="form-group row">
         <label class="col-sm-4" for="usSurname"><fmt:message key="form.usSurname" bundle="${loc}"/></label>
         <div class="col-sm-7">
             <input id="usSurname" type="text" name="usSurname" required
-               title='<fmt:message key="form.usSurname.title" bundle="${loc}"/>'/>
-    </div>
+                   title='<fmt:message key="form.usSurname.title" bundle="${loc}"/>'/>
+        </div>
     </div>
     <div class="form-group row">
         <label class="col-sm-4" for="usEmail"><fmt:message key="form.usEmail" bundle="${loc}"/></label>
         <div class="col-sm-7">
             <input id="usEmail" type="text" name="usEmail"
-               title='<fmt:message key="form.usEmail.title" bundle="${loc}"/>' required
-               pattern="^[-._a-z0-9]+@(?:[a-z0-9][-a-z0-9]+\.)+[a-z]{2,6}$"/>
-    </div>
+                   title='<fmt:message key="form.usEmail.title" bundle="${loc}"/>' required
+                   pattern="^[-._a-z0-9]+@(?:[a-z0-9][-a-z0-9]+\.)+[a-z]{2,6}$"/>
+        </div>
     </div>
     <div class="form-group row">
         <label class="col-sm-4" for="usPassport"><fmt:message key="form.usPassport" bundle="${loc}"/></label>
         <div class="col-sm-7">
             <input id="usPassport" type="text" name="usPassport" required
-               title='<fmt:message key="form.usPassport.title" bundle="${loc}"/>'/>
+                   title='<fmt:message key="form.usPassport.title" bundle="${loc}"/>'/>
+        </div>
     </div>
-    </div>
-    <button id="submit_registration" class="btn btn-default" type="submit">
+    <button id="submit_registration" class="btn btn-primary center-block" type="submit">
         <fmt:message key="registration.button.register" bundle="${loc}"/></button>
 </form>
+<h2 class="demoHeaders">
+    <span id='tooltipClick' title='This is a tooltip that appears on click...'>Tooltip on Click</span>
+</h2>
+
+<script src="../js/bootstrap/bootstrap.min.js"></script>
+<script src="../js/bootstrap/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $( "#tooltipClick" )
+            .tooltip({
+                content: $( "#tooltipClick" ).attr( "title" ),
+                items: 'span'
+            })
+            .off( "mouseover" )
+            .on( "click", function(){
+                $( this ).tooltip( "open" );
+                return false;
+            })
+            .attr( "title", "" ).css({ cursor: "pointer" });
+
+        //$('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
 </body>
 </html>

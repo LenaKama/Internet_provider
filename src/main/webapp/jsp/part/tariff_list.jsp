@@ -1,4 +1,5 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
+<meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
 <div class="panel panel-default">
     <div class="panel-heading">
         <c:out value="${tariff.TName}"/>
@@ -47,7 +48,6 @@
             <form id="panel_info" action="/Controller" method="post">
                 <input type="hidden" name="command" value="update_tariff">
                 <input type="hidden" name="tId" value="${tariff.TId}">
-                <div class="form-group row">
                     <c:if test="${sessionScope.usRole eq 'admin'}">
                         <div class="form-group row">
                             <label class="control-label label-default col-md-3" for="tName">
@@ -69,15 +69,16 @@
                             </div>
                         </div>
                     </c:if>
-                    <label class="control-label label-default col-md-3" for="daily_fee">
-                        <fmt:message key="tariff.dailyFee" bundle="${loc}"/></label>
-                    <div class="col-md-2 field">
-                        <p id="daily_fee" class="info-field">
-                            <c:out value="${tariff.dailyFee}"/></p>
-                        <input type="text" name="dailyFee" class="edit-field" value="${tariff.dailyFee}"
-                               style="display: none"/>
+                    <div class="form-group row">
+                        <label class="control-label label-default col-md-3" for="daily_fee">
+                            <fmt:message key="tariff.dailyFee" bundle="${loc}"/></label>
+                        <div class="col-md-2 field">
+                            <p id="daily_fee" class="info-field">
+                                <c:out value="${tariff.dailyFee}"/></p>
+                            <input type="text" name="dailyFee" class="edit-field" value="${tariff.dailyFee}"
+                                   style="display: none"/>
+                        </div>
                     </div>
-                </div>
                 <div class="form-group row">
                     <label class="control-label label-default col-md-3" for="speedIn">
                         <fmt:message key="tariff.speedIn" bundle="${loc}"/></label>
@@ -159,14 +160,25 @@
                                 <label class="col-sm-2" for="salePercent">
                                     <fmt:message key="tariff.sale.percent" bundle="${loc}"/></label>
                                 <div class="col-sm-3">
-                                    <input id="salePercent" type="text" name="salePercent"/>
+                                    <input id="salePercent" type="text" name="salePercent"
+                                           title='<fmt:message key="tariff.sale_percent.title" bundle="${loc}"/>'/>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-2" for="saleExpirationDate">
+                                <label for="saleExpirationDate" class="col-sm-2 col-form-label">
                                     <fmt:message key="tariff.sale.expiration_date" bundle="${loc}"/></label>
                                 <div class="col-sm-3">
-                                    <input id="saleExpirationDate" type="text" name="saleExpirationDate"/>
+                                    <input class="form-control" type="date" name="saleExpirationDate"
+                                           title='<fmt:message key="tariff.sale_expiration_date.title" bundle="${loc}"/>'
+                                           id="saleExpirationDate">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-2 col-form-label" for="saleExpirationDate2">
+                                    <fmt:message key="tariff.sale.expiration_date" bundle="${loc}"/></label>
+                                <div class="col-sm-3">
+                                    <input class="form-control" id="saleExpirationDate2" type="date"
+                                           name="saleExpirationDate"/>
                                 </div>
                             </div>
                         </div>

@@ -10,6 +10,7 @@
     <link href="${pageContext.request.contextPath}/css/bootstrap/bootstrap-theme.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat+Alternates" rel="stylesheet">
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/icon.png" type="image/x-icon">
     <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
 
     <title>Title</title>
@@ -17,7 +18,7 @@
 <body>
 <%@include file="header.jsp" %>
 <div class="container">
-    <%@include file="client_menu.jsp" %>
+    <%@include file="menu.jsp" %>
     <table class="table">
         <thead>
         <tr>

@@ -45,12 +45,13 @@ public class AjaxHandler extends HttpServlet {
         String command = request.getParameter("command");
         switch (command) {
             case "checkLogin":
-                String usLogin = request.getParameter("checkLogin");
-                response.getWriter().write(ajaxReceiver.checkLogin(usLogin));
+                String checkLogin = request.getParameter("checkLogin");
+                response.getWriter().write(ajaxReceiver.checkLogin(checkLogin));
                 break;
             case "changeTariff":
                 int tId = Integer.parseInt(request.getParameter("tId"));
-                response.getWriter().write(ajaxReceiver.changeTariff(tId));
+                String usLogin = request.getParameter("usLogin");
+               // response.getWriter().write(ajaxReceiver.changeTariff(tId));
                 break;
         }
     }

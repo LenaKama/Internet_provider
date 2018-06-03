@@ -4,7 +4,7 @@ import by.kamotskaya.internet_provider.command.CommandResult;
 import by.kamotskaya.internet_provider.constant.PagePath;
 import by.kamotskaya.internet_provider.constant.ParamName;
 import by.kamotskaya.internet_provider.controller.RequestContent;
-import by.kamotskaya.internet_provider.dao.impl.TransactionDAO;
+import by.kamotskaya.internet_provider.dao.TransactionDAO;
 import by.kamotskaya.internet_provider.entity.Transaction;
 import by.kamotskaya.internet_provider.exception.ConnectionPoolException;
 import by.kamotskaya.internet_provider.exception.DAOException;
@@ -22,7 +22,7 @@ public class BalanceReceiver {
     public static CommandResult rechargeAccount(RequestContent content) {
 
         Double amount = Double.parseDouble(content.getRequestParameters().get("amount")[0]);
-       String usLogin = String.valueOf(RequestContent.getSessionAttributes().get("usLogin"));
+       String usLogin = String.valueOf(content.getSessionAttributes().get(ParamName.US_LOGIN));
        // String usLogin = content.getRequestParameters().get(ParamName.US_LOGIN)[0];
         LOGGER.log(Level.DEBUG, "amount - " + amount);
         LOGGER.log(Level.DEBUG, "usLogin - " + usLogin);
@@ -34,7 +34,7 @@ public class BalanceReceiver {
             TransactionDAO transactionDAO = new TransactionDAO();
             transactionDAO.add(transaction);
         } catch (DAOException | ConnectionPoolException e) {
-            content.putRequestAttribute("errorMessage", "Error while recharging your account");
+            content.putRequestAttribute(ParamName.ERROR_MESSAGE, "Error while recharging your account");
             return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.ERROR);
         }
         return GoToPageReceiver.goToWelcomePage(content);

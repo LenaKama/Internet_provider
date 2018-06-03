@@ -1,10 +1,8 @@
-package by.kamotskaya.internet_provider.dao.impl;
+package by.kamotskaya.internet_provider.dao;
 
 import by.kamotskaya.internet_provider.entity.User;
 import by.kamotskaya.internet_provider.exception.ConnectionPoolException;
 import by.kamotskaya.internet_provider.exception.DAOException;
-import by.kamotskaya.internet_provider.dao.BaseDAO;
-import by.kamotskaya.internet_provider.pool.BalanceCheckerThread;
 import by.kamotskaya.internet_provider.pool.ConnectionPool;
 import by.kamotskaya.internet_provider.pool.ProxyConnection;
 import org.apache.logging.log4j.Level;
@@ -21,7 +19,7 @@ import java.util.List;
 /**
  * @author Lena Kamotskaya
  */
-public class UserDAO implements BaseDAO<User> {
+public class UserDAO {
 
     private static final Logger LOGGER = LogManager.getLogger(UserDAO.class);
 
@@ -40,7 +38,6 @@ public class UserDAO implements BaseDAO<User> {
 
     }
 
-    @Override
     public void add(User user) throws DAOException {
         try (ProxyConnection connection = connectionPool.takeConnection();
              PreparedStatement statement = connection.prepareStatement(ADD_NEW_CLIENT)) {
@@ -106,7 +103,6 @@ public class UserDAO implements BaseDAO<User> {
         return clients;
     }
 
-    @Override
     public void delete(String usLogin) throws DAOException {
         try (ProxyConnection connection = connectionPool.takeConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_USER)) {
@@ -121,7 +117,6 @@ public class UserDAO implements BaseDAO<User> {
      * @param user
      * @throws DAOException
      */
-    @Override
     public void update(User user) throws DAOException {
         try (ProxyConnection connection = connectionPool.takeConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATE_USER)) {
