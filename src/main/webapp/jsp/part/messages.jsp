@@ -20,25 +20,18 @@
 <body>
 <%@include file="header.jsp" %>
 <div class="container">
-    <c:choose>
-        <c:when test="${sessionScope.usRole eq 'admin'}">
-            <%@include file="admin_menu.jsp" %>
-        </c:when>
-        <c:otherwise>
-            <%@include file="menu.jsp" %>
-        </c:otherwise>
-    </c:choose>
-    <c:forEach items="${unrepliedFeedbacks}" var="unrepliedFeedback" varStatus="theCount">
-        <c:if test="${empty unrepliedFeedback.usLogin}">
+    <%@include file="menu.jsp" %>
+    <c:forEach items="${unrepliedFeedbacks}" var="userFeedback" varStatus="theCount">
+        <c:if test="${empty userFeedback.usLogin}">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <label class="form-group label-info text-left"><c:out value="${unrepliedFeedback.fName}"/></label>
+                    <label class="form-group label-info text-left"><c:out value="${userFeedback.fName}"/></label>
                     <label class="form-group text-muted" style="display: inline-block;">
-                        <c:out value="${unrepliedFeedback.fEmail}"/></label>
+                        <c:out value="${userFeedback.fEmail}"/></label>
                 </div>
                 <div class="panel-body">
                     <div class="form-control-lg card card-body nav-justified">
-                        <c:out value="${unrepliedFeedback.fMessage}"/></div>
+                        <c:out value="${userFeedback.fMessage}"/></div>
                 </div>
                 <div class="panel-footer">
                     <button class="btn btn-info col-md-offset-11 form-group" onclick="showReplyForm(${theCount.count})">
@@ -46,7 +39,7 @@
                     <div class="panel-body" id="reply_form${theCount.count}" style="display: none;">
                         <form action="/Controller" method="post">
                             <input type="hidden" name="command" value="reply_on_feedback">
-                            <input type="hidden" name="fId" value="${unrepliedFeedback.fId}">
+                            <input type="hidden" name="fId" value="${userFeedback.fId}">
                             <input class="form-control col-md-11 form-group" type="text" name="fAnswer"
                                    placeholder='<fmt:message key="message.input.reply" bundle="${loc}"/>'/>
                             <button class="btn btn-info col-md-offset-11 form-group" type="submit">

@@ -10,17 +10,19 @@ import by.kamotskaya.internet_provider.entity.Session;
 import by.kamotskaya.internet_provider.entity.User;
 import by.kamotskaya.internet_provider.exception.ConnectionPoolException;
 import by.kamotskaya.internet_provider.exception.DAOException;
-import by.kamotskaya.internet_provider.pool.thread.OpeningBalanceController;
-import by.kamotskaya.internet_provider.pool.thread.PaymentThread;
-import org.apache.logging.log4j.Level;
+import by.kamotskaya.internet_provider.pool.thread.TrafficCounterThread;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 
 /**
+ * 
  * @author Lena Kamotskaya
  */
 public class UserReceiver {
@@ -32,14 +34,13 @@ public class UserReceiver {
 
         //new Thread(new BalanceCheckerThread()).start();
 
-        new Thread(new OpeningBalanceController()).start();
-        new Thread(new PaymentThread()).start();
+//        new Thread(new OpeningBalanceController()).start();
+//        new Thread(new PaymentThread()).start();
 
         String usLogin = content.getRequestParameters().get(ParamName.US_LOGIN)[0];
         String usPassword = content.getRequestParameters().get(ParamName.US_PASSWORD)[0];
 
-        PasswordGenerator passwordGenerator = new PasswordGenerator();
-        LOGGER.log(Level.DEBUG, "in authenticate");
+        PasswordEncryptor passwordGenerator = new PasswordEncryptor();
         try {
             UserDAO userDAO = new UserDAO();
             if (passwordGenerator.authenticate(usPassword, userDAO.findPasswordByLogin(usLogin))) {
@@ -49,7 +50,12 @@ public class UserReceiver {
                 content.putSessionAttribute(ParamName.US_ROLE, user.getUsRole());
                 loadGeneralUserInfo(content);
                 startUserSession(content);
-            } else {
+
+                if (user.getTId() != 0) {
+                    ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
+                    executorService.scheduleAtFixedRate(new TrafficCounterThread(), 5, 10, TimeUnit.SECONDS);
+                }
+            }else {
                 content.putRequestAttribute(ParamName.WRONG_USER_CREDENTIALS, true);
             }
         } catch (DAOException | ConnectionPoolException e) {
@@ -78,7 +84,7 @@ public class UserReceiver {
         SessionDAO sessionDAO = new SessionDAO();
         Session session = new Session();
         session.setUsLogin(usLogin);
-        content.putSessionAttribute(ParamName.CURRENT_SESSION, sessionDAO.startSession(session));
+        content.putSessionAttribute(ParamName.SESSION_ID, sessionDAO.startSession(session));
     }
 
     public static CommandResult register(RequestContent content) {
@@ -90,9 +96,8 @@ public class UserReceiver {
         String usEmail = content.getRequestParameters().get(ParamName.US_EMAIL)[0];
         String usPassport = content.getRequestParameters().get(ParamName.US_PASSPORT)[0];
 
-        PasswordGenerator passwordGenerator = new PasswordGenerator();
+        PasswordEncryptor passwordGenerator = new PasswordEncryptor();
 
-///////////session
         User user = new User();
         user.setUsLogin(usLogin);
         user.setUsPassword(passwordGenerator.encryptPassword(usPassword));
@@ -154,8 +159,7 @@ public class UserReceiver {
     }
 
     public static CommandResult changeTariff(RequestContent content) {
-        int tId = Integer.parseInt(content.getRequestParameters().get("tId")[0]);
-        LOGGER.log(Level.DEBUG, "tId -" + tId);
+        int tId = Integer.parseInt(content.getRequestParameters().get(ParamName.T_ID)[0]);
         String usLogin = String.valueOf(content.getRequestParameters().get(ParamName.US_LOGIN)[0]);
         try {
             UserDAO userDAO = new UserDAO();
@@ -171,11 +175,11 @@ public class UserReceiver {
     }
 
     public static CommandResult logOut(RequestContent content) {
-        content.putSessionAttribute(ParamName.US_ROLE, ParamName.QUEST);
-        Session currentSession = (Session) content.getSessionAttributes().get("currentSession");
+        content.putSessionAttribute(ParamName.US_ROLE, ParamName.GUEST);
+        int sessionId = (int) content.getSessionAttributes().get(ParamName.SESSION_ID);
         try {
             SessionDAO sessionDAO = new SessionDAO();
-            sessionDAO.endSession(currentSession);
+            sessionDAO.endSession(sessionId);
         } catch (DAOException | ConnectionPoolException e) {
             content.putRequestAttribute(ParamName.ERROR_MESSAGE, "Error while ending the session.");
             return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.ERROR);

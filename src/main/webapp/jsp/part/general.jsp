@@ -14,6 +14,7 @@
 <%--<c:set var="avatarButton" value='<fmt:message key="general.button.changeAvatar" bundle="${loc}"/>'/>--%>
 <%--</c:otherwise>--%>
 <%--</c:choose>--%>
+<%@include file="menu.jsp"%>
 <div class="col-md-6">
     <div class="row">
         <div class="col-sm-4">

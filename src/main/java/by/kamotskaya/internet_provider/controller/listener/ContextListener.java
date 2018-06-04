@@ -2,23 +2,28 @@ package by.kamotskaya.internet_provider.controller.listener;
 
 import by.kamotskaya.internet_provider.exception.ConnectionPoolException;
 import by.kamotskaya.internet_provider.pool.ConnectionPool;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
-import java.sql.SQLException;
 
 /**
+ * Class for initialization and destroying ConnectionPool.
+ *
  * @author Lena Kamotskaya
  */
 @WebListener
-public class ListenerForDestroyingConnections implements ServletContextListener {
+public class ContextListener implements ServletContextListener {
 
-    /*
-            * Initializes connection pool when web application initialization
+    private static final Logger LOGGER = LogManager.getLogger(ContextListener.class);
+
+    /** Initializes connection pool when web application initialization
      * process is starting.
      *
-             * @param sce the ServletContextEvent containing the ServletContext
+     * @param sce the ServletContextEvent containing the ServletContext
      * that is being initialized
      */
     @Override
@@ -26,7 +31,7 @@ public class ListenerForDestroyingConnections implements ServletContextListener 
         try {
             ConnectionPool.getInstance().initializeConnectionPool();
         } catch (ConnectionPoolException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.ERROR, "Exception from ContextListener.", e);
         }
     }
 
@@ -41,8 +46,8 @@ public class ListenerForDestroyingConnections implements ServletContextListener 
     public void contextDestroyed(ServletContextEvent sce) {
         try {
             ConnectionPool.getInstance().destroyConnectionPool();
-        } catch (SQLException | ConnectionPoolException e) {
-
+        } catch (ConnectionPoolException e) {
+LOGGER.log(Level.ERROR, "Exception from ContextListener.", e);
         }
     }
 }

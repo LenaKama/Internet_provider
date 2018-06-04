@@ -63,13 +63,13 @@ public class TariffReceiver {
     }
 
     public static CommandResult addSale(RequestContent content) {
-        int tId = Integer.parseInt(content.getRequestParameters().get("tId")[0]);
+        int tId = Integer.parseInt(content.getRequestParameters().get(ParamName.T_ID)[0]);
 
         try {
             TariffDAO tariffDAO = new TariffDAO();
             Tariff tariff = tariffDAO.findTariffById(tId);
-            tariff.setSalePercent(Integer.parseInt(content.getRequestParameters().get("salePercent")[0]));
-            tariff.setSaleExpirationDate(Date.valueOf(content.getRequestParameters().get("saleExpirationDate")[0]));
+            tariff.setSalePercent(Integer.parseInt(content.getRequestParameters().get(ParamName.SALE_PERCENT)[0]));
+            tariff.setSaleExpirationDate(Date.valueOf(content.getRequestParameters().get(ParamName.SALE_EXPIRATION_DATE)[0]));
             tariff.setConnectionPayment(tariff.getConnectionPayment() - tariff.getSalePercent() * tariff.getConnectionPayment() / 100);
             tariffDAO.update(tariff);
         } catch (DAOException | ConnectionPoolException e) {
@@ -80,22 +80,22 @@ public class TariffReceiver {
     }
 
     public static CommandResult updateTariff(RequestContent content) {
-        int tId = Integer.parseInt(content.getRequestParameters().get("tId")[0]);
+        int tId = Integer.parseInt(content.getRequestParameters().get(ParamName.T_ID)[0]);
         System.out.println("tId - " + tId);
         try {
             TariffDAO tariffDAO = new TariffDAO();
             Tariff tariff = tariffDAO.findTariffById(tId);
-            tariff.setTName(content.getRequestParameters().get("tName")[0]);
-            tariff.setConnectionPayment(Double.parseDouble(content.getRequestParameters().get("connectionPayment")[0]));
-            tariff.setDailyFee(Double.parseDouble(content.getRequestParameters().get("dailyFee")[0]));
-            if (content.getRequestParameters().get("trafficLimit")[0] != null) {
-                tariff.setTrafficLimit(Integer.parseInt(content.getRequestParameters().get("trafficLimit")[0]));
+            tariff.setTName(content.getRequestParameters().get(ParamName.T_NAME)[0]);
+            tariff.setConnectionPayment(Double.parseDouble(content.getRequestParameters().get(ParamName.CONNECTION_PAYMENT)[0]));
+            tariff.setDailyFee(Double.parseDouble(content.getRequestParameters().get(ParamName.DAILY_FEE)[0]));
+            if (content.getRequestParameters().get(ParamName.TRAFFIC_LIMIT)[0] != null) {
+                tariff.setTrafficLimit(Integer.parseInt(content.getRequestParameters().get(ParamName.TRAFFIC_LIMIT)[0]));
             } else {
                 tariff.setTrafficLimit(0);
             }
-            tariff.setSpeedIn(content.getRequestParameters().get("speedIn")[0]);
-            tariff.setSpeedOut(content.getRequestParameters().get("speedOut")[0]);
-            tariff.setOverrunFee(Double.parseDouble(content.getRequestParameters().get("overrunFee")[0]));
+            tariff.setSpeedIn(content.getRequestParameters().get(ParamName.SPEED_IN)[0]);
+            tariff.setSpeedOut(content.getRequestParameters().get(ParamName.SPEED_OUT)[0]);
+            tariff.setOverrunFee(Double.parseDouble(content.getRequestParameters().get(ParamName.OVERRUN_FEE)[0]));
             LOGGER.log(Level.DEBUG, "new tariff - " + tariff.toString());
             tariffDAO.update(tariff);
         } catch (ConnectionPoolException | DAOException e) {

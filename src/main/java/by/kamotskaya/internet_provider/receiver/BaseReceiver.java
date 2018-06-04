@@ -1,6 +1,7 @@
 package by.kamotskaya.internet_provider.receiver;
 
 import by.kamotskaya.internet_provider.command.CommandResult;
+import by.kamotskaya.internet_provider.constant.ParamName;
 import by.kamotskaya.internet_provider.controller.RequestContent;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -18,8 +19,8 @@ public class BaseReceiver {
         String locale = content.getRequestParameters().get("locale")[0];
         String pageUrl = content.getRequestParameters().get("previousPage")[0];
         pageUrl = pageUrl.substring(pageUrl.indexOf("jsp"));
-        content.putSessionAttribute("usLocale", locale);
-        content.putSessionAttribute("active_locale", locale);
+        content.putSessionAttribute(ParamName.US_LOCALE, locale);
+        content.putSessionAttribute(ParamName.ACTIVE_LOCALE, locale);
         LOGGER.log(Level.INFO, "Change the locale, pageUrl - " + pageUrl);
 
         return new CommandResult(CommandResult.ResponseType.FORWARD, pageUrl);

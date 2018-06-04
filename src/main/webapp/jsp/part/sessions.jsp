@@ -15,15 +15,8 @@
 </head>
 <body>
 <%@include file="header.jsp" %>
+<%@include file="menu.jsp" %>
 <div class="container">
-<c:choose>
-    <c:when test="${sessionScope.usRole eq 'admin'}">
-        <%@include file="admin_menu.jsp" %>
-    </c:when>
-    <c:otherwise>
-        <%@include file="menu.jsp" %>
-    </c:otherwise>
-</c:choose>
 <table class="table">
     <thead>
     <tr>

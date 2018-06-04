@@ -12,15 +12,7 @@
 <c:set var="imgRU" scope="page" value="${pageContext.request.contextPath}/img/ru_icon.png"/>
 <c:set var="imgEN" scope="page" value="${pageContext.request.contextPath}/img/en_icon.png"/>
 <c:set var="url" scope="page" value="${pageContext.request.requestURL}"/>
-<%--<c:set var="pagename" scope="page" value="${pageContext.request.servletContext.contextPath}"/>--%>
-<%--<c:choose>--%>
-<%--<c:when test="${sessionScope.userLocale eq 'en'}">--%>
-<%--<c:set var="curImg" value="${imgEN}"/>--%>
-<%--</c:when>--%>
-<%--<c:otherwise>--%>
-<%--<c:set var="curImg" value="${imgRU}"/>--%>
-<%--</c:otherwise>--%>
-<%--</c:choose>--%>
+
 <c:choose>
     <c:when test="${empty activeClass}">
         <c:set var="active_class" value="sign_in"/>
@@ -98,5 +90,3 @@
         </div>
     </div>
 </nav>
-<script>
-</script>

@@ -40,11 +40,10 @@
 <%@include file="part/header.jsp" %>
 <div class="container">
     <c:choose>
-        <c:when test="${sessionScope.usRole eq 'quest'}">
+        <c:when test="${sessionScope.usRole eq 'guest'}">
             <%@include file="sign_in.jsp" %>
         </c:when>
         <c:otherwise>
-            <%@include file="part/menu.jsp"%>
             <%@include file="part/general.jsp" %>
         </c:otherwise>
     </c:choose>

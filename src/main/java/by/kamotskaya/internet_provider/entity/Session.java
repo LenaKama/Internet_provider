@@ -3,6 +3,8 @@ package by.kamotskaya.internet_provider.entity;
 import java.util.Date;
 
 /**
+ * Entity class.
+ *
  * @author Lena Kamotskaya
  */
 public class Session extends Entity {
@@ -62,5 +64,44 @@ public class Session extends Entity {
 
     public void setUsLogin(String usLogin) {
         this.usLogin = usLogin;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Session session = (Session) o;
+
+        if (sessionId != session.sessionId) return false;
+        if (trafficIn != session.trafficIn) return false;
+        if (trafficOut != session.trafficOut) return false;
+        if (sessionStart != null ? !sessionStart.equals(session.sessionStart) : session.sessionStart != null)
+            return false;
+        if (sessionEnd != null ? !sessionEnd.equals(session.sessionEnd) : session.sessionEnd != null) return false;
+        return usLogin != null ? usLogin.equals(session.usLogin) : session.usLogin == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = sessionId;
+        result = 31 * result + (sessionStart != null ? sessionStart.hashCode() : 0);
+        result = 31 * result + (sessionEnd != null ? sessionEnd.hashCode() : 0);
+        result = 31 * result + trafficIn;
+        result = 31 * result + trafficOut;
+        result = 31 * result + (usLogin != null ? usLogin.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Session{" +
+                "sessionId=" + sessionId +
+                ", sessionStart=" + sessionStart +
+                ", sessionEnd=" + sessionEnd +
+                ", trafficIn=" + trafficIn +
+                ", trafficOut=" + trafficOut +
+                ", usLogin='" + usLogin + '\'' +
+                '}';
     }
 }

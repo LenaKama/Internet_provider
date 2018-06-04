@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Class provides data access methods for operations with users.
+ *
  * @author Lena Kamotskaya
  */
 public class UserDAO {
@@ -38,6 +40,12 @@ public class UserDAO {
 
     }
 
+    /**
+     * Adds a user in application base.
+     *
+     * @param user {@link User} entity object
+     * @throws DAOException
+     */
     public void add(User user) throws DAOException {
         try (ProxyConnection connection = connectionPool.takeConnection();
              PreparedStatement statement = connection.prepareStatement(ADD_NEW_CLIENT)) {
@@ -55,6 +63,12 @@ public class UserDAO {
         }
     }
 
+    /**
+     * Creates a list of admins from application base.
+     *
+     * @return {@link List} of {@link User} objects
+     * @throws DAOException
+     */
     public List<User> findAllAdmins() throws DAOException {
         List<User> admins = new ArrayList<>();
         try (ProxyConnection connection = connectionPool.takeConnection();
@@ -79,6 +93,12 @@ public class UserDAO {
         return admins;
     }
 
+    /**
+     * Creates a list of clients from application base.
+     *
+     * @return {@link List} of {@link User} objects
+     * @throws DAOException
+     */
     public List<User> findAllClients() throws DAOException {
         List<User> clients = new ArrayList<>();
         try (ProxyConnection connection = connectionPool.takeConnection();
@@ -103,6 +123,12 @@ public class UserDAO {
         return clients;
     }
 
+    /**
+     * Deletes a user from application base.
+     *
+     * @param usLogin login of user
+     * @throws DAOException
+     */
     public void delete(String usLogin) throws DAOException {
         try (ProxyConnection connection = connectionPool.takeConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_USER)) {
@@ -114,7 +140,9 @@ public class UserDAO {
     }
 
     /**
-     * @param user
+     * Updates a user in application base.
+     *
+     * @param user {@link User} object
      * @throws DAOException
      */
     public void update(User user) throws DAOException {
@@ -135,6 +163,13 @@ public class UserDAO {
         }
     }
 
+    /**
+     * Finds user's password.
+     *
+     * @param usLogin login of user
+     * @return string of password
+     * @throws DAOException
+     */
     public String findPasswordByLogin(String usLogin) throws DAOException {
         try (ProxyConnection connection = connectionPool.takeConnection();
              PreparedStatement statement = connection.prepareStatement(FIND_PASSWORD_BY_LOGIN)) {
@@ -150,6 +185,13 @@ public class UserDAO {
         }
     }
 
+    /**
+     * Creates user bean from application base.
+     *
+     * @param usLogin login of user
+     * @return {@link User} entity object
+     * @throws DAOException
+     */
     public User createUserBean(String usLogin) throws DAOException {
         User user = new User();
         try (ProxyConnection connection = connectionPool.takeConnection();
@@ -172,6 +214,13 @@ public class UserDAO {
         return user;
     }
 
+    /**
+     * Checks if there's such a login in application base.
+     *
+     * @param usLogin checking login
+     * @return {@code true} if login exists
+     * @throws DAOException
+     */
     public boolean checkLogin(String usLogin) throws DAOException {
         try (ProxyConnection connection = connectionPool.takeConnection();
              Statement statement = connection.createStatement()) {
@@ -187,6 +236,11 @@ public class UserDAO {
         return true;
     }
 
+    /**
+     * Creates a list of users' logins.
+     *
+     * @return {@link List} of {@link String} users' logins
+     */
     public List<String> findAllUsLogins() {
         List<String> usLogins = new ArrayList<>();
         try (ProxyConnection connection = connectionPool.takeConnection();

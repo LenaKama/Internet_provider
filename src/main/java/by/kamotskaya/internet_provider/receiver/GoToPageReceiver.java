@@ -20,7 +20,7 @@ public class GoToPageReceiver {
     public static CommandResult goToWelcomePage(RequestContent content) {
         content.putRequestAttribute(ParamName.ACTIVE_CLASS, "sign_in");
         try {
-            if (!content.getSessionAttributes().get(ParamName.US_ROLE).equals(ParamName.QUEST)) {
+            if (!content.getSessionAttributes().get(ParamName.US_ROLE).equals(ParamName.GUEST)) {
                 UserReceiver.loadGeneralUserInfo(content);
             }
         } catch (DAOException | ConnectionPoolException e) {
@@ -31,7 +31,7 @@ public class GoToPageReceiver {
     }
 
     public static CommandResult goToTariffs(RequestContent content) {
-         content.putRequestAttribute(ParamName.ACTIVE_CLASS, "tariffs");
+        content.putRequestAttribute(ParamName.ACTIVE_CLASS, "tariffs");
         try {
             TariffDAO tariffDAO = new TariffDAO();
             content.putRequestAttribute("tariffList", tariffDAO.findAllTariffs());
@@ -44,6 +44,16 @@ public class GoToPageReceiver {
 
     public static CommandResult goToHelp(RequestContent content) {
         content.putRequestAttribute(ParamName.ACTIVE_CLASS, "help");
+        String usLogin = String.valueOf(content.getSessionAttributes().get(ParamName.US_LOGIN));
+        try {
+            FeedbackDAO feedbackDAO = new FeedbackDAO();
+            List userFeedbacks = feedbackDAO.loadUserFeedbacks(usLogin);
+            Collections.reverse(userFeedbacks);
+            content.putRequestAttribute(ParamName.USER_FEEDBACKS, userFeedbacks);
+        } catch (DAOException | ConnectionPoolException e) {
+            content.putRequestAttribute(ParamName.ERROR_MESSAGE, "Error while loading user's information.");
+            return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.ERROR);
+        }
         return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.HELP);
     }
 
@@ -55,10 +65,13 @@ public class GoToPageReceiver {
     public static CommandResult goToTrafficStatus(RequestContent content) {
         content.putSessionAttribute(ParamName.ACTIVE_MENU, "traffic_status");
         String usLogin = String.valueOf(content.getSessionAttributes().get(ParamName.US_LOGIN));
+        User user = (User) content.getSessionAttributes().get(ParamName.USER);
         try {
             SessionDAO sessionDAO = new SessionDAO();
-            content.putSessionAttribute("trafficInStatus", sessionDAO.findTrafficInStatus(usLogin));
-            content.putRequestAttribute("trafficOutStatus", sessionDAO.findTrafficOutStatus(usLogin));
+            TariffDAO tariffDAO = new TariffDAO();
+            content.putRequestAttribute(ParamName.CURRENT_TARIFF, tariffDAO.findTariffById(user.getTId()));
+            content.putSessionAttribute(ParamName.TRAFFIC_IN_STATUS, sessionDAO.findTrafficInStatus(usLogin));
+            content.putRequestAttribute(ParamName.TRAFFIC_OUT_STATUS, sessionDAO.findTrafficOutStatus(usLogin));
         } catch (DAOException | ConnectionPoolException e) {
             content.putRequestAttribute(ParamName.ERROR_MESSAGE, "Error while loading traffic status.");
             return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.ERROR);
@@ -71,28 +84,21 @@ public class GoToPageReceiver {
         try {
             UserReceiver.loadGeneralUserInfo(content);
         } catch (DAOException | ConnectionPoolException e) {
-            content.putRequestAttribute("errorMessage", "Error while loading user's information.");
+            content.putRequestAttribute(ParamName.ERROR_MESSAGE, "Error while loading user's information.");
             return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.ERROR);
         }
         return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.WELCOME);
     }
 
     public static CommandResult goToMessages(RequestContent content) {
-        ////admin page
         content.putRequestAttribute(ParamName.ACTIVE_MENU, "messages");
-        String usLogin = String.valueOf(content.getSessionAttributes().get(ParamName.US_LOGIN));
         try {
             FeedbackDAO feedbackDAO = new FeedbackDAO();
-            /*
-            List userFeedbacks = feedbackDAO.loadUserFeedbacks(usLogin);
-            Collections.reverse(userFeedbacks);
-            content.putRequestAttribute(ParamName.USER_FEEDBACKS, userFeedbacks);
-            */
-            List unrepliedFeedbacks = feedbackDAO.loadUnrepliedFeedbacks(usLogin);
+            List unrepliedFeedbacks = feedbackDAO.loadUnrepliedFeedbacks();
             content.putRequestAttribute(ParamName.UNREPLIED_FEEDBACKS, unrepliedFeedbacks);
 
         } catch (DAOException | ConnectionPoolException e) {
-            content.putRequestAttribute("errorMessage", "Error while loading user's information.");
+            content.putRequestAttribute(ParamName.ERROR_MESSAGE, "Error while loading user's information.");
             return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.ERROR);
         }
         return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.MESSAGES);

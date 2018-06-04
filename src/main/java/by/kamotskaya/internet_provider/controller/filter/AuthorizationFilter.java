@@ -14,9 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import by.kamotskaya.internet_provider.constant.PagePath;
 import by.kamotskaya.internet_provider.constant.ParamName;
-import by.kamotskaya.internet_provider.dao.OpeningBalanceDAO;
-import by.kamotskaya.internet_provider.entity.User;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,10 +26,11 @@ import org.apache.logging.log4j.Logger;
  *
  * @author Pavel Sorokoletov
  */
-//@WebFilter
+@WebFilter(urlPatterns = { "/*" })
 public class AuthorizationFilter implements Filter {
 
     private static final Logger LOGGER = LogManager.getLogger(AuthorizationFilter.class);
+
     private final static String ERROR_DESTINATION_INIT_PARAMETER = "goto-auth-error-page";
     private final static String INDEX_PAGE = "index.jsp";
     private final static String AUTHORIZATION_ERROR_PAGE = "auth-error.jsp";
@@ -49,44 +49,27 @@ public class AuthorizationFilter implements Filter {
      * admins (admin mode).
      */
     private enum AdminCommand {
-        SHOW_MESSAGES, SHOW_CLIENTS, DELETE_USER, DELETE_TARIFF, UPDATE_TARIFF, ADD_SALE, REPLY_ON_FEEDBACK
+        SHOW_MESSAGES, SHOW_CLIENTS, DELETE_USER, DELETE_TARIFF, UPDATE_TARIFF, ADD_SALE, REPLY_ON_FEEDBACK, SHOW_TRAFFIC_STATUS, SHOW_SESSIONS, SHOW_TRANSACTIONS, SHOW_ACCOUNT_SETTINGS, RECHARGE_ACCOUNT, CHANGE_TARIFF, UPDATE_USER, LOG_OUT, SHOW_WELCOME_PAGE, SHOW_TARIFFS, SHOW_HELP, SHOW_ABOUT_US, ADD_FEEDBACK
     }
 
     /**
      * Contains {@code enum} commands-name constants, which are allowed for clients (client mode).
      */
     private enum ClientCommand {
+        SHOW_TRAFFIC_STATUS, SHOW_SESSIONS, SHOW_TRANSACTIONS, SHOW_ACCOUNT_SETTINGS, RECHARGE_ACCOUNT, CHANGE_TARIFF, UPDATE_USER, LOG_OUT, SHOW_WELCOME_PAGE, SHOW_TARIFFS, SHOW_HELP, SHOW_ABOUT_US, ADD_FEEDBACK
     }
-
-    /**
-     * Contains {@code enum} commands-name constants, which are allowed for
-     * both clients and admins.
-     */
-    private enum AuthenticatedUserCommand {
-        SHOW_TRAFFIC_STATUS, SHOW_SESSIONS, SHOW_TRANSACTIONS, SHOW_ACCOUNT_SETTINGS, RECHARGE_ACCOUNT, CHANGE_TARIFF, UPDATE_USER, LOG_OUT
-    }
-
-    /**
-     * Contains {@code enum} commands-name constants, which are allowed for
-     * all users of the site.
-     */
-    private enum BaseUserCommand {
-        SHOW_WELCOME_PAGE, SHOW_TARIFFS, SHOW_HELP, SHOW_ABOUT_US, ADD_FEEDBACK
-    }
-
-    private static String redirect_page;
-    private String gotoDestination;
 
     /**
      * Reads initialization value from WEB.XML file. If value is "yes", bad request
-     * will be redirected to specific error page. If value not "no" or missing,
+     * will be redirected to specific error page. If value is "no" or missing,
      * request redirects to the main page.
      */
     @Override
     public void init(FilterConfig fConfig) throws ServletException {
 
-        gotoDestination = fConfig.getInitParameter(ERROR_DESTINATION_INIT_PARAMETER);
-        redirect_page = ("yes".equals(gotoDestination)) ? AUTHORIZATION_ERROR_PAGE : INDEX_PAGE;
+        LOGGER.log(Level.DEBUG, "I'm in init in AuthorizationFilter");
+       // gotoDestination = fConfig.getInitParameter(ERROR_DESTINATION_INIT_PARAMETER);
+        //redirect_page = ("yes".equals(gotoDestination)) ? AUTHORIZATION_ERROR_PAGE : INDEX_PAGE;
     }
 
     /**
@@ -107,18 +90,21 @@ public class AuthorizationFilter implements Filter {
         HttpSession session = httpRequest.getSession(false);
         String command;
         boolean isValidCommand = false;
+        LOGGER.log(Level.DEBUG, "state -" + isValidCommand);
+
 
         if (httpRequest.getParameter(COMMAND_ATTRIBUTE) != null) {
             command = httpRequest.getParameter(COMMAND_ATTRIBUTE);
 
             if (session.getAttribute(ParamName.US_ROLE) != null) {
                 String usRole = (String) session.getAttribute(ParamName.US_ROLE);
-
                 try {
                     if (usRole.equals(ParamName.ADMIN)) {
                         AdminCommand.valueOf(command.toUpperCase());
-                    } else {
+                    } else if (usRole.equals(ParamName.CLIENT)) {
                         ClientCommand.valueOf(command.toUpperCase());
+                    } else {
+                        ValidGuestCommand.valueOf(command.toUpperCase());
                     }
                     isValidCommand = true;
                 } catch (IllegalArgumentException e) {
@@ -126,26 +112,24 @@ public class AuthorizationFilter implements Filter {
                             "Invalid user command:" + command + " in AuthorizationFilter");
                 }
 
-            } else
-                try {
-                    ValidGuestCommand.valueOf(command.toUpperCase());
-                    isValidCommand = true;
-                } catch (IllegalArgumentException e) {
-                    LOGGER.log(Level.DEBUG,
-                            "Invalid guest command:" + command + " in AuthorizationFilter");
-                }
+            } else {
+                LOGGER.log(Level.DEBUG,
+                        "Invalid command:" + command + " in AuthorizationFilter");
 
+            }
+        } else {
+            isValidCommand = true;
         }
 
+        LOGGER.log(Level.DEBUG, "state -" + isValidCommand);
         if (isValidCommand) {
             chain.doFilter(request, response);
         } else {
-            httpResponse.sendRedirect(redirect_page);
+            httpResponse.sendRedirect(PagePath.INDEX);
         }
     }
 
     public void destroy() {
-        gotoDestination = null;
     }
 
 }

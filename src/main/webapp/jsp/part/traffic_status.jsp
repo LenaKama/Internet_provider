@@ -16,22 +16,24 @@
 <body>
 <%@include file="header.jsp" %>
 <div class="container">
-<%@include file="menu.jsp"%>
-    <label class="label-default text-center" style="background-color: rgba(5, 250, 224, 0.5);"><fmt:message key="traffic_status.uploaded" bundle="${loc}"/></label>
-<div class="progress">
-    <div class="progress-bar" role="progressbar" aria-valuenow="${trafficInStatus}"
-         aria-valuemin="0" aria-valuemax="2000" style="width:70%">
-        ${trafficInStatus}
+    <%@include file="menu.jsp" %>
+    <label class="label-default text-center" style="background-color: rgba(5, 250, 224, 0.5);"><fmt:message
+            key="traffic_status.uploaded" bundle="${loc}"/></label>
+    <div class="progress">
+        <div class="progress-bar" role="progressbar" aria-valuenow="${trafficInStatus}"
+             aria-valuemin="0" aria-valuemax="${currentTariff.trafficLimit}" style="width:70%">
+            ${trafficInStatus}
+        </div>
     </div>
-</div>
-<label class="text-center" style="background-color: rgba(5, 250, 224, 0.5);"><fmt:message key="traffic_status.downloaded" bundle="${loc}"/></label>
-<div class="progress">
-    <div class="progress-bar" role="progressbar" aria-valuenow="${trafficOutStatus}"
-         aria-valuemin="0" aria-valuemax="2000" style="width:70%">
-        ${trafficOutStatus}
+    <label class="text-center" style="background-color: rgba(5, 250, 224, 0.5);"><fmt:message
+            key="traffic_status.downloaded" bundle="${loc}"/></label>
+    <div class="progress">
+        <div class="progress-bar" role="progressbar" aria-valuenow="${trafficOutStatus}"
+             aria-valuemin="0" aria-valuemax="${currentTariff.trafficLimit}" style="width:70%">
+            ${trafficOutStatus}
+        </div>
     </div>
-</div>
-    <%@include file="../fragment/footer.jspf"%>
+    <%@include file="../fragment/footer.jspf" %>
 </div>
 </body>
 </html>

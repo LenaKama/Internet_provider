@@ -41,7 +41,7 @@ public class ParamName {
 
     public static final String WELCOME_LOCALE = "welcomeLocale";
     public static final String ERROR_MESSAGE = "errorMessage";
-    public static final Object QUEST = "quest";
+    public static final Object GUEST = "guest";
     public static final Object CLIENT = "client";
     public static final Object ADMIN = "admin";
     public static final String ERROR_TRACE = "errorTrace";
@@ -52,6 +52,7 @@ public class ParamName {
     public static final String ACTIVE_LOCALE = "activeLocale";
     public static final String CURRENT_SESSION = "currentSession";
 
+    public static final String F_ID = "f_id";
     public static final String F_NAME = "fName";
     public static final String F_EMAIL = "fEmail";
     public static final String F_MESSAGE = "fMessage";
@@ -62,6 +63,7 @@ public class ParamName {
     public static final String CURRENT_TARIFF = "currentTariff";
     public static final String WRONG_USER_CREDENTIALS = "wrongUserCredentials";
 
+    public static final String T_ID = "tId";
     public static final String T_NAME = "tName";
     public static final String CONNECTION_PAYMENT = "connectionPayment";
     public static final String DAILY_FEE = "dailyFee";
@@ -69,6 +71,15 @@ public class ParamName {
     public static final String SPEED_OUT = "speedIn";
     public static final String SPEED_IN = "speedOut";
     public static final String OVERRUN_FEE = "overrunFee";
+    public static final String SALE_PERCENT = "salePercent";
+    public static final String SALE_EXPIRATION_DATE = "saleExpirationDate";
+
+    public static final String SESSION_ID = "sessionID";
+
+
+    public static final String TRAFFIC_IN_STATUS = "trafficInStatus";
+    public static final String TRAFFIC_OUT_STATUS = "trafficOutStatus";
+
 
     public static int FIRST_MONTH_DAY = 1;
 }

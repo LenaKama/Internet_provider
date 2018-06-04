@@ -5,6 +5,7 @@ package by.kamotskaya.internet_provider.constant;
  */
 public class PagePath {
 
+    public static final String INDEX = "index.jsp";
     public static final String WELCOME = "jsp/welcome.jsp";
     public static final String SIGN_IN = "jsp/sign_in.jsp";
     public static final String TARIFFS = "jsp/tariffs.jsp";

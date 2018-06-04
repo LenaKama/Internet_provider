@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Class provides data access methods for operations with tariffs.
+ *
  * @author Lena Kamotskaya
  */
 public class TariffDAO {
@@ -24,9 +26,6 @@ public class TariffDAO {
     private final static String DELETE_TARIFF = "DELETE FROM tariff WHERE t_id = ?";
     private final static String FIND_TARIFF_BY_ID = "SELECT * FROM tariff where t_id = ?";
     private final static String SELECT_ALL = "SELECT * FROM tariff";
-   public final static String ADD_SALE = "ALTER TABLE tariff SET sale_percent = ? SET sale_expiration_date = ? SET daily_fee = ? WHERE t_id = ?";
-    private final static String FIND_DAILY_FEE = "SELECT daily_fee FROM tariff WHERE t_id = ?";
-    private final static String FIND_OVERRUN_FEE = "SELECT overrun_fee FROM tariff WHERE t_id = ?";
 
     private final ConnectionPool connectionPool;
 
@@ -34,6 +33,12 @@ public class TariffDAO {
         connectionPool = ConnectionPool.getInstance();
     }
 
+    /**
+     * Adds new tariff in application base.
+     *
+     * @param tariff {@link Tariff} entity object for adding
+     * @throws DAOException
+     */
     public void add(Tariff tariff) throws DAOException {
         try (ProxyConnection connection = connectionPool.takeConnection();
              PreparedStatement statement = connection.prepareStatement(ADD_NEW_TARIFF)) {
@@ -50,6 +55,12 @@ public class TariffDAO {
         }
     }
 
+    /**
+     * Deletes tariff from application base.
+     *
+     * @param tId id of tariff
+     * @throws DAOException
+     */
     public void delete(int tId) throws DAOException {
         try (ProxyConnection connection = connectionPool.takeConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_TARIFF)) {
@@ -60,6 +71,12 @@ public class TariffDAO {
         }
     }
 
+    /**
+     * Updates tariff in application base.
+     *
+     * @param tariff {@link Tariff} entity object
+     * @throws DAOException
+     */
     public void update(Tariff tariff) throws DAOException {
         try (ProxyConnection connection = connectionPool.takeConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATE_TARIFF)) {
@@ -79,6 +96,12 @@ public class TariffDAO {
         }
     }
 
+    /**
+     * Creates list of tariffs in application base.
+     *
+     * @return {@link List} of {@link Tariff} objects
+     * @throws DAOException
+     */
     public List<Tariff> findAllTariffs() throws DAOException {
         List<Tariff> tariffs = new ArrayList<>();
         try (ProxyConnection connection = connectionPool.takeConnection();
@@ -104,6 +127,13 @@ public class TariffDAO {
         return tariffs;
     }
 
+    /**
+     * Creates tariff entity object.
+     *
+     * @param tId id of tariff
+     * @return {@link Tariff} object
+     * @throws DAOException
+     */
     public Tariff findTariffById(int tId) throws DAOException {
         Tariff tariff = new Tariff();
         try (ProxyConnection connection = connectionPool.takeConnection();

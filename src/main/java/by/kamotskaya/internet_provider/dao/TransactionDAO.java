@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Class provides data access methods for operations with transactions.
+ *
  * @author Lena Kamotskaya
  */
 public class TransactionDAO {
@@ -33,6 +35,12 @@ public class TransactionDAO {
         connectionPool = ConnectionPool.getInstance();
     }
 
+    /**
+     * Adds transaction in application base.
+     *
+     * @param transaction {@link Transaction} object for adding
+     * @throws DAOException
+     */
     public void add(Transaction transaction) throws DAOException {
         try (ProxyConnection connection = connectionPool.takeConnection()) {
             PreparedStatement statement = connection.prepareStatement(ADD_NEW_TRANSACTION);
@@ -45,6 +53,13 @@ public class TransactionDAO {
         }
     }
 
+    /**
+     * Creates a list of all user's transactions.
+     *
+     * @param usLogin PK in user table
+     * @return {@link List} of {@link Transaction} objects
+     * @throws DAOException
+     */
     public List<Transaction> createTransactionList(String usLogin) throws DAOException {
         List<Transaction> transactions = new ArrayList<>();
         try (ProxyConnection connection = connectionPool.takeConnection();
@@ -64,20 +79,38 @@ public class TransactionDAO {
         return transactions;
     }
 
+    /**
+     * Calculates current balance of user.
+     *
+     * @param usLogin PK in user table
+     * @param openingBalance value of user's balance at the beginning of month
+     * @return value of current balance
+     * @throws DAOException
+     */
     public Double findCurrentBalance(String usLogin, double openingBalance) throws DAOException {
         Double curBalance;
         try (ProxyConnection connection = connectionPool.takeConnection();
              PreparedStatement statement = connection.prepareStatement(FIND_THIS_MONTH_TRANSACTIONS)) {
             statement.setString(1, usLogin);
             ResultSet resultSet = statement.executeQuery();
-            resultSet.next();
-            curBalance = openingBalance + resultSet.getDouble(1);
-        } catch (SQLException e) {
-            throw new DAOException("Exception from TransactionDAO", e);
+            if (resultSet.next()) {
+                curBalance = openingBalance + resultSet.getDouble(1);
+            } else {
+                curBalance = openingBalance;
+            }
+        } catch(SQLException e){
+                throw new DAOException("Exception from TransactionDAO", e);
+            }
+            return curBalance;
         }
-        return curBalance;
-    }
 
+    /**
+     * Checks if there's a today's transaction with message 'Daily fee'.
+     *
+     * @param usLogin PK in user table
+     * @return {@code true} if there is a transaction
+     * @throws DAOException
+     */
     public boolean checkTransaction(String usLogin) throws DAOException {
         try (ProxyConnection connection = connectionPool.takeConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_DAILY_TRANSACTIONS)) {

@@ -43,13 +43,13 @@ public class ConnectionPool {
 
     }
 
-    public static ConnectionPool getInstance() throws ConnectionPoolException {
+    public static ConnectionPool getInstance() {
         if (!instanceCreated.get()) {
             instanceLock.lock();
             try {
                 if (instance == null) {
                     instance = new ConnectionPool();
-                   // initializeConnectionPool();
+                    // initializeConnectionPool();
                     instanceCreated.compareAndSet(false, true);
                 }
             } finally {
@@ -91,11 +91,7 @@ public class ConnectionPool {
             }
 
         } catch (SQLException e) {
-            throw new ConnectionPoolException("SQLException", e);
-			/*
-			 * } catch (ClassNotFoundException e) { throw new
-			 * ConnectionPoolException("Can't find database driver class.", e);
-			 */
+            LOGGER.log(Level.ERROR, "SQLException in ConnectionPool", e);
         }
         LOGGER.log(Level.INFO, "ConnectionPool is initialized.");
     }
@@ -110,27 +106,32 @@ public class ConnectionPool {
         connectionLock.unlock();
         return connection;
     }
-/////////??????????
+
     static void releaseConnection(ProxyConnection connection) throws SQLException {
+        connectionLock.lock();
         if (!connection.getAutoCommit()) {
             connection.setAutoCommit(true);
         }
         freeConnections.add(busyConnections.poll());
+        connectionLock.unlock();
     }
 
-    public void destroyConnectionPool() throws SQLException, ConnectionPoolException {
-        //check if all connections return to the freeConnections
-        //locking while polling from freeConnections
-        for (int i = 0; i < poolSize; i++) {
-            freeConnections.poll().close();
-        }
+    public void destroyConnectionPool() throws ConnectionPoolException {
         try {
+            if (freeConnections.size() == poolSize) {
+            for (int i = 0; i < poolSize; i++) {
+                connectionLock.lock();
+                freeConnections.poll().closeConnection();
+                connectionLock.unlock();
+            }
+        }
             Enumeration<Driver> drivers = DriverManager.getDrivers();
             while (drivers.hasMoreElements()) {
                 Driver driver = drivers.nextElement();
                 DriverManager.deregisterDriver(driver);
             }
         } catch (SQLException e) {
+            LOGGER.log(Level.ERROR, "SQLException in ConnectionPool");
             throw new ConnectionPoolException("Exception from ConnectionPool.", e);
         }
     }
@@ -140,4 +141,11 @@ public class ConnectionPool {
         throw new CloneNotSupportedException("Cannot clone the ConnectionPool");
     }
 
+    static int getFreeConnectionsSize() {
+        return freeConnections.size();
+    }
+
+    static int getBusyConnectionsSize() {
+        return busyConnections.size();
+    }
 }

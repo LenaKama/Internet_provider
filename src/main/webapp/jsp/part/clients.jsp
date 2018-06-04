@@ -28,7 +28,7 @@
 <body>
 <%@include file="header.jsp" %>
 <div class="container">
-    <%@include file="admin_menu.jsp"%>
+    <%@include file="menu.jsp"%>
 <div class="panel-group">
     <c:forEach items="${requestScope.clients}" var="client" varStatus="theCount">
     <div class="panel panel-default">

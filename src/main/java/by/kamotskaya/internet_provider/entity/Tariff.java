@@ -3,6 +3,8 @@ package by.kamotskaya.internet_provider.entity;
 import java.sql.Date;
 
 /**
+ * Entity class.
+ *
  * @author Lena Kamotskaya
  */
 public class Tariff extends Entity{
@@ -108,6 +110,45 @@ public class Tariff extends Entity{
 
     public int getSalePercent() {
         return salePercent;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Tariff tariff = (Tariff) o;
+
+        if (tId != tariff.tId) return false;
+        if (Double.compare(tariff.connectionPayment, connectionPayment) != 0) return false;
+        if (Double.compare(tariff.dailyFee, dailyFee) != 0) return false;
+        if (trafficLimit != tariff.trafficLimit) return false;
+        if (Double.compare(tariff.overrunFee, overrunFee) != 0) return false;
+        if (salePercent != tariff.salePercent) return false;
+        if (tName != null ? !tName.equals(tariff.tName) : tariff.tName != null) return false;
+        if (speedIn != null ? !speedIn.equals(tariff.speedIn) : tariff.speedIn != null) return false;
+        if (speedOut != null ? !speedOut.equals(tariff.speedOut) : tariff.speedOut != null) return false;
+        return saleExpirationDate != null ? saleExpirationDate.equals(tariff.saleExpirationDate) : tariff.saleExpirationDate == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = tId;
+        result = 31 * result + (tName != null ? tName.hashCode() : 0);
+        temp = Double.doubleToLongBits(connectionPayment);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(dailyFee);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + trafficLimit;
+        result = 31 * result + (speedIn != null ? speedIn.hashCode() : 0);
+        result = 31 * result + (speedOut != null ? speedOut.hashCode() : 0);
+        temp = Double.doubleToLongBits(overrunFee);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + salePercent;
+        result = 31 * result + (saleExpirationDate != null ? saleExpirationDate.hashCode() : 0);
+        return result;
     }
 
     @Override
