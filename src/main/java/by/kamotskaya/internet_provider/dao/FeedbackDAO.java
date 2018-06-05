@@ -62,20 +62,24 @@ public class FeedbackDAO {
      * @return {@link List} of {@link Feedback} objects
      * @throws DAOException
      */
-    public List<Feedback> loadRepliedbacks() throws DAOException {
+    public List<Feedback> loadRepliedFeedbacks() throws DAOException {
         List<Feedback> feedbacks = new ArrayList<>();
         try (ProxyConnection connection = connectionPool.takeConnection();
              Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(SELECT_REPLIED_FEEDBACKS);
-            while (resultSet.next()) {
-                Feedback feedback = new Feedback();
-                feedback.setfId(resultSet.getInt(ParamName.F_ID));
-                feedback.setfName(resultSet.getString(ParamName.F_NAME));
-                feedback.setfEmail(resultSet.getString(ParamName.F_EMAIL));
-                feedback.setfMessage(resultSet.getString(ParamName.F_MESSAGE));
-                feedback.setfAnswer(resultSet.getString(ParamName.F_ANSWER));
-                feedback.setUsLogin(resultSet.getString(ParamName.US_LOGIN));
-                feedbacks.add(feedback);
+            if (resultSet.next()) {
+                while (resultSet.next()) {
+                    Feedback feedback = new Feedback();
+                    feedback.setfId(resultSet.getInt("f_id"));
+                    feedback.setfName(resultSet.getString("f_name"));
+                    feedback.setfEmail(resultSet.getString("f_email"));
+                    feedback.setfMessage(resultSet.getString("f_message"));
+                    feedback.setfAnswer(resultSet.getString("f_answer"));
+                    feedback.setUsLogin(resultSet.getString("us_login"));
+                    feedbacks.add(feedback);
+                }
+            } else {
+                System.out.println("no replied");
             }
         } catch (SQLException e) {
             throw new DAOException("Exception from FeedbackDAO:", e);

@@ -3,11 +3,13 @@ package by.kamotskaya.internet_provider.command;
 import by.kamotskaya.internet_provider.receiver.*;
 
 /**
+ * Enum that contains commands names and the relevant methods for each command.
+ *
  * @author Lena Kamotskaya
  */
 public enum CommandType {
 
-    CHANGE_LOCALE(BaseReceiver::changeLocale),
+    CHANGE_LOCALE(UserReceiver::changeLocale),
     SHOW_WELCOME_PAGE(GoToPageReceiver::goToWelcomePage),
     SHOW_TARIFFS(GoToPageReceiver::goToTariffs),
     SHOW_HELP(GoToPageReceiver::goToHelp),

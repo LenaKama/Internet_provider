@@ -24,16 +24,13 @@ import org.apache.logging.log4j.Logger;
  * Filters requests to the main servlet-Controller, not allowing
  * access to resources that must be available only to authorized users.
  *
- * @author Pavel Sorokoletov
+ * @author Lena Kamotskaya
  */
 @WebFilter(urlPatterns = { "/*" })
 public class AuthorizationFilter implements Filter {
 
     private static final Logger LOGGER = LogManager.getLogger(AuthorizationFilter.class);
 
-    private final static String ERROR_DESTINATION_INIT_PARAMETER = "goto-auth-error-page";
-    private final static String INDEX_PAGE = "index.jsp";
-    private final static String AUTHORIZATION_ERROR_PAGE = "auth-error.jsp";
     private final static String COMMAND_ATTRIBUTE = "command";
 
     /**
@@ -41,7 +38,7 @@ public class AuthorizationFilter implements Filter {
      * unauthorized users (guest mode).
      */
     private enum ValidGuestCommand {
-        AUTHENTICATE, REGISTER, SHOW_WELCOME_PAGE, SHOW_TARIFFS, SHOW_HELP, SHOW_ABOUT_US
+        CHANGE_LOCALE, AUTHENTICATE, REGISTER, SHOW_WELCOME_PAGE, SHOW_TARIFFS, SHOW_HELP, SHOW_ABOUT_US
     }
 
     /**
@@ -49,38 +46,30 @@ public class AuthorizationFilter implements Filter {
      * admins (admin mode).
      */
     private enum AdminCommand {
-        SHOW_MESSAGES, SHOW_CLIENTS, DELETE_USER, DELETE_TARIFF, UPDATE_TARIFF, ADD_SALE, REPLY_ON_FEEDBACK, SHOW_TRAFFIC_STATUS, SHOW_SESSIONS, SHOW_TRANSACTIONS, SHOW_ACCOUNT_SETTINGS, RECHARGE_ACCOUNT, CHANGE_TARIFF, UPDATE_USER, LOG_OUT, SHOW_WELCOME_PAGE, SHOW_TARIFFS, SHOW_HELP, SHOW_ABOUT_US, ADD_FEEDBACK
+        CHANGE_LOCALE, SHOW_MESSAGES, SHOW_CLIENTS, DELETE_USER, DELETE_TARIFF, UPDATE_TARIFF, ADD_SALE, REPLY_ON_FEEDBACK, SHOW_TRAFFIC_STATUS, SHOW_SESSIONS, SHOW_TRANSACTIONS, SHOW_ACCOUNT_SETTINGS, RECHARGE_ACCOUNT, CHANGE_TARIFF, UPDATE_USER, LOG_OUT, SHOW_WELCOME_PAGE, SHOW_TARIFFS, SHOW_HELP, SHOW_ABOUT_US, ADD_FEEDBACK
     }
 
     /**
      * Contains {@code enum} commands-name constants, which are allowed for clients (client mode).
      */
     private enum ClientCommand {
-        SHOW_TRAFFIC_STATUS, SHOW_SESSIONS, SHOW_TRANSACTIONS, SHOW_ACCOUNT_SETTINGS, RECHARGE_ACCOUNT, CHANGE_TARIFF, UPDATE_USER, LOG_OUT, SHOW_WELCOME_PAGE, SHOW_TARIFFS, SHOW_HELP, SHOW_ABOUT_US, ADD_FEEDBACK
+        CHANGE_LOCALE, SHOW_TRAFFIC_STATUS, SHOW_SESSIONS, SHOW_TRANSACTIONS, SHOW_ACCOUNT_SETTINGS, RECHARGE_ACCOUNT, CHANGE_TARIFF, UPDATE_USER, LOG_OUT, SHOW_WELCOME_PAGE, SHOW_TARIFFS, SHOW_HELP, SHOW_ABOUT_US, ADD_FEEDBACK
     }
 
-    /**
-     * Reads initialization value from WEB.XML file. If value is "yes", bad request
-     * will be redirected to specific error page. If value is "no" or missing,
-     * request redirects to the main page.
-     */
     @Override
     public void init(FilterConfig fConfig) throws ServletException {
 
         LOGGER.log(Level.DEBUG, "I'm in init in AuthorizationFilter");
-       // gotoDestination = fConfig.getInitParameter(ERROR_DESTINATION_INIT_PARAMETER);
-        //redirect_page = ("yes".equals(gotoDestination)) ? AUTHORIZATION_ERROR_PAGE : INDEX_PAGE;
     }
 
     /**
-     * Performs filtering of commands
+     * Performs filtering of commands.
      *
      * @param request  {@link ServletRequest}
      * @param response {@link ServletResponse}
      * @param chain    {@link FilterChain}
      * @throws IOException, ServletException
      */
-
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
@@ -90,7 +79,6 @@ public class AuthorizationFilter implements Filter {
         HttpSession session = httpRequest.getSession(false);
         String command;
         boolean isValidCommand = false;
-        LOGGER.log(Level.DEBUG, "state -" + isValidCommand);
 
 
         if (httpRequest.getParameter(COMMAND_ATTRIBUTE) != null) {
@@ -121,7 +109,6 @@ public class AuthorizationFilter implements Filter {
             isValidCommand = true;
         }
 
-        LOGGER.log(Level.DEBUG, "state -" + isValidCommand);
         if (isValidCommand) {
             chain.doFilter(request, response);
         } else {

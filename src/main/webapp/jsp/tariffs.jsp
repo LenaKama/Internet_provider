@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="ctg" uri="customtags" %>
 <html>
 <head>
     <%@include file="part/bundle.jsp" %>
@@ -21,9 +22,10 @@
 <%@include file="part/header.jsp" %>
 
 <div class="container">
-    <div class="form-group text-center text-bold">
+    <div class="form-group text-center" style="font-weight: bold;font-size: 20px;">
         <fmt:message key="tariffs.heading" bundle="${loc}"/>
     </div>
+    <div class="form-group text-center">
     <c:if test="${sessionScope.usRole eq 'admin'}">
         <button id="add_tariff_button" class="btn btn-info btn-group-lg">
             <fmt:message key="tariffs.button.add_new_tariff" bundle="${loc}"/>
@@ -57,11 +59,11 @@
                                 <input type="text" class="form-control" id="dailyFee" name="dailyFee">
                             </div>
                                 <%--limit--%>
-                            <div class="radio-inline">
-                                <input type="radio" id="limited_tariff" name="tariffType" value="limit"/>
-                                    <fmt:message key="tariff.limited" bundle="${loc}"/>
+                            <div class="radio">
+                                <input type="radio" id="limited_tariff" name="tariffType" value="limit" checked/>
+                                <fmt:message key="tariff.limited" bundle="${loc}"/>
                                 <input type="radio" id="unlimited_tariff" name="tariffType" value="unlimit"/>
-                                    <fmt:message key="tariff.unlimited" bundle="${loc}"/>
+                                <fmt:message key="tariff.unlimited" bundle="${loc}"/>
                             </div>
                             <div class="form-group">
                                 <label for="trafficLimit">
@@ -84,20 +86,19 @@
                             <button type="submit" class="btn btn-info btn-block"><span
                                     class="glyphicon glyphicon-off"></span>
                                 <fmt:message key="tariffs.button.add_new_tariff" bundle="${loc}"/></button>
-                            </button>
                         </form>
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal">
-                            <span class="glyphicon glyphicon-remove"></span> Cancel
+                            <span class="glyphicon glyphicon-remove"></span>
+                            <fmt:message key="form.button.cancel" bundle="${loc}"/>
                         </button>
-                        <p>Not a member? <a href="#">Sign Up</a></p>
-                        <p>Forgot <a href="#">Password?</a></p>
                     </div>
                 </div>
             </div>
         </div>
     </c:if>
+    </div>
     <ul class="nav nav-tabs nav-justified" role="tablist">
         <li class="nav-item active">
             <a class="nav-link" href="#limited" data-toggle="tab" role="tab">
@@ -124,15 +125,11 @@
             </c:forEach>
         </div>
     </div>
-    <div class="bottom-static">
-        <%@include file="fragment/footer.jspf" %>
-    </div>
 </div>
+<%@include file="part/footer.jspf" %>
 
 <script src="../js/bootstrap/jquery.min.js"></script>
 <script src="../js/bootstrap/bootstrap.min.js"></script>
-<script src="../js/ajax.js"></script>
-<script src="../js/carousel.js"></script>
 <script src="../js/script.js"></script>
 
 <script>
@@ -149,16 +146,6 @@
             $('#overrunFee').attr('disabled', true);
         }
     });
-    /*
-    $("#limited_tariff").click(function () {
-        $('#trafficLimit').attr('disabled', true);
-        $('#overrunFee').attr('disabled', true);
-    });
-    $("#unlimited_tariff").click(function () {
-        $('#trafficLimit').attr('disabled', false);
-        $('#overrunFee').attr('disabled', false);
-    });
-    */
     function changeTariff(tId) {
         if (confirm('Are you sure you want to change your tariff?')) {
             alert("Done");

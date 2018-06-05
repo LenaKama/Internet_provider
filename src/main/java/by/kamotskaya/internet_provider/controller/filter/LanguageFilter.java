@@ -29,8 +29,6 @@ public class LanguageFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) {
-
-        LOGGER.log(Level.DEBUG, "I'm in init in LanguageFilter");
         locale = filterConfig.getInitParameter(PARAM_NAME);
     }
 

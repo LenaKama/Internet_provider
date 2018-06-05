@@ -18,6 +18,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
+ * Pool for database connections.
+ *
  * @author Lena Kamotskaya
  */
 public class ConnectionPool {

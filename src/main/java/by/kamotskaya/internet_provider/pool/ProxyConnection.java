@@ -11,6 +11,7 @@ import java.util.concurrent.Executor;
 import static by.kamotskaya.internet_provider.pool.ConnectionPool.releaseConnection;
 
 /**
+ * Class for 
  * @author Lena Kamotskaya
  */
 public class ProxyConnection implements Connection {

@@ -1,5 +1,5 @@
 /**
- * Created by Администратор on 10.05.2018.
+ * @author Lena Kamotskaya
  */
 $("#feedback_button").click(function () {
     $("#feedback").slideToggle();
@@ -8,29 +8,13 @@ $('#register_button').click(function () {
     document.getElementById("sign_form").style.display = 'none';
     document.getElementById("registration_form").style.display = "block";
 });
-function checkUsLogin(usLogin){
-    $.get("AjaxHandler", {"checkLogin":usLogin, "command":"checkLogin"}, function (responseText) {
-        if (responseText === "false") {
-            document.getElementById("errorLogin").style.display = 'block';
-            document.getElementById("submit_registration").setAttribute("disabled", "")
-        } else {
-            document.getElementById("errorLogin").style.display = 'none';
-            document.getElementById("submit_registration").removeAttribute("disabled");
-        }
-    });
-}
-function checkPasswords() {
-    var pass1 = document.getElementById('usPassword');
-    var pass2 = document.getElementById('usPassword_repeat');
-    if (pass1.value != pass2.value) {
-        document.getElementById("submit_registration").setAttribute("disabled", "");
-    } else {
-        document.getElementById("submit_registration").removeAttribute("disabled");
-    }
-
-}
 $('#charge_button').click(function () {
     document.getElementById("payment_form").style.display = 'block';
+});
+$('.info-field').click(function () {
+    $('#saveButton').removeAttr("disabled");
+    $(this).hide();
+    $(this).closest('.field').children('.edit-field').show();
 });
 //
 // $("#feedback_button").click(function() {
@@ -54,7 +38,6 @@ document.onkeydown = function(){
 };
 
 function show(form1, form2) {
-    //document.getElementById("transfer_form").style.display = 'none';
     document.getElementById("transfer_form").style.display = 'block';
     document.getElementById(form1).style.display = 'block';
     document.getElementById(form2).style.display = 'none';
@@ -86,3 +69,24 @@ function showReplyForm(val) {
     }
 }
 
+function checkUsLogin(usLogin){
+    $.get("AjaxHandler", {"checkLogin":usLogin, "command":"checkLogin"}, function (responseText) {
+        if (responseText === "false") {
+            document.getElementById("errorLogin").style.display = 'block';
+            document.getElementById("submit_registration").setAttribute("disabled", "")
+        } else {
+            document.getElementById("errorLogin").style.display = 'none';
+            document.getElementById("submit_registration").removeAttribute("disabled");
+        }
+    });
+}
+function checkPasswords() {
+    var pass1 = document.getElementById('usPassword');
+    var pass2 = document.getElementById('usPassword_repeat');
+    if (pass1.value != pass2.value) {
+        document.getElementById("submit_registration").setAttribute("disabled", "");
+    } else {
+        document.getElementById("submit_registration").removeAttribute("disabled");
+    }
+
+}

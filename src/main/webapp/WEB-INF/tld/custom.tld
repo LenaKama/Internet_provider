@@ -8,15 +8,15 @@
     <tlib-version>1.0</tlib-version>
     <short-name>ctg</short-name>
     <uri>customtags</uri>
-    <tag>
-        <name>info-time</name>
-        <tag-class>by.kamotskaya.internet_provider.tag.TimeTag</tag-class>
-        <body-content>empty</body-content>
-    </tag>
 
     <tag>
-    <name>hello</name>
-    <tag-class>by.kamotskaya.internet_provider.tag.RoleTag</tag-class>
+    <name>error</name>
+    <tag-class>by.kamotskaya.internet_provider.tag.ErrorMessageTag</tag-class>
     <body-content>empty</body-content>
+        <attribute>
+            <name>message</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
     </tag>
 </taglib>

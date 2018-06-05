@@ -20,13 +20,13 @@
 <body>
 <%@include file="part/header.jsp" %>
 <div class="container">
+    <div class="about-us text-center form-group">
+        <fmt:message key="page.about_us.slogan" bundle="${loc}"/>
+    </div>
     <form action="/Controller" method="post">
         <input type="hidden" name="command" value="show_welcome_page"/>
         <input class="imgLogo" type="image" src="${imgLogo}" onclick="$(this).parent('form').submit()"/>
     </form>
-    <div class="about-us text-center form-group">
-        <fmt:message key="page.about_us.slogan" bundle="${loc}"/>
-    </div>
     <div class="form-group center-block" style="margin: 30px">
         <fmt:message key="page.about_us.info" bundle="${loc}"/>
     </div>
@@ -35,9 +35,6 @@
         <button class="btn btn-primary" type="submit">
             <fmt:message key="about_us.button.want_to_connect" bundle="${loc}"/></button>
     </form>
-    <div class="our-contacts">
-        <fmt:message key="about_us.contacts" bundle="${loc}"/>
-    </div>
 </div>
 </body>
 </html>

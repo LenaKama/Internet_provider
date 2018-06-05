@@ -3,6 +3,8 @@ package by.kamotskaya.internet_provider.exception;
 import java.sql.SQLException;
 
 /**
+ * Class for exceptions from DBResourceManager.
+ *
  * @author Lena Kamotskaya
  */
 public class DBResourceManagerException extends SQLException {

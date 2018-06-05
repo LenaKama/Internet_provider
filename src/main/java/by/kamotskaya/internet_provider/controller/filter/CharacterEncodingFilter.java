@@ -10,6 +10,8 @@ import javax.servlet.annotation.WebInitParam;
 import java.io.IOException;
 
 /**
+ * Filter for setting unified character encoding for requests.
+ *
  * @author Lena Kamotskaya
  */
 @WebFilter(urlPatterns = { "/*" },
@@ -24,7 +26,6 @@ public class CharacterEncodingFilter implements Filter{
 
         @Override
         public void init(FilterConfig filterConfig) throws ServletException {
-            LOGGER.log(Level.DEBUG, "I'm in init in CharacterFilter");
             code = filterConfig.getInitParameter(PARAM_ENCODING);
         }
 

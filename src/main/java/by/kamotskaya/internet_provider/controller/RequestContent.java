@@ -4,6 +4,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 /**
+ * Class for keeping content of requests.
+ *
  * @author Lena Kamotskaya
  */
 public class RequestContent {
@@ -32,6 +34,12 @@ public class RequestContent {
         sessionAttributes.put(name, value);
     }
 
+    /**
+     * Updates giving request while setting attributes.
+     *
+     * @param request {@link HttpServletRequest}
+     * @return {@link HttpServletRequest} updated request
+     */
     HttpServletRequest update(HttpServletRequest request) {
         requestAttributes.forEach((name, value) -> request.setAttribute(name, value));
         sessionAttributes.forEach((name, value) -> request.getSession().setAttribute(name, value));

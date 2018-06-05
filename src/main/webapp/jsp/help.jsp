@@ -31,26 +31,18 @@
                 <div class="panel-heading">
                     <label class="form-group label-info text-left"><c:out value="${userFeedback.fName}"/></label>
                     <label class="form-group text-muted" style="display: inline-block;">
-                        <c:out value="${userFeedback.fEmail}"/></label>
+                        <c:out value="${userFeedback.fEmail}email"/></label>
                 </div>
                 <div class="panel-body">
                     <div class="form-control-lg card card-body nav-justified">
                         <c:out value="${userFeedback.fMessage}"/></div>
                 </div>
                 <div class="panel-footer">
-                    <button class="btn btn-info col-md-offset-11 form-group" onclick="showReplyForm(${theCount.count})">
-                        <fmt:message key="form.button.reply" bundle="${loc}"/></button>
-                    <div class="panel-body" id="reply_form${theCount.count}" style="display: none;">
-                        <form action="/Controller" method="post">
-                            <input type="hidden" name="command" value="reply_on_feedback">
-                            <input type="hidden" name="fId" value="${userFeedback.fId}">
-                            <input class="form-control col-md-11 form-group" type="text" name="fAnswer"
-                                   placeholder='<fmt:message key="message.input.reply" bundle="${loc}"/>'/>
-                            <button class="btn btn-info col-md-offset-11 form-group" type="submit">
-                                <fmt:message key="form.button.enter" bundle="${loc}"/></button>
-                        </form>
-                    </div>
+                    <div class="form-control-lg card card-body nav-justified">
+                        <c:out value="${userFeedback.usLogin}"/></div>
                 </div>
+                <div class="form-control-lg card card-body nav-justified">
+                    <c:out value="${userFeedback.fAnswer}"/></div>
             </div>
         </c:if>
     </c:forEach>
@@ -58,8 +50,6 @@
 
 <script src="../js/bootstrap/bootstrap.min.js"></script>
 <script src="../js/bootstrap/jquery.min.js"></script>
-<script src="../js/ajax.js"></script>
-<script src="../js/carousel.js"></script>
 <script src="../js/script.js"></script>
 
 </body>

@@ -6,7 +6,7 @@
 
 .container {
     /*padding-top: 20px;*/
-    /*background-color: rgba(5, 250, 224, 0.1);*/
+    background-color: rgba(5, 250, 224, 0.1);
     border-radius: 10px 10px 0 0;
 }
 
@@ -78,14 +78,13 @@
 }
 
 .menu-item {
-    border-radius: 20%;
     background-color: #05fae0;
 }
-.menu-item.active input {
-    border: 3px solid rgba(20, 113, 216, 0.99);
+.menu-item.active {
+    border: 10px solid rgba(20, 113, 216, 0.99);
 }
 
-.menu-item input:hover {
+.menu-item:hover {
     border: 5px solid rgba(20, 113, 216, 0.99);
 }
 
@@ -104,7 +103,7 @@
     padding: 30px;
     margin: 100px 150px;
     height: 330px;
-    width: 500px;
+    width: 450px;
     background-color: rgba(178, 178, 178, 0.5);
     /*opacity: 0.5;*/
     z-index: -1;
@@ -121,7 +120,7 @@
     padding: 30px 60px;
     margin: 100px 150px;
     height: 510px;
-    width: 430px;
+    width: 400px;
     background-color: rgba(178, 178, 178, 0.5);
     z-index: -1;
     border-radius: 5%;
@@ -147,11 +146,6 @@
     box-sizing: border-box;
 }
 
-/*client_menu*/
-.menu-item {
-    border-radius: 30%;
-}
-
 /*general*/
 #payment_form input[type="image"] {
     height: 50px;
@@ -168,13 +162,14 @@
     position: fixed;
     bottom: 0px;
     width: 250px;
-    border-radius: 20px 20px 0 0;
+    border-radius: 20px;
     border: 2px solid #05fae0;
     padding: 0px;
 }
 
 #feedback_form p {
     margin: 0px;
+    border-radius: 20px;
     background-color: #05fae0;
     text-align: center;
     padding: 10px;
@@ -183,7 +178,7 @@
 
 #feedback {
     display: none;
-    border-radius: 0 0 20px 20px;
+    border-radius: 20px;
 }
 
 #feedback_form input[type="text"] {

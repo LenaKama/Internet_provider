@@ -1,8 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" language="java" isELIgnored="false" %>
+<%@ taglib prefix="ctg" uri="customtags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@include file="part/bundle.jsp" %>
+
 <html>
 <head>
-    <%@include file="part/bundle.jsp"%>
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="../css/bootstrap/bootstrap.min.css" rel="stylesheet">
     <link href="../css/bootstrap/bootstrap-theme.min.css" rel="stylesheet">
@@ -17,6 +20,11 @@
 <body>
 <%@include file="part/header.jsp" %>
 <div class="container">
+    <div class="card bg-danger text-white">
+        <div class="card-body">
+            <ctg:error message="${errorMessage}"/>
+        </div>
+    </div>
     <div class="text-danger text-center">
         <c:out value="${errorMessage}"/>
     </div>
@@ -27,7 +35,6 @@
 
 <script src="../js/bootstrap/bootstrap.min.js"></script>
 <script src="../js/bootstrap/jquery.min.js"></script>
-<script src="../js/ajax.js"></script>
 <script src="../js/script.js"></script>
 </body>
 </html>

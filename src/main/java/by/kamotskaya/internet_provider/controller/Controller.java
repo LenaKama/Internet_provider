@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * Main controller of the application.
+ *
  * @author Lena Kamotskaya
  */
 @WebServlet(name = "Controller", urlPatterns = "/Controller")

@@ -6,18 +6,18 @@ import javax.servlet.jsp.tagext.TagSupport;
 /**
  * @author Lena Kamotskaya
  */
-public class RoleTag extends TagSupport {
+public class ErrorMessageTag extends TagSupport {
 
-    private String role = "admin";
+    private String role;
 
-    public void setRole(String role) {
+    public void setMessage(String role) {
         this.role = role;
     }
     @Override
     public int doStartTag() throws JspException {
         try {
-            String to = null;
-            if ("admin".equalsIgnoreCase(role)) {
+            String to;
+            if ("hi".equalsIgnoreCase(role)) {
                 to = "Hello, " + role;
             } else {
                 to = "Welcome, " + role;

@@ -2,7 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-
 <div id="sign_form">
     <form class="form-sign-in" action="/Controller" method="post">
         <input type="hidden" name="command" value="authenticate"/>
@@ -35,7 +34,7 @@
             <button type="submit" class="btn btn-primary">
                 <fmt:message key="sign_in.button.sign_in" bundle="${loc}"/></button>
         </div>
-        <div class="form-group row center-pill">
+        <div class="form-group row text-center">
             <button id="register_button" class="nav-link">
                 <fmt:message key="form.button.register" bundle="${loc}"/></button>
         </div>

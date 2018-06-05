@@ -4,7 +4,7 @@
 
 <html>
 <head>
-    <%@include file="bundle.jsp" %>
+    <%@include file="part/bundle.jsp" %>
 
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
     <link href="${pageContext.request.contextPath}/css/bootstrap/bootstrap.min.css" rel="stylesheet">
@@ -18,9 +18,9 @@
     <title>${title}</title>
 </head>
 <body>
-<%@include file="header.jsp" %>
+<%@include file="part/header.jsp" %>
 <div class="container">
-    <%@include file="menu.jsp" %>
+    <%@include file="part/menu.jsp" %>
     <c:forEach items="${unrepliedFeedbacks}" var="userFeedback" varStatus="theCount">
         <c:if test="${empty userFeedback.usLogin}">
             <div class="panel panel-default">
@@ -54,7 +54,6 @@
 
 <script src="${pageContext.request.contextPath}/js/bootstrap/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/bootstrap/jquery.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/ajax.js"></script>
 <script src="${pageContext.request.contextPath}/js/script.js"></script>
 
 </body>

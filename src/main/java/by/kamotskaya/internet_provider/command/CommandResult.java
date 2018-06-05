@@ -1,6 +1,9 @@
 package by.kamotskaya.internet_provider.command;
 
 /**
+ * Class for creating result for main controller of application,
+ * contains a page's name and a type of response.
+ *
  * @author Lena Kamotskaya
  */
 public class CommandResult {

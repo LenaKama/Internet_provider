@@ -11,6 +11,7 @@ import by.kamotskaya.internet_provider.entity.User;
 import by.kamotskaya.internet_provider.exception.ConnectionPoolException;
 import by.kamotskaya.internet_provider.exception.DAOException;
 import by.kamotskaya.internet_provider.pool.thread.TrafficCounterThread;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,6 +20,8 @@ import java.time.LocalDate;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
+import static by.kamotskaya.internet_provider.receiver.GoToPageReceiver.goToWelcomePage;
 
 
 /**
@@ -50,11 +53,11 @@ public class UserReceiver {
                 content.putSessionAttribute(ParamName.US_ROLE, user.getUsRole());
                 loadGeneralUserInfo(content);
                 startUserSession(content);
-
+/*
                 if (user.getTId() != 0) {
                     ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
                     executorService.scheduleAtFixedRate(new TrafficCounterThread(), 5, 10, TimeUnit.SECONDS);
-                }
+                }*/
             }else {
                 content.putRequestAttribute(ParamName.WRONG_USER_CREDENTIALS, true);
             }
@@ -107,7 +110,6 @@ public class UserReceiver {
         user.setUsPassport(usPassport);
         user.setUsRole("client");
         user.setUsBan(false);
-//////// при регистрации создавать пустые поля в таблицах openning balance and transactions sessions
         try {
             OpeningBalanceDAO openingBalanceDAO = new OpeningBalanceDAO();
             OpeningBalance openingBalance = new OpeningBalance();
@@ -134,10 +136,6 @@ public class UserReceiver {
             user.setUsName(content.getRequestParameters().get(ParamName.US_NAME)[0]);
             user.setUsSurname(content.getRequestParameters().get(ParamName.US_SURNAME)[0]);
             user.setUsPassport(content.getRequestParameters().get(ParamName.US_PASSPORT)[0]);
-
-            // String usLogin = content.getRequestParameters().get("usLogin")[0];
-            // String usPassword = content.getRequestParameters().get("usPassword")[0];
-
             userDAO.update(user);
         } catch (DAOException | ConnectionPoolException e) {
             content.putRequestAttribute(ParamName.ERROR_MESSAGE, "Error while updating the user.");
@@ -145,6 +143,8 @@ public class UserReceiver {
         }
         return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.WELCOME);
     }
+
+    //change password
 
     public static CommandResult deleteUser(RequestContent content) {
         String login = content.getRequestParameters().get("loginForDelete")[0];
@@ -171,7 +171,7 @@ public class UserReceiver {
             content.putRequestAttribute(ParamName.ERROR_MESSAGE, "Error while updating user.");
             return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.ERROR);
         }
-        return GoToPageReceiver.goToWelcomePage(content);
+        return goToWelcomePage(content);
     }
 
     public static CommandResult logOut(RequestContent content) {
@@ -187,4 +187,11 @@ public class UserReceiver {
         return new CommandResult(CommandResult.ResponseType.REDIRECT, PagePath.WELCOME);
     }
 
+    public static CommandResult changeLocale(RequestContent content) {
+
+        String locale = content.getRequestParameters().get("locale")[0];
+        content.putSessionAttribute(ParamName.US_LOCALE, locale);
+        content.putSessionAttribute(ParamName.ACTIVE_LOCALE, locale);
+        return GoToPageReceiver.goToWelcomePage(content);
+    }
 }

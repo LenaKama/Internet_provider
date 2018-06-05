@@ -5,6 +5,7 @@ import by.kamotskaya.internet_provider.constant.PagePath;
 import by.kamotskaya.internet_provider.constant.ParamName;
 import by.kamotskaya.internet_provider.controller.RequestContent;
 import by.kamotskaya.internet_provider.dao.*;
+import by.kamotskaya.internet_provider.entity.Feedback;
 import by.kamotskaya.internet_provider.entity.User;
 import by.kamotskaya.internet_provider.exception.ConnectionPoolException;
 import by.kamotskaya.internet_provider.exception.DAOException;
@@ -44,14 +45,13 @@ public class GoToPageReceiver {
 
     public static CommandResult goToHelp(RequestContent content) {
         content.putRequestAttribute(ParamName.ACTIVE_CLASS, "help");
-        String usLogin = String.valueOf(content.getSessionAttributes().get(ParamName.US_LOGIN));
         try {
             FeedbackDAO feedbackDAO = new FeedbackDAO();
-            List userFeedbacks = feedbackDAO.loadUserFeedbacks(usLogin);
+            List<Feedback> userFeedbacks = feedbackDAO.loadRepliedFeedbacks();
             Collections.reverse(userFeedbacks);
             content.putRequestAttribute(ParamName.USER_FEEDBACKS, userFeedbacks);
         } catch (DAOException | ConnectionPoolException e) {
-            content.putRequestAttribute(ParamName.ERROR_MESSAGE, "Error while loading user's information.");
+            content.putRequestAttribute(ParamName.ERROR_MESSAGE, "Error while loading user's feedbacks.");
             return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.ERROR);
         }
         return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.HELP);

@@ -6,7 +6,7 @@
 <html>
 <head>
 
-    <%@include file="bundle.jsp" %>
+    <%@include file="part/bundle.jsp" %>
 
     <c:set var="imgAvatar" value="${pageContext.request.contextPath}/img/anonym.jpg"/>
     <fmt:message key="general.button.loadAvatar" bundle="${loc}" var="avatarButton"/>
@@ -22,9 +22,9 @@
 
 </head>
 <body>
-<%@include file="header.jsp" %>
+<%@include file="part/header.jsp" %>
 <div class="container">
-    <%@include file="menu.jsp" %>
+    <%@include file="part/menu.jsp" %>
     <form class="form-horizontal" action="/Controller" method="post">
         <input type="hidden" name="command" value="update_user">
         <div class="profile_photo">
@@ -41,13 +41,6 @@
                 <p id="login" name="usLogin" class="form-control-static">${user.usLogin}</p>
             </div>
         </div>
-        <%--<div class="form-group">--%>
-        <%--<label class="control-label col-sm-1" for="password" style="display: inline-block">--%>
-        <%--<fmt:message key="form.usPassword" bundle="${loc}"/></label>--%>
-        <%--<div class="col-sm-10">--%>
-        <%--<label id="password" class="form-control info-field">${user.usPassword}</label>--%>
-        <%--</div>--%>
-        <%--</div>--%>
         <div class="form-group">
             <label class="control-label col-sm-1" for="email" style="display: inline-block">
                 <fmt:message key="form.usEmail" bundle="${loc}"/></label>
@@ -85,22 +78,20 @@
             <fmt:message key="form.button.save" bundle="${loc}"/>
         </button>
     </form>
+
+    <%--<div class="form-group">--%>
+    <%--<label class="control-label col-sm-1" for="password" style="display: inline-block">--%>
+    <%--<fmt:message key="form.usPassword" bundle="${loc}"/></label>--%>
+    <%--<div class="col-sm-10">--%>
+    <%--<label id="password" class="form-control info-field">${user.usPassword}</label>--%>
+    <%--</div>--%>
+    <%--</div>--%>
     <%--<%@include file="../fragment/footer.jspf"%>--%>
 </div>
 
 <script src="${pageContext.request.contextPath}/js/bootstrap/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/bootstrap/bootstrap.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/ajax.js"></script>
-<script src="${pageContext.request.contextPath}/js/carousel.js"></script>
 <script src="${pageContext.request.contextPath}/js/script.js"></script>
-<script>
-
-    $('.info-field').click(function () {
-        $('#saveButton').removeAttr("disabled");
-        $(this).hide();
-        $(this).closest('.field').children('.edit-field').show();
-    });
-</script>
 </body>
 </html>
 

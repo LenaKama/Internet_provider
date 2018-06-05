@@ -13,8 +13,7 @@
         <textarea id="message" name="fMessage" required
                   placeholder='<fmt:message key="feedback.message.title" bundle="${loc}"/>'></textarea>
         <br>
-        <input type="submit" id="submit_feedback" onclick="sendFeedback($(this).closest('#feedback'))"
-               value='<fmt:message key="form.button.enter" bundle="${loc}"/>'>
+        <input type="submit" id="submit_feedback" value='<fmt:message key="form.button.enter" bundle="${loc}"/>'>
 
     </form>
 </div>

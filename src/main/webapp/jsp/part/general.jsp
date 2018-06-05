@@ -14,7 +14,7 @@
 <%--<c:set var="avatarButton" value='<fmt:message key="general.button.changeAvatar" bundle="${loc}"/>'/>--%>
 <%--</c:otherwise>--%>
 <%--</c:choose>--%>
-<%@include file="menu.jsp"%>
+<%@include file="menu.jsp" %>
 <div class="col-md-6">
     <div class="row">
         <div class="col-sm-4">
@@ -82,26 +82,26 @@
     <div class="form-group" id="payment_form" style="display: none">
         <label class="center-pill">
             <fmt:message key="general.button.paymentMethod" bundle="${loc}"/></label>
-        <div class="row">
+        <div class="row" style="margin-left: 30px">
             <input type="image" class="img-thumbnail" src="${credit_cards}"
                    onclick="show('card_form', 'banking_form')"/>
             <input type="image" class="img-thumbnail" src="${m_banking}" onclick="show('banking_form', 'card_form')"/>
         </div>
         <div class="form-group" id="card_form" style="display: none">
-            <input type="text" placeholder="Enter the card number" required/>
+            <input type="text" placeholder='<fmt:message key="general.card.number" bundle="${loc}"/>'
+                   required pattern="^[+0-9]+"/>
         </div>
         <div class="form-group" id="banking_form" style="display: none">
-            <input type="text" placeholder="Enter the phone number" required/>
+            <input type="text" placeholder='<fmt:message key="general.phone.number" bundle="${loc}"/>'
+                   required pattern="^[0-9]+"/>
         </div>
     </div>
     <form id="transfer_form" action="/Controller" method="post" style="display: none">
         <input type="hidden" name="command" value="recharge_account">
 
-        <input type="text" name="amount" placeholder="Enter the amount" required
-               pattern="^[0-9]+(\\.[0-9]+)?$"/>
-        <button class="form-group btn btn-primary" type="submit">
+        <input type="text" name="amount" placeholder='<fmt:message key="general.sum" bundle="${loc}"/>'
+                required pattern="^[0-9]+(\\.[0-9]+)?$"/>
+        <button class="form-group row btn btn-info" type="submit">
             <fmt:message key="general.button.submit" bundle="${loc}"/></button>
     </form>
 </div>
-<ctg:hello/>
-

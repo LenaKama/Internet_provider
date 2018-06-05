@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
-    <%@include file="bundle.jsp" %>
+    <%@include file="part/bundle.jsp" %>
 
     <fmt:message key="menu.clients" bundle="${loc}" var="title"/>
     <link href="${pageContext.request.contextPath}/css/bootstrap/bootstrap.min.css" rel="stylesheet">
@@ -26,9 +26,9 @@
     </script>
 </head>
 <body>
-<%@include file="header.jsp" %>
+<%@include file="part/header.jsp" %>
 <div class="container">
-    <%@include file="menu.jsp"%>
+    <%@include file="part/menu.jsp"%>
 <div class="panel-group">
     <c:forEach items="${requestScope.clients}" var="client" varStatus="theCount">
     <div class="panel panel-default">
@@ -42,10 +42,10 @@
         </div>
     </div>
     </c:forEach>
-<%--<%@include file="../fragment/footer.jspf"%>--%>
+<%@include file="part/footer.jspf"%>
 </div>
-        <script src="../../js/bootstrap/jquery.min.js"></script>
-        <script src="../../js/bootstrap/bootstrap.min.js"></script>
+        <script src="../js/bootstrap/jquery.min.js"></script>
+        <script src="../js/bootstrap/bootstrap.min.js"></script>
 
 </body>
 </html>

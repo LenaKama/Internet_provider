@@ -1,6 +1,8 @@
 package by.kamotskaya.internet_provider.exception;
 
 /**
+ * Class for exceptions from DAO classes.
+ *
  * @author Lena Kamotskaya
  */
 public class DAOException extends Exception{

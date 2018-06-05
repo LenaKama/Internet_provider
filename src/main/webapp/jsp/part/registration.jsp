@@ -4,13 +4,13 @@
 
 <html>
 <head>
-    <%@include file="part/bundle.jsp" %>
+    <%@include file="bundle.jsp" %>
 
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
-    <link href="../css/bootstrap/bootstrap.min.css" rel="stylesheet">
-    <link href="../css/bootstrap/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="../../css/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/bootstrap/bootstrap-theme.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Montserrat+Alternates" rel="stylesheet">
-    <link href="../css/style.css" rel="stylesheet">
+    <link href="../../css/style.css" rel="stylesheet">
 
     <fmt:message key="page.registration.title" bundle="${loc}" var="title"/>
     <title>${title}</title>
@@ -51,14 +51,14 @@
     <div class="form-group row">
         <label class="col-sm-4" for="usName"><fmt:message key="form.usName" bundle="${loc}"/></label>
         <div class="col-sm-7">
-            <input id="usName" type="text" name="usName" required
+            <input id="usName" type="text" name="usName" required pattern="^[a-zA-Zа-яА-Я]{1,}"
                    title='<fmt:message key="form.usName.title" bundle="${loc}"/>'/>
         </div>
     </div>
     <div class="form-group row">
         <label class="col-sm-4" for="usSurname"><fmt:message key="form.usSurname" bundle="${loc}"/></label>
         <div class="col-sm-7">
-            <input id="usSurname" type="text" name="usSurname" required
+            <input id="usSurname" type="text" name="usSurname" required pattern="^[a-zA-Zа-яА-Я]{1,}"
                    title='<fmt:message key="form.usSurname.title" bundle="${loc}"/>'/>
         </div>
     </div>
@@ -73,35 +73,15 @@
     <div class="form-group row">
         <label class="col-sm-4" for="usPassport"><fmt:message key="form.usPassport" bundle="${loc}"/></label>
         <div class="col-sm-7">
-            <input id="usPassport" type="text" name="usPassport" required
+            <input id="usPassport" type="text" name="usPassport" required pattent="^[A-Z]{2}[0-9]{7}"
                    title='<fmt:message key="form.usPassport.title" bundle="${loc}"/>'/>
         </div>
     </div>
     <button id="submit_registration" class="btn btn-primary center-block" type="submit">
         <fmt:message key="registration.button.register" bundle="${loc}"/></button>
 </form>
-<h2 class="demoHeaders">
-    <span id='tooltipClick' title='This is a tooltip that appears on click...'>Tooltip on Click</span>
-</h2>
 
-<script src="../js/bootstrap/bootstrap.min.js"></script>
-<script src="../js/bootstrap/jquery.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $( "#tooltipClick" )
-            .tooltip({
-                content: $( "#tooltipClick" ).attr( "title" ),
-                items: 'span'
-            })
-            .off( "mouseover" )
-            .on( "click", function(){
-                $( this ).tooltip( "open" );
-                return false;
-            })
-            .attr( "title", "" ).css({ cursor: "pointer" });
-
-        //$('[data-toggle="tooltip"]').tooltip();
-    });
-</script>
+<script src="../../js/bootstrap/bootstrap.min.js"></script>
+<script src="../../js/bootstrap/jquery.min.js"></script>
 </body>
 </html>

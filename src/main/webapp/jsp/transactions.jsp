@@ -4,7 +4,7 @@
 
 <html>
 <head>
-    <%@include file="bundle.jsp" %>
+    <%@include file="part/bundle.jsp" %>
 
     <link href="${pageContext.request.contextPath}/css/bootstrap/bootstrap.min.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/bootstrap/bootstrap-theme.min.css" rel="stylesheet">
@@ -16,9 +16,9 @@
     <title>Title</title>
 </head>
 <body>
-<%@include file="header.jsp" %>
+<%@include file="part/header.jsp" %>
 <div class="container">
-    <%@include file="menu.jsp" %>
+    <%@include file="part/menu.jsp" %>
     <table class="table">
         <thead>
         <tr>
@@ -48,7 +48,8 @@
         </c:forEach>
         </tbody>
     </table>
-    <%@include file="../fragment/footer.jspf" %>
 </div>
+<div
+<%@include file="part/footer.jspf" %>
 </body>
 </html>
