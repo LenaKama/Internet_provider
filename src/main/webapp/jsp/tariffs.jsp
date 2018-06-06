@@ -126,6 +126,9 @@
             </c:forEach>
         </div>
     </div>
+    <div style="margin-left: 800px">
+        <%@include file="part/feedback_form.jsp" %>
+    </div>
 </div>
 <%@include file="part/footer.jspf" %>
 
@@ -147,17 +150,6 @@
             $('#overrunFee').attr('disabled', true);
         }
     });
-    function changeTariff(tId) {
-        if (confirm('Are you sure you want to change your tariff?')) {
-            $.get("AjaxHandler", {"command": "changeTariff", "tId": tId, "usLogin":${sessionScope.usLogin}}, function (responseText) {
-                if (responseText === "true") {
-                    alert("Tariff is successfully changed.");
-                } else {
-                    alert("There isn't enough money on your account.")
-                }
-            });
-    }
-
     $('.info-field').click(function () {
         if (${sessionScope.usRole eq 'admin'}) {
             $(this).hide();

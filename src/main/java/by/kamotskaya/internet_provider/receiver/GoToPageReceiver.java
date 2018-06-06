@@ -14,6 +14,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * Class for executing commands which forwards to pages.
+ *
  * @author Lena Kamotskaya
  */
 public class GoToPageReceiver {
@@ -25,7 +27,7 @@ public class GoToPageReceiver {
                 UserReceiver.loadGeneralUserInfo(content);
             }
         } catch (DAOException | ConnectionPoolException e) {
-            content.putRequestAttribute("errorMessage", "Error while loading user's information.");
+            content.putRequestAttribute(ParamName.ERROR_MESSAGE, "Error while loading user's information.");
             return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.ERROR);
         }
         return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.WELCOME);
@@ -48,7 +50,6 @@ public class GoToPageReceiver {
         try {
             FeedbackDAO feedbackDAO = new FeedbackDAO();
             List<Feedback> userFeedbacks = feedbackDAO.loadRepliedFeedbacks();
-            Collections.reverse(userFeedbacks);
             content.putRequestAttribute(ParamName.USER_FEEDBACKS, userFeedbacks);
         } catch (DAOException | ConnectionPoolException e) {
             content.putRequestAttribute(ParamName.ERROR_MESSAGE, "Error while loading user's feedbacks.");
@@ -136,7 +137,6 @@ public class GoToPageReceiver {
 
     public static CommandResult goToAccountSettings(RequestContent content) {
         content.putRequestAttribute(ParamName.ACTIVE_MENU, "account_settings");
-        System.out.println(content.getSessionAttributes().get("usLogin"));
         String usLogin = String.valueOf(content.getSessionAttributes().get(ParamName.US_LOGIN));
         try {
             UserDAO userDAO = new UserDAO();

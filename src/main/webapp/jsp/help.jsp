@@ -42,7 +42,11 @@
                 </div>
             </div>
     </c:forEach>
+    <div style="margin-left: 800px">
+        <%@include file="part/feedback_form.jsp" %>
+    </div>
 </div>
+<%@include file="part/footer.jspf"%>
 
 <script src="../js/bootstrap/bootstrap.min.js"></script>
 <script src="../js/bootstrap/jquery.min.js"></script>

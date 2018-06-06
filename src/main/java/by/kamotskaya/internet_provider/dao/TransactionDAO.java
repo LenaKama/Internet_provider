@@ -49,7 +49,7 @@ public class TransactionDAO {
             statement.setString(3, transaction.getUsLogin());
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new DAOException("Exception from UserDAO:", e);
+            throw new DAOException("Exception from TransactionDAO:", e);
         }
     }
 

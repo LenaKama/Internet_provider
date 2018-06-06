@@ -24,7 +24,7 @@
         </div>
         <div class="col-sm-6">
             <c:choose>
-                <c:when test="${user.usBan}">
+                <c:when test="${currentBalance <= 0}">
                     <i class="fa fa-circle" style="font-size:24px;color:red"></i>
                     <fmt:message key="general.account.unactive" bundle="${loc}"/>
                 </c:when>
@@ -90,19 +90,25 @@
         <form id="transfer_form" action="/Controller" method="post" style="display: none">
             <div class="form-group" id="card_form" style="display: none">
                 <input type="text" placeholder='<fmt:message key="general.card.number" bundle="${loc}"/>'
-                        required pattern="^[0-9]+" style="margin-left: 5px"/>
+                       required pattern="^[0-9]+" style="margin-left: 5px"/>
             </div>
             <div class="form-group" id="banking_form" style="display: none">
                 +<input type="text" placeholder='<fmt:message key="general.phone.number" bundle="${loc}"/>'
-                       required pattern="^[0-9]+"/>
+                        required pattern="^[0-9]+"/>
             </div>
             <input type="hidden" name="command" value="recharge_account">
 
             <input type="text" name="amount" placeholder='<fmt:message key="general.sum" bundle="${loc}"/>'
                    required pattern="^[0-9]+(\\.[0-9]+)?$"/>
             <div class="row">
-            <button class="form-group btn btn-info" type="submit">
-                <fmt:message key="general.button.submit" bundle="${loc}"/></button></div>
+                <button class="form-group btn btn-info" type="submit">
+                    <fmt:message key="general.button.submit" bundle="${loc}"/></button>
+            </div>
         </form>
     </div>
 </div>
+<c:if test="${tariffMessage}">
+    <div class="form-group form-inline alert-danger" style="margin-top: 200px">
+    <fmt:message key="general.not.enough.money" bundle="${loc}"/>
+    </div>
+</c:if>

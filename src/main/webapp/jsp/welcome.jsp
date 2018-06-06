@@ -18,7 +18,7 @@
         <c:set var="bg_style" value="transparent"/>
     </c:when>
     <c:otherwise>
-        <c:set var="bg_style" value="inherit"/>
+        <c:set var="bg_style" value="rgba(5, 250, 224, 0.1)"/>
     </c:otherwise>
 </c:choose>
 <html>
@@ -35,7 +35,7 @@
 </head>
 <body>
 <%@include file="part/header.jsp" %>
-<div class="container" style="background-color:${bg_style}">
+<div class="container" style="background-color: ${bg_style}">
     <c:if test="${sessionScope.usRole eq 'guest'}">
         <div id="myCarousel" class="carousel container slide">
             <div class="carousel-inner">
@@ -62,10 +62,5 @@
 <script src="../js/bootstrap/jquery.min.js"></script>
 <script src="../js/carousel.js"></script>
 <script src="../js/script.js"></script>
-<script>
-    //    $(document).ready(function () {
-    //        $('.carousel').carousel({interval: 5000});
-    //    });
-</script>
 </body>
 </html>

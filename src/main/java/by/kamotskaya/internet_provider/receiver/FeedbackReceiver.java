@@ -12,6 +12,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
+ * Class for executing commands which relates to feedbacks.
+ *
  * @author Lena Kamotskaya
  */
 public class FeedbackReceiver {

@@ -11,9 +11,10 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Optional;
 
 /**
+ * Class for executing commands which came from AjaxHandler.
+ *
  * @author Lena Kamotskaya
  */
 public class AjaxReceiver {
@@ -38,26 +39,4 @@ public class AjaxReceiver {
         }
         return response;
     }
-
-    public String changeTariff(String usLogin, int tId) {
-        String response = null;
-        try {
-            TransactionDAO transactionDAO = new TransactionDAO();
-            TariffDAO tariffDAO = new TariffDAO();
-            OpeningBalanceDAO openingBalanceDAO = new OpeningBalanceDAO();
-            Optional<Double> balance = openingBalanceDAO.findOpeningBalance(usLogin, true);
-            UserDAO userDAO = new UserDAO();
-            User user = userDAO.createUserBean(usLogin);
-            if (transactionDAO.findCurrentBalance(usLogin, balance.get()) >= tariffDAO.findTariffById(tId).getConnectionPayment()) {
-                user.setTId(tId);
-                response = "true";
-            } else {
-                response = "false";
-            }
-        } catch (DAOException | ConnectionPoolException e) {
-            LOGGER.log(Level.ERROR, "Error ");
-        }
-        return response;
-    }
-
 }

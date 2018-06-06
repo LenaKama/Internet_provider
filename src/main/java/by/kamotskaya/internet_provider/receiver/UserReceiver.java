@@ -7,25 +7,23 @@ import by.kamotskaya.internet_provider.controller.RequestContent;
 import by.kamotskaya.internet_provider.dao.*;
 import by.kamotskaya.internet_provider.entity.OpeningBalance;
 import by.kamotskaya.internet_provider.entity.Session;
+import by.kamotskaya.internet_provider.entity.Transaction;
 import by.kamotskaya.internet_provider.entity.User;
 import by.kamotskaya.internet_provider.exception.ConnectionPoolException;
 import by.kamotskaya.internet_provider.exception.DAOException;
-import by.kamotskaya.internet_provider.pool.thread.TrafficCounterThread;
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.Optional;
 
 import static by.kamotskaya.internet_provider.receiver.GoToPageReceiver.goToWelcomePage;
 
 
 /**
- * 
+ * Class for executing commands which relates to users.
+ *
  * @author Lena Kamotskaya
  */
 public class UserReceiver {
@@ -33,12 +31,6 @@ public class UserReceiver {
     private static final Logger LOGGER = LogManager.getLogger(UserReceiver.class);
 
     public static CommandResult authenticate(RequestContent content) {
-
-
-        //new Thread(new BalanceCheckerThread()).start();
-
-//        new Thread(new OpeningBalanceController()).start();
-//        new Thread(new PaymentThread()).start();
 
         String usLogin = content.getRequestParameters().get(ParamName.US_LOGIN)[0];
         String usPassword = content.getRequestParameters().get(ParamName.US_PASSWORD)[0];
@@ -53,11 +45,6 @@ public class UserReceiver {
                 content.putSessionAttribute(ParamName.US_ROLE, user.getUsRole());
                 loadGeneralUserInfo(content);
                 startUserSession(content);
-/*
-                if (user.getTId() != 0) {
-                    ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
-                    executorService.scheduleAtFixedRate(new TrafficCounterThread(), 5, 10, TimeUnit.SECONDS);
-                }*/
             }else {
                 content.putRequestAttribute(ParamName.WRONG_USER_CREDENTIALS, true);
             }
@@ -144,8 +131,6 @@ public class UserReceiver {
         return GoToPageReceiver.goToAccountSettings(content);
     }
 
-    //change password
-
     public static CommandResult deleteUser(RequestContent content) {
         String login = content.getRequestParameters().get("loginForDelete")[0];
         try {
@@ -160,13 +145,27 @@ public class UserReceiver {
 
     public static CommandResult changeTariff(RequestContent content) {
         int tId = Integer.parseInt(content.getRequestParameters().get(ParamName.T_ID)[0]);
-        String usLogin = String.valueOf(content.getRequestParameters().get(ParamName.US_LOGIN)[0]);
+        String usLogin = String.valueOf(content.getSessionAttributes().get(ParamName.US_LOGIN));
         try {
+            TransactionDAO transactionDAO = new TransactionDAO();
+            TariffDAO tariffDAO = new TariffDAO();
+            OpeningBalanceDAO openingBalanceDAO = new OpeningBalanceDAO();
+            Optional<Double> balance = openingBalanceDAO.findOpeningBalance(usLogin, true);
             UserDAO userDAO = new UserDAO();
             User user = userDAO.createUserBean(usLogin);
-            user.setTId(tId);
-            userDAO.update(user);
-            content.putSessionAttribute(ParamName.USER, user);
+            Double curBalance = transactionDAO.findCurrentBalance(usLogin, balance.get());
+            Double conPayment = tariffDAO.findTariffById(tId).getConnectionPayment();
+            if (curBalance >= conPayment) {
+                user.setTId(tId);
+                userDAO.update(user);
+                Transaction transaction = new Transaction();
+                transaction.setTrInfo(ParamName.PAYMENT_FOR_CONNECTION);
+                transaction.setTrSum(curBalance - conPayment);
+                transaction.setUsLogin(usLogin);
+                transactionDAO.add(transaction);
+            } else {
+                content.putRequestAttribute(ParamName.TARIFF_MESSAGE, true);
+            }
         } catch (DAOException | ConnectionPoolException e) {
             content.putRequestAttribute(ParamName.ERROR_MESSAGE, "Error while updating user.");
             return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.ERROR);

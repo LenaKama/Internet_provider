@@ -7,13 +7,21 @@ import by.kamotskaya.internet_provider.dao.UserDAO;
 import by.kamotskaya.internet_provider.entity.OpeningBalance;
 import by.kamotskaya.internet_provider.exception.ConnectionPoolException;
 import by.kamotskaya.internet_provider.exception.DAOException;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDate;
 
 /**
+ * Class-thread for controlling opening balances.
+ *
  * @author Lena Kamotskaya
  */
-public class OpeningBalanceController implements Runnable {
+public class OpeningBalanceController extends Thread {
+
+    private static final Logger LOGGER = LogManager.getLogger(OpeningBalanceController.class);
+
     @Override
     public void run() {
         LocalDate localDate = LocalDate.now();
@@ -24,20 +32,16 @@ public class OpeningBalanceController implements Runnable {
                 OpeningBalanceDAO openingBalanceDAO = new OpeningBalanceDAO();
                 OpeningBalance openingBalance = new OpeningBalance();
                 UserDAO userDAO = new UserDAO();
-                for (String usLogin : userDAO.findAllUsLogins()) { //go through all users
-                    if (openingBalanceDAO.findOpeningBalance(usLogin, true).isPresent()) { //check if already added opening balances
-                        System.out.println("already added");
-                    } else {
+                for (String usLogin : userDAO.findAllUsLogins()) {
+                    if (!openingBalanceDAO.findOpeningBalance(usLogin, true).isPresent()) {
                         openingBalance.setUsLogin(usLogin);
                         openingBalance.setObSum(transactionDAO.findCurrentBalance(usLogin, openingBalanceDAO.findOpeningBalance(usLogin, false).get()));
                         openingBalanceDAO.add(openingBalance);
                     }
                 }
             } catch (ConnectionPoolException | DAOException e) {
-                e.printStackTrace();
+                LOGGER.log(Level.ERROR, "Error while controlling opening balances.");
             }
-        } else {
-            System.out.println("not 1 day");
         }
     }
 }

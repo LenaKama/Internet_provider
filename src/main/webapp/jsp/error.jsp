@@ -20,16 +20,14 @@
 <body>
 <%@include file="part/header.jsp" %>
 <div class="container">
-    <div class="card bg-danger text-white">
-        <div class="card-body">
+    <div class="alert alert-danger">
+        <strong>
             <ctg:error message="${errorMessage}"/>
-        </div>
+        </strong>
     </div>
-    <div class="text-danger text-center">
-        <c:out value="${errorMessage}"/>
-    </div>
+
     <div class="panel-default">
-       <c:out value="${errorTrace}"/>
+       <ctg:error message="${errorTrace}"/>
     </div>
 </div>
 

@@ -15,6 +15,8 @@ import org.apache.logging.log4j.Logger;
 import java.sql.Date;
 
 /**
+ * Class for executing commands which relates to tariffs.
+ *
  * @author Lena Kamotskaya
  */
 public class TariffReceiver {
@@ -81,7 +83,6 @@ public class TariffReceiver {
 
     public static CommandResult updateTariff(RequestContent content) {
         int tId = Integer.parseInt(content.getRequestParameters().get(ParamName.T_ID)[0]);
-        System.out.println("tId - " + tId);
         try {
             TariffDAO tariffDAO = new TariffDAO();
             Tariff tariff = tariffDAO.findTariffById(tId);
@@ -96,7 +97,6 @@ public class TariffReceiver {
             tariff.setSpeedIn(content.getRequestParameters().get(ParamName.SPEED_IN)[0]);
             tariff.setSpeedOut(content.getRequestParameters().get(ParamName.SPEED_OUT)[0]);
             tariff.setOverrunFee(Double.parseDouble(content.getRequestParameters().get(ParamName.OVERRUN_FEE)[0]));
-            LOGGER.log(Level.DEBUG, "new tariff - " + tariff.toString());
             tariffDAO.update(tariff);
         } catch (ConnectionPoolException | DAOException e) {
             content.putRequestAttribute(ParamName.ERROR_MESSAGE, "Error while updating a tariff.");

@@ -22,14 +22,14 @@ $('.info-field').click(function () {
 //     $("#feedback_form").css.display;
 // });
 
-document.onkeydown = function(){
-    switch (event.keyCode){
+document.onkeydown = function () {
+    switch (event.keyCode) {
         case 116 : //F5 button
             event.returnValue = false;
             event.keyCode = 0;
             return false;
         case 82 : //R button
-            if (event.ctrlKey){
+            if (event.ctrlKey) {
                 event.returnValue = false;
                 event.keyCode = 0;
                 return false;
@@ -69,17 +69,6 @@ function showReplyForm(val) {
     }
 }
 
-function checkUsLogin(usLogin){
-    $.get("AjaxHandler", {"checkLogin":usLogin, "command":"checkLogin"}, function (responseText) {
-        if (responseText === "false") {
-            document.getElementById("errorLogin").style.display = 'block';
-            document.getElementById("submit_registration").setAttribute("disabled", "")
-        } else {
-            document.getElementById("errorLogin").style.display = 'none';
-            document.getElementById("submit_registration").removeAttribute("disabled");
-        }
-    });
-}
 function checkPasswords() {
     var pass1 = document.getElementById('usPassword');
     var pass2 = document.getElementById('usPassword_repeat');

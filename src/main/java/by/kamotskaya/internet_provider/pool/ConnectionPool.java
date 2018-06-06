@@ -62,7 +62,6 @@ public class ConnectionPool {
     }
 
     public void initializeConnectionPool() throws ConnectionPoolException {
-
         DBResourceManager dbResourceManager = DBResourceManager.getInstance();
 
         try {

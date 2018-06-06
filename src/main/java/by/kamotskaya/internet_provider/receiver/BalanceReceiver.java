@@ -13,6 +13,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
+ * Class for executing commands which relates to users' balances.
+ *
  * @author Lena Kamotskaya
  */
 public class BalanceReceiver {
@@ -23,8 +25,6 @@ public class BalanceReceiver {
 
         Double amount = Double.parseDouble(content.getRequestParameters().get("amount")[0]);
         String usLogin = String.valueOf(content.getSessionAttributes().get(ParamName.US_LOGIN));
-        LOGGER.log(Level.DEBUG, "amount - " + amount);
-        LOGGER.log(Level.DEBUG, "usLogin - " + usLogin);
         Transaction transaction = new Transaction();
         transaction.setTrInfo(ParamName.MONEY_INFLOW);
         transaction.setTrSum(amount);

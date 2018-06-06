@@ -67,7 +67,6 @@ public class FeedbackDAO {
         try (ProxyConnection connection = connectionPool.takeConnection();
              Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(SELECT_REPLIED_FEEDBACKS);
-            if (resultSet.next()) {
                 while (resultSet.next()) {
                     Feedback feedback = new Feedback();
                     feedback.setfId(resultSet.getInt("f_id"));
@@ -78,7 +77,6 @@ public class FeedbackDAO {
                     feedback.setUsLogin(resultSet.getString("us_login"));
                     feedbacks.add(feedback);
                 }
-            }
         } catch (SQLException e) {
             throw new DAOException("Exception from FeedbackDAO:", e);
         }

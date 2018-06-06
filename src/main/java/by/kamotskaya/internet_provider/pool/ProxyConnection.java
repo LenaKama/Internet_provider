@@ -8,20 +8,18 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 
-import static by.kamotskaya.internet_provider.pool.ConnectionPool.releaseConnection;
 
 /**
- * Class for 
+ * Class for wrapping connection {@link Connection} into proxyConnection {@link ProxyConnection}.
+ *
  * @author Lena Kamotskaya
  */
 public class ProxyConnection implements Connection {
 
     private Connection connection;
-    private ConnectionPool connectionPool;
 
     ProxyConnection(Connection connection) throws ConnectionPoolException {
         this.connection = connection;
-        connectionPool = ConnectionPool.getInstance();
     }
 
     @Override

@@ -30,9 +30,9 @@
         <div class="profile_photo">
             <img src="${imgAvatar}"/>
         </div>
-        <button class="btn btn-default" style="display:block;height:50px;width:200px"
-                onclick="document.getElementById('getFile').click()">${avatarButton}</button>
-        <input type='file' id="getFile" style="display:none">
+        <%--<button class="btn btn-default" style="display:block;height:50px;width:200px"--%>
+                <%--onclick="document.getElementById('getFile').click()">${avatarButton}</button>--%>
+        <%--<input type='file' id="getFile" style="display:none">--%>
 
         <div class="form-group">
             <label class="col-sm-4" for="login" style="display: inline-block">
@@ -70,7 +70,8 @@
                 <fmt:message key="form.usPassport" bundle="${loc}"/></label>
             <div class="col-sm-5 field">
                 <p id="passport" class="form-control-static info-field">${user.usPassport}</p>
-                <input type="text" name="usPassport" class="edit-field" value="${user.usPassport}" style="display: none"/>
+                <input type="text" name="usPassport" class="edit-field" value="${user.usPassport}"
+                       style="display: none"/>
             </div>
         </div>
 
@@ -79,16 +80,11 @@
         </button>
     </form>
 
-    <%--<div class="form-group">--%>
-    <%--<label class="control-label col-sm-1" for="password" style="display: inline-block">--%>
-    <%--<fmt:message key="form.usPassword" bundle="${loc}"/></label>--%>
-    <%--<div class="col-sm-10">--%>
-    <%--<label id="password" class="form-control info-field">${user.usPassword}</label>--%>
-    <%--</div>--%>
-    <%--</div>--%>
-    <%--<%@include file="../fragment/footer.jspf"%>--%>
+    <div style="margin-left: 800px">
+        <%@include file="part/feedback_form.jsp" %>
+    </div>
 </div>
-<%@include file="part/footer.jspf"%>
+<%@include file="part/footer.jspf" %>
 
 <script src="${pageContext.request.contextPath}/js/bootstrap/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/bootstrap/bootstrap.min.js"></script>

@@ -73,7 +73,7 @@
     <div class="form-group row">
         <label class="col-sm-4" for="usPassport"><fmt:message key="form.usPassport" bundle="${loc}"/></label>
         <div class="col-sm-7">
-            <input id="usPassport" type="text" name="usPassport" required pattent="^[A-Z]{2}[0-9]{7}"
+            <input id="usPassport" type="text" name="usPassport" required pattern="^[A-Z]{2}[0-9]{7}"
                    title='<fmt:message key="form.usPassport.title" bundle="${loc}"/>'/>
         </div>
     </div>
@@ -83,5 +83,19 @@
 
 <script src="../../js/bootstrap/bootstrap.min.js"></script>
 <script src="../../js/bootstrap/jquery.min.js"></script>
+<script src="../../js/script.js"></script>
+<script>
+    function checkUsLogin(usLogin) {
+        $.get("AjaxHandler", {"command": "check_login", "login": usLogin}, function (responseText) {
+            if (responseText === "false") {
+                document.getElementById("errorLogin").style.display = 'block';
+                document.getElementById("submit_registration").setAttribute("disabled", "")
+            } else {
+                document.getElementById("errorLogin").style.display = 'none';
+                document.getElementById("submit_registration").removeAttribute("disabled");
+            }
+        });
+    }
+</script>
 </body>
 </html>

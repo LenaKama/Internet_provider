@@ -37,7 +37,10 @@
             </div>
         </div>
     </div>
-    <%@include file="part/footer.jspf" %>
 </div>
+<div style="margin-left: 800px">
+    <%@include file="part/feedback_form.jsp" %>
+</div>
+<%@include file="part/footer.jspf" %>
 </body>
 </html>

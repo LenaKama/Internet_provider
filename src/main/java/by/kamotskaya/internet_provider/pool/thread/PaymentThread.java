@@ -10,13 +10,20 @@ import by.kamotskaya.internet_provider.entity.Transaction;
 import by.kamotskaya.internet_provider.entity.User;
 import by.kamotskaya.internet_provider.exception.ConnectionPoolException;
 import by.kamotskaya.internet_provider.exception.DAOException;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.sql.Date;
 
 /**
- * Created by Администратор on 28.05.2018.
+ * Class-thread for executing clients' everyday daily fees.
+ *
+ * @author Lena Kamotskaya
  */
-public class PaymentThread implements Runnable {
+public class PaymentThread extends Thread {
+
+    private static final Logger LOGGER = LogManager.getLogger(PaymentThread.class);
+
     @Override
     public void run() {
         try {
@@ -24,31 +31,30 @@ public class PaymentThread implements Runnable {
             TariffDAO tariffDAO = new TariffDAO();
             SessionDAO sessionDAO = new SessionDAO();
             UserDAO userDAO = new UserDAO();
-            for (String usLogin : userDAO.findAllUsLogins()) { //go through all users
-                if (!transactionDAO.checkTransaction(usLogin)) {//check if there is daily fee
+            for (String usLogin : userDAO.findAllUsLogins()) {
+                if (!transactionDAO.checkTransaction(usLogin)) {
                     User user = userDAO.createUserBean(usLogin);
                     int tId = user.getTId();
-                    if (tId != 0) {//if tariff is set
+                    if (tId != 0) {
                         Tariff tariff = tariffDAO.findTariffById(tId);
                         Transaction transaction = new Transaction();
                         transaction.setUsLogin(usLogin);
                         transaction.setTrInfo(ParamName.PAYMENT_INFO);
-                        if (sessionDAO.findTrafficInStatus(usLogin) + sessionDAO.findTrafficOutStatus(usLogin) <= tariff.getTrafficLimit()) {
+                        int totalTraffic = sessionDAO.findTrafficInStatus(usLogin) + sessionDAO.findTrafficOutStatus(usLogin);
+                        if(tariff.getTrafficLimit()==0) {
                             transaction.setTrSum(tariff.getDailyFee());
-                        } else {
-                            transaction.setTrSum(tariff.getOverrunFee());
-                        }
+                        } else if ( totalTraffic <= tariff.getTrafficLimit() || tariff.getTrafficLimit() == 0) {
+                                transaction.setTrSum(tariff.getDailyFee());
+                            } else {
+                                transaction.setTrSum(tariff.getOverrunFee());
+                            }
                         transactionDAO.add(transaction);
-                    } else {
-                        System.out.println("no tariff");
                     }
-                } else {
-                    System.out.println("there is a transaction");
                 }
-                System.out.println("----" + usLogin);
             }
         } catch (ConnectionPoolException | DAOException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.ERROR, "Error while executing daily fee.");
         }
     }
 }
+

@@ -35,6 +35,9 @@
         <button class="btn btn-primary center-block form-group" type="submit">
             <fmt:message key="about_us.button.want_to_connect" bundle="${loc}"/></button>
     </form>
+    <div style="margin-left: 800px">
+        <%@include file="part/feedback_form.jsp" %>
+    </div>
 </div>
 <%@include file="part/footer.jspf"%>
 </body>

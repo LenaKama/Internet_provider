@@ -43,6 +43,9 @@
             </div>
         </c:forEach>
     </div>
+    <div style="margin-left: 800px">
+        <%@include file="part/feedback_form.jsp" %>
+    </div>
 </div>
 <%@include file="part/footer.jspf" %>
 

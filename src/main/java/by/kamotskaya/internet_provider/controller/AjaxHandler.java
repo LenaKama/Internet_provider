@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * Servlet for AJAX calls.
+ *
  * @author Lena Kamotskaya
  */
 @WebServlet(name = "AjaxHandler", urlPatterns = "/AjaxHandler")
@@ -42,18 +44,10 @@ public class AjaxHandler extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         AjaxReceiver ajaxReceiver = new AjaxReceiver();
-        String command = request.getParameter("command");
-        switch (command) {
-            case "checkLogin":
-                String checkLogin = request.getParameter("checkLogin");
-                response.getWriter().write(ajaxReceiver.checkLogin(checkLogin));
-                break;
-            case "changeTariff":
-                int tId = Integer.parseInt(request.getParameter("tId"));
-                String usLogin = request.getParameter("usLogin");
-               response.getWriter().write(ajaxReceiver.changeTariff(usLogin, tId));
-                break;
-        }
+
+        String checkLogin = request.getParameter("login");
+        response.getWriter().write(ajaxReceiver.checkLogin(checkLogin));
+
     }
 
     @Override

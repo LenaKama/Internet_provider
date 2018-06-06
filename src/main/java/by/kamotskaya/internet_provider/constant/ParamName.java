@@ -66,4 +66,6 @@ public class ParamName {
 
     public static final int FIRST_MONTH_DAY = 1;
     public static final String MONEY_INFLOW = "Money inflow";
+    public static final String TARIFF_MESSAGE = "tariffMessage";
+    public static final String PAYMENT_FOR_CONNECTION = "Payment for connection to tariff";
 }

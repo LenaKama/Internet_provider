@@ -4,6 +4,8 @@ import java.io.IOException;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 /**
+ * Class for outputting error message.
+ *
  * @author Lena Kamotskaya
  */
 public class ErrorMessageTag extends TagSupport {
@@ -16,13 +18,8 @@ public class ErrorMessageTag extends TagSupport {
     @Override
     public int doStartTag() throws JspException {
         try {
-            String to;
-            if ("hi".equalsIgnoreCase(message)) {
-                to = "Hello, " + message;
-            } else {
-                to = "Welcome, " + message;
-            }
-            pageContext.getOut().write("<hr/>" + to + "<hr/>");
+            String to = "ERROR:<hr> " + message + "</hr>";
+            pageContext.getOut().write(to);
         } catch (IOException e) {
             throw new JspException(e.getMessage());
         }
