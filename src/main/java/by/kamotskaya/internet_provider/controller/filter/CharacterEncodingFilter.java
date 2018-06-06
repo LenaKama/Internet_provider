@@ -1,6 +1,5 @@
 package by.kamotskaya.internet_provider.controller.filter;
 
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

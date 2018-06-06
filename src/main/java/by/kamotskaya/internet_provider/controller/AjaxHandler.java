@@ -51,7 +51,7 @@ public class AjaxHandler extends HttpServlet {
             case "changeTariff":
                 int tId = Integer.parseInt(request.getParameter("tId"));
                 String usLogin = request.getParameter("usLogin");
-               // response.getWriter().write(ajaxReceiver.changeTariff(tId));
+               response.getWriter().write(ajaxReceiver.changeTariff(usLogin, tId));
                 break;
         }
     }

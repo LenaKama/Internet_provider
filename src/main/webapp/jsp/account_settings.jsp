@@ -35,40 +35,40 @@
         <input type='file' id="getFile" style="display:none">
 
         <div class="form-group">
-            <label class="control-label col-sm-1" for="login" style="display: inline-block">
+            <label class="col-sm-4" for="login" style="display: inline-block">
                 <fmt:message key="form.usLogin" bundle="${loc}"/></label>
-            <div class="col-sm-10">
+            <div class="col-sm-5">
                 <p id="login" name="usLogin" class="form-control-static">${user.usLogin}</p>
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-sm-1" for="email" style="display: inline-block">
+            <label class="col-sm-4" for="email" style="display: inline-block">
                 <fmt:message key="form.usEmail" bundle="${loc}"/></label>
-            <div class="col-sm-10 field">
+            <div class="col-sm-5 field">
                 <p id="email" class="form-control-static info-field">${user.usEmail}</p>
                 <input type="text" name="usEmail" class="edit-field" value="${user.usEmail}" style="display: none"/>
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-sm-1" for="name" style="display: inline-block">
+            <label class="col-sm-4" for="name" style="display: inline-block">
                 <fmt:message key="form.usName" bundle="${loc}"/></label>
-            <div class="col-sm-10 field">
+            <div class="col-sm-5 field">
                 <p id="name" class="form-control-static info-field">${user.usName}</p>
                 <input type="text" name="usName" class="edit-field" value="${user.usName}" style="display: none"/>
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-sm-1" for="surname" style="display: inline-block">
+            <label class="col-sm-4" for="surname" style="display: inline-block">
                 <fmt:message key="form.usSurname" bundle="${loc}"/></label>
-            <div class="col-sm-10 field">
+            <div class="col-sm-5 field">
                 <p id="surname" class="form-control-static info-field">${user.usSurname}</p>
                 <input type="text" name="usSurname" class="edit-field" value="${user.usSurname}" style="display: none"/>
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-sm-1" for="passport" style="display: inline-block">
+            <label class="col-sm-4" for="passport" style="display: inline-block">
                 <fmt:message key="form.usPassport" bundle="${loc}"/></label>
-            <div class="col-sm-10 field">
+            <div class="col-sm-5 field">
                 <p id="passport" class="form-control-static info-field">${user.usPassport}</p>
                 <input type="text" name="usPassport" class="edit-field" value="${user.usPassport}" style="display: none"/>
             </div>
@@ -88,6 +88,7 @@
     <%--</div>--%>
     <%--<%@include file="../fragment/footer.jspf"%>--%>
 </div>
+<%@include file="part/footer.jspf"%>
 
 <script src="${pageContext.request.contextPath}/js/bootstrap/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/bootstrap/bootstrap.min.js"></script>

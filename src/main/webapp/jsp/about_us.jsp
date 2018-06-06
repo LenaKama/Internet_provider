@@ -20,7 +20,7 @@
 <body>
 <%@include file="part/header.jsp" %>
 <div class="container">
-    <div class="about-us text-center form-group">
+    <div class="text-center form-group" style="font-weight: bold;font-size: 20px;margin:50px;">
         <fmt:message key="page.about_us.slogan" bundle="${loc}"/>
     </div>
     <form action="/Controller" method="post">
@@ -32,9 +32,10 @@
     </div>
     <form action="/Controller" method="post">
         <input type="hidden" name="command" value="show_welcome_page"/>
-        <button class="btn btn-primary" type="submit">
+        <button class="btn btn-primary center-block form-group" type="submit">
             <fmt:message key="about_us.button.want_to_connect" bundle="${loc}"/></button>
     </form>
 </div>
+<%@include file="part/footer.jspf"%>
 </body>
 </html>

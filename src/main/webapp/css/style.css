@@ -5,7 +5,7 @@
 }
 
 .container {
-    /*padding-top: 20px;*/
+    padding-top: 20px;
     background-color: rgba(5, 250, 224, 0.1);
     border-radius: 10px 10px 0 0;
 }
@@ -81,11 +81,11 @@
     background-color: #05fae0;
 }
 .menu-item.active {
-    border: 10px solid rgba(20, 113, 216, 0.99);
+    border: 10px solid rgba(4, 179, 216, 0.99);
 }
 
 .menu-item:hover {
-    border: 5px solid rgba(20, 113, 216, 0.99);
+    border: 5px solid rgba(4, 179, 216, 0.99);
 }
 
 .locale input[type="image"] {
@@ -202,7 +202,7 @@
 }
 
 #submit_feedback {
-    width: 120px;
+    width: 220px;
     margin-left: 65px;
     background-color: rgba(5, 250, 224, 0.4);
     border: none;

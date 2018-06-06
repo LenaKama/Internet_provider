@@ -38,5 +38,6 @@
         </tbody>
     </table>
 </div>
+<%@include file="part/footer.jspf"%>
 </body>
 </html>

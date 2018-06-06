@@ -18,9 +18,9 @@ public class ParamName {
     public static final String ACTIVE_MENU = "activeMenu";
     public static final String WELCOME_LOCALE = "welcomeLocale";
     public static final String ERROR_MESSAGE = "errorMessage";
-    public static final Object GUEST = "guest";
-    public static final Object CLIENT = "client";
-    public static final Object ADMIN = "admin";
+    public static final String GUEST = "guest";
+    public static final String CLIENT = "client";
+    public static final String ADMIN = "admin";
     public static final String ERROR_TRACE = "errorTrace";
     public static final String USER = "user";
 
@@ -64,5 +64,6 @@ public class ParamName {
     public static final String TRAFFIC_IN_STATUS = "trafficInStatus";
     public static final String TRAFFIC_OUT_STATUS = "trafficOutStatus";
 
-    public static int FIRST_MONTH_DAY = 1;
+    public static final int FIRST_MONTH_DAY = 1;
+    public static final String MONEY_INFLOW = "Money inflow";
 }

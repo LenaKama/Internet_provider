@@ -27,7 +27,7 @@
                 <form class="col-md-2" action="/Controller" method="post">
                     <input type="hidden" name="command" value="change_tariff">
                     <input type="hidden" name="tId" value="${tariff.TId}"/>
-                    <button type="button" class="btn-primary" onclick="changeTariff(${tariff.TId})">
+                    <button type="button" class="btn btn-info" onclick="changeTariff(${tariff.TId})">
                         <fmt:message key="tariff.button.connect" bundle="${loc}"/></button>
                 </form>
             </div>

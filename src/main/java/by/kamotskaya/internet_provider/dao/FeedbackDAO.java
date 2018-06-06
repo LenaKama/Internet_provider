@@ -78,8 +78,6 @@ public class FeedbackDAO {
                     feedback.setUsLogin(resultSet.getString("us_login"));
                     feedbacks.add(feedback);
                 }
-            } else {
-                System.out.println("no replied");
             }
         } catch (SQLException e) {
             throw new DAOException("Exception from FeedbackDAO:", e);
@@ -149,9 +147,7 @@ public class FeedbackDAO {
     }
 
     /**
-     *
      * @param fId primary key in feedback table.
-     *
      * @return {@link Feedback}
      * @throws DAOException
      */

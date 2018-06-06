@@ -23,7 +23,7 @@
                 <input class="menu-item" type="submit" value='<fmt:message key="menu.general" bundle="${loc}"/>'/>
             </form>
         </li>
-        <c:if test="${usRole eq 'admin'}">
+        <c:if test="${sessionScope.usRole eq 'admin'}">
             <li id="clients">
                 <form action="/Controller">
                     <input type="hidden" name="command" value="show_clients">

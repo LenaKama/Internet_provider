@@ -36,11 +36,11 @@
         </div>
     </div>
     <div class="row">
-        <label class="col-sm-4" for="usLogin"><fmt:message key="form.usLogin" bundle="${loc}"/></label>
+        <label class="col-sm-5" for="usLogin"><fmt:message key="form.usLogin" bundle="${loc}"/></label>
         <div id="usLogin" class="col-sm-6">${user.usLogin}</div>
     </div>
     <div class="row">
-        <label class="col-sm-4" for="usTariff"><fmt:message key="general.current_tariff" bundle="${loc}"/></label>
+        <label class="col-sm-5" for="usTariff"><fmt:message key="general.current_tariff" bundle="${loc}"/></label>
         <div id="usTariff" class="col-sm-6">
             <c:choose>
                 <c:when test="${empty currentTariff}">
@@ -58,21 +58,21 @@
         </div>
     </div>
     <div class="row">
-        <label class="col-sm-4" for="tariff_limit"><fmt:message key="general.tariff.limit" bundle="${loc}"/></label>
+        <label class="col-sm-5" for="tariff_limit"><fmt:message key="general.tariff.limit" bundle="${loc}"/></label>
         <div id="tariff_limit" class="col-sm-6">${currentTariff.trafficLimit}</div>
     </div>
     <div class="row">
-        <label class="col-sm-4" for="speed_in"><fmt:message key="general.tariff.speed_in" bundle="${loc}"/></label>
+        <label class="col-sm-5" for="speed_in"><fmt:message key="general.tariff.speed_in" bundle="${loc}"/></label>
         <div id="speed_in" class="col-sm-6">${currentTariff.speedIn}</div>
     </div>
     <div class="row">
-        <label class="col-sm-4" for="speed_out"><fmt:message key="general.tariff.speed_out" bundle="${loc}"/></label>
+        <label class="col-sm-5" for="speed_out"><fmt:message key="general.tariff.speed_out" bundle="${loc}"/></label>
         <div id="speed_out" class="col-sm-6">${currentTariff.speedOut}</div>
     </div>
 </div>
 <div class="col-md-6">
     <div class="row">
-        <label class="col-sm-4" for="curBalance"><fmt:message key="general.current_balance" bundle="${loc}"/></label>
+        <label class="col-sm-5" for="curBalance"><fmt:message key="general.current_balance" bundle="${loc}"/></label>
         <div id="curBalance" class="col-sm-6">${currentBalance}</div>
     </div>
     <div class="form-group">
@@ -87,21 +87,22 @@
                    onclick="show('card_form', 'banking_form')"/>
             <input type="image" class="img-thumbnail" src="${m_banking}" onclick="show('banking_form', 'card_form')"/>
         </div>
-        <div class="form-group" id="card_form" style="display: none">
-            <input type="text" placeholder='<fmt:message key="general.card.number" bundle="${loc}"/>'
-                   required pattern="^[+0-9]+"/>
-        </div>
-        <div class="form-group" id="banking_form" style="display: none">
-            <input type="text" placeholder='<fmt:message key="general.phone.number" bundle="${loc}"/>'
-                   required pattern="^[0-9]+"/>
-        </div>
-    </div>
-    <form id="transfer_form" action="/Controller" method="post" style="display: none">
-        <input type="hidden" name="command" value="recharge_account">
+        <form id="transfer_form" action="/Controller" method="post" style="display: none">
+            <div class="form-group" id="card_form" style="display: none">
+                <input type="text" placeholder='<fmt:message key="general.card.number" bundle="${loc}"/>'
+                        required pattern="^[0-9]+" style="margin-left: 5px"/>
+            </div>
+            <div class="form-group" id="banking_form" style="display: none">
+                +<input type="text" placeholder='<fmt:message key="general.phone.number" bundle="${loc}"/>'
+                       required pattern="^[0-9]+"/>
+            </div>
+            <input type="hidden" name="command" value="recharge_account">
 
-        <input type="text" name="amount" placeholder='<fmt:message key="general.sum" bundle="${loc}"/>'
-                required pattern="^[0-9]+(\\.[0-9]+)?$"/>
-        <button class="form-group row btn btn-info" type="submit">
-            <fmt:message key="general.button.submit" bundle="${loc}"/></button>
-    </form>
+            <input type="text" name="amount" placeholder='<fmt:message key="general.sum" bundle="${loc}"/>'
+                   required pattern="^[0-9]+(\\.[0-9]+)?$"/>
+            <div class="row">
+            <button class="form-group btn btn-info" type="submit">
+                <fmt:message key="general.button.submit" bundle="${loc}"/></button></div>
+        </form>
+    </div>
 </div>

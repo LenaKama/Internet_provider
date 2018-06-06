@@ -1,7 +1,6 @@
 package by.kamotskaya.internet_provider.receiver;
 
-import by.kamotskaya.internet_provider.constant.ParamName;
-import by.kamotskaya.internet_provider.controller.RequestContent;
+import by.kamotskaya.internet_provider.dao.OpeningBalanceDAO;
 import by.kamotskaya.internet_provider.dao.TariffDAO;
 import by.kamotskaya.internet_provider.dao.TransactionDAO;
 import by.kamotskaya.internet_provider.dao.UserDAO;
@@ -11,6 +10,8 @@ import by.kamotskaya.internet_provider.exception.DAOException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.Optional;
 
 /**
  * @author Lena Kamotskaya
@@ -33,19 +34,21 @@ public class AjaxReceiver {
         try {
             response = userDAO.checkLogin(usLogin) ? "true" : "false";
         } catch (DAOException e) {
-            //
+            LOGGER.log(Level.ERROR, "DAOException from AjaxReceiver.");
         }
         return response;
     }
-/*
-    public String changeTariff(int tId) {
+
+    public String changeTariff(String usLogin, int tId) {
         String response = null;
-        String usLogin = String.valueOf(content.getSessionAttributes().get(ParamName.US_LOGIN));
-        User user = (User) content.getSessionAttributes().get(ParamName.USER);
         try {
             TransactionDAO transactionDAO = new TransactionDAO();
             TariffDAO tariffDAO = new TariffDAO();
-            if (transactionDAO.findCurrentBalance(usLogin) >= tariffDAO.findTariffById(tId).getConnectionPayment()) {
+            OpeningBalanceDAO openingBalanceDAO = new OpeningBalanceDAO();
+            Optional<Double> balance = openingBalanceDAO.findOpeningBalance(usLogin, true);
+            UserDAO userDAO = new UserDAO();
+            User user = userDAO.createUserBean(usLogin);
+            if (transactionDAO.findCurrentBalance(usLogin, balance.get()) >= tariffDAO.findTariffById(tId).getConnectionPayment()) {
                 user.setTId(tId);
                 response = "true";
             } else {
@@ -56,5 +59,5 @@ public class AjaxReceiver {
         }
         return response;
     }
-    */
+
 }

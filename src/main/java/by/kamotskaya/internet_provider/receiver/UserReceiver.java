@@ -108,7 +108,7 @@ public class UserReceiver {
         user.setUsSurname(usSurname);
         user.setUsEmail(usEmail);
         user.setUsPassport(usPassport);
-        user.setUsRole("client");
+        user.setUsRole(ParamName.CLIENT);
         user.setUsBan(false);
         try {
             OpeningBalanceDAO openingBalanceDAO = new OpeningBalanceDAO();
@@ -141,7 +141,7 @@ public class UserReceiver {
             content.putRequestAttribute(ParamName.ERROR_MESSAGE, "Error while updating the user.");
             return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.ERROR);
         }
-        return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.WELCOME);
+        return GoToPageReceiver.goToAccountSettings(content);
     }
 
     //change password
@@ -166,7 +166,7 @@ public class UserReceiver {
             User user = userDAO.createUserBean(usLogin);
             user.setTId(tId);
             userDAO.update(user);
-            content.putSessionAttribute("user", user);
+            content.putSessionAttribute(ParamName.USER, user);
         } catch (DAOException | ConnectionPoolException e) {
             content.putRequestAttribute(ParamName.ERROR_MESSAGE, "Error while updating user.");
             return new CommandResult(CommandResult.ResponseType.FORWARD, PagePath.ERROR);

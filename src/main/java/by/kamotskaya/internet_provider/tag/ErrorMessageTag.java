@@ -8,19 +8,19 @@ import javax.servlet.jsp.tagext.TagSupport;
  */
 public class ErrorMessageTag extends TagSupport {
 
-    private String role;
+    private String message;
 
     public void setMessage(String role) {
-        this.role = role;
+        this.message = role;
     }
     @Override
     public int doStartTag() throws JspException {
         try {
             String to;
-            if ("hi".equalsIgnoreCase(role)) {
-                to = "Hello, " + role;
+            if ("hi".equalsIgnoreCase(message)) {
+                to = "Hello, " + message;
             } else {
-                to = "Welcome, " + role;
+                to = "Welcome, " + message;
             }
             pageContext.getOut().write("<hr/>" + to + "<hr/>");
         } catch (IOException e) {

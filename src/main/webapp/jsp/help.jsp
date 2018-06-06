@@ -22,11 +22,10 @@
 <body>
 <%@include file="part/header.jsp" %>
 <div class="container">
-    <div class="form-group text-center label-info-lg">
+    <div class="form-group text-center" style="margin: 20px;font-size: 20px;font-weight: bold">
         <fmt:message key="help.heading" bundle="${loc}"/>
     </div>
     <c:forEach items="${userFeedbacks}" var="userFeedback" varStatus="theCount">
-        <c:if test="${empty userFeedback.usLogin}">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <label class="form-group label-info text-left"><c:out value="${userFeedback.fName}"/></label>
@@ -37,14 +36,11 @@
                     <div class="form-control-lg card card-body nav-justified">
                         <c:out value="${userFeedback.fMessage}"/></div>
                 </div>
-                <div class="panel-footer">
+                <div class="panel-footer card">
                     <div class="form-control-lg card card-body nav-justified">
-                        <c:out value="${userFeedback.usLogin}"/></div>
+                        <c:out value="${userFeedback.fAnswer}"/></div>
                 </div>
-                <div class="form-control-lg card card-body nav-justified">
-                    <c:out value="${userFeedback.fAnswer}"/></div>
             </div>
-        </c:if>
     </c:forEach>
 </div>
 

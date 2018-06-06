@@ -13,7 +13,14 @@
         <c:set var="title" value="${account}"/>
     </c:otherwise>
 </c:choose>
-
+<c:choose>
+    <c:when test="${sessionScope.usRole eq 'guest'}">
+        <c:set var="bg_style" value="transparent"/>
+    </c:when>
+    <c:otherwise>
+        <c:set var="bg_style" value="inherit"/>
+    </c:otherwise>
+</c:choose>
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
@@ -28,7 +35,7 @@
 </head>
 <body>
 <%@include file="part/header.jsp" %>
-<div class="container" style="background-color: transparent">
+<div class="container" style="background-color:${bg_style}">
     <c:if test="${sessionScope.usRole eq 'guest'}">
         <div id="myCarousel" class="carousel container slide">
             <div class="carousel-inner">

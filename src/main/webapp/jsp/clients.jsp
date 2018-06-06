@@ -28,24 +28,26 @@
 <body>
 <%@include file="part/header.jsp" %>
 <div class="container">
-    <%@include file="part/menu.jsp"%>
-<div class="panel-group">
-    <c:forEach items="${requestScope.clients}" var="client" varStatus="theCount">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-                ${client.usName}
-            <button class="btn-primary" onclick="showInfo(${theCount.count})">Show more</button>
-        </div>
-        <div id="clientInfo${theCount.count}" class="panel-body" style="display: none">
-            Client info:
-                ${client.usEmail}
-        </div>
+    <%@include file="part/menu.jsp" %>
+    <div class="panel-group">
+        <c:forEach items="${requestScope.clients}" var="client" varStatus="theCount">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                        ${client.usName}
+                    <button class="btn-primary" onclick="showInfo(${theCount.count})">Show more</button>
+                </div>
+                <div id="clientInfo${theCount.count}" class="panel-body" style="display: none">
+                    Client info:
+                        ${client.usEmail}
+                </div>
+            </div>
+        </c:forEach>
     </div>
-    </c:forEach>
-<%@include file="part/footer.jspf"%>
 </div>
-        <script src="../js/bootstrap/jquery.min.js"></script>
-        <script src="../js/bootstrap/bootstrap.min.js"></script>
+<%@include file="part/footer.jspf" %>
+
+<script src="../js/bootstrap/jquery.min.js"></script>
+<script src="../js/bootstrap/bootstrap.min.js"></script>
 
 </body>
 </html>

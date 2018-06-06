@@ -22,12 +22,11 @@ public class BalanceReceiver {
     public static CommandResult rechargeAccount(RequestContent content) {
 
         Double amount = Double.parseDouble(content.getRequestParameters().get("amount")[0]);
-       String usLogin = String.valueOf(content.getSessionAttributes().get(ParamName.US_LOGIN));
-       // String usLogin = content.getRequestParameters().get(ParamName.US_LOGIN)[0];
+        String usLogin = String.valueOf(content.getSessionAttributes().get(ParamName.US_LOGIN));
         LOGGER.log(Level.DEBUG, "amount - " + amount);
         LOGGER.log(Level.DEBUG, "usLogin - " + usLogin);
         Transaction transaction = new Transaction();
-        transaction.setTrInfo("Money inflow");
+        transaction.setTrInfo(ParamName.MONEY_INFLOW);
         transaction.setTrSum(amount);
         transaction.setUsLogin(usLogin);
         try {
